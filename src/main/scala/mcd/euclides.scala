@@ -17,8 +17,16 @@ import scala.io.StdIn.readInt
 
 @main def euclidesInteractivo(): Unit = {
   // Inicio de la zona donde deben editar el código
-  
-  println("No le sé al máximo común divisor :(")
-  
+  println("Ingrese el primer numero (0 para salir): ")
+  val a = readInt()
+  if (a == 0){
+    println("Adios!")
+  } else {
+    println("Ingrese el segundo numero")
+    val b = readInt()
+
+    val c = ???
+    println(s"El MCD de $a y $b es $c")
+  }
   // Fin de la zona donde deben editar el código
 }
