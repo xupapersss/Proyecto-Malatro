@@ -4,5 +4,4 @@ package Rank
 class Ace extends Rank {
   val order: Int = 1
   val value: Int = 11
-  val category: String =
 }
