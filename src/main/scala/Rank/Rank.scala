@@ -4,4 +4,7 @@ package Rank
 trait Rank {
   def order: Int
   def value: Int
+  def category = {
+    ???
+  }
 }
