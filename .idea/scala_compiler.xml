@@ -2,6 +2,6 @@
 <project version="4">
   <component name="ScalaCompilerConfiguration">
     <option name="separateProdTestSources" value="true" />
-    <profile name="sbt 1" modules="cc3002-project-template,cc3002-project-template.main,cc3002-project-template.test,malatro-2026.cc3002-project-template,malatro-2026.cc3002-project-template.main,malatro-2026.cc3002-project-template.test" />
+    <profile name="sbt 1" modules="cc3002-project-template,cc3002-project-template.main,cc3002-project-template.test,malatro-2026-xupapersss.cc3002-project-template,malatro-2026-xupapersss.cc3002-project-template.main,malatro-2026-xupapersss.cc3002-project-template.test,malatro-2026.cc3002-project-template,malatro-2026.cc3002-project-template.main,malatro-2026.cc3002-project-template.test" />
   </component>
 </project>
