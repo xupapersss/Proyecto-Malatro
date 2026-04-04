@@ -1,6 +1,7 @@
 package cl.uchile.dcc
+package Rank
 
-trait Range {
+trait Rank {
   def order: Int
   def value: Int
 }
