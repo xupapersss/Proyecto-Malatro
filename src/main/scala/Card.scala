@@ -1,8 +1,8 @@
 package cl.uchile.dcc
 
-import Suit.Suit
+import Suit.
 
-import Rank.Rank
+import Rank.
 
 class Card (var Suit:Suit, var Rank: Rank){
 
