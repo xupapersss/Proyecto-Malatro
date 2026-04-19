@@ -161,4 +161,23 @@ class RankTest extends FunSuite {
     assert(two != king)
     assert(jack != king)
   }
+  test("Ace has correct category") {
+    val rank = new Ace
+    assertEquals(rank.category.label, "Odd")
+  }
+
+  test("Two has correct category") {
+    val rank = new Two
+    assertEquals(rank.category.label, "Even")
+  }
+
+  test("Queen has correct category") {
+    val rank = new Queen
+    assertEquals(rank.category.label, "Face Card")
+  }
+
+  test("King has correct category") {
+    val rank = new King
+    assertEquals(rank.category.label, "Face Card")
+  }
 }
