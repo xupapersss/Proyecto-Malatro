@@ -6,5 +6,5 @@ trait Rank {
 
   def value: Int
 
-  def category = ???
+  def category: Category
 }
