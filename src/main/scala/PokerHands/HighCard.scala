@@ -2,6 +2,6 @@ package cl.uchile.dcc
 package PokerHands
 
 class HighCard extends PokerHand {
-  val chips = 5
-  val mult = 1
+  val basechips = 5
+  val basemult = 1
 }

@@ -2,6 +2,6 @@ package cl.uchile.dcc
 package PokerHands
 
 class Pair extends PokerHand {
-  val chips = 10
-  val mult = 2
+  val basechips = 10
+  val basemult = 2
 }
