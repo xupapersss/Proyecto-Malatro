@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/malatro-2026-xupapersss/MEMES.malatro-2026-xupapersss.cc3002-project-template.iml" filepath="$PROJECT_DIR$/.idea/modules/malatro-2026-xupapersss/MEMES.malatro-2026-xupapersss.cc3002-project-template.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/malatro-2026-xupapersss/MEMES.malatro-2026-xupapersss.cc3002-project-template.cc3002-project-template-build.iml" filepath="$PROJECT_DIR$/.idea/modules/malatro-2026-xupapersss/MEMES.malatro-2026-xupapersss.cc3002-project-template.cc3002-project-template-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/malatro-2026-xupapersss/MEMES.malatro-2026-xupapersss.cc3002-project-template.main.iml" filepath="$PROJECT_DIR$/.idea/modules/malatro-2026-xupapersss/MEMES.malatro-2026-xupapersss.cc3002-project-template.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/malatro-2026-xupapersss/MEMES.malatro-2026-xupapersss.cc3002-project-template.test.iml" filepath="$PROJECT_DIR$/.idea/modules/malatro-2026-xupapersss/MEMES.malatro-2026-xupapersss.cc3002-project-template.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cc3002-project-template.iml" filepath="$PROJECT_DIR$/.idea/modules/cc3002-project-template.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cc3002-project-template/cc3002-project-template.cc3002-project-template-build.iml" filepath="$PROJECT_DIR$/.idea/modules/cc3002-project-template/cc3002-project-template.cc3002-project-template-build.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cc3002-project-template/cc3002-project-template.main.iml" filepath="$PROJECT_DIR$/.idea/modules/cc3002-project-template/cc3002-project-template.main.iml" />
