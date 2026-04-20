@@ -7,6 +7,15 @@ import munit.FunSuite
 
 import scala.collection.mutable.ArrayBuffer
 
-class PokerHandTest extends FunSuite{
+class PokerHandTest extends FunSuite {
 
+  test("isHCard returns true for any hand") {
+    val cards = ArrayBuffer(
+      new Card(new Hearts, new Two),
+      new Card(new Spades, new Five)
+    )
+    val result = new HighCard().isHCard(cards)
+
+    assert(result)
+  }
 }
