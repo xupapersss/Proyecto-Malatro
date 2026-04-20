@@ -49,4 +49,18 @@ class PokerHandTest extends FunSuite {
 
     assert(result)
   }
+
+  test("Flush is detected correctly") {
+    val cards = ArrayBuffer(
+      new Card(new Hearts, new Jack),
+      new Card(new Hearts, new Three),
+      new Card(new Hearts, new Five),
+      new Card(new Hearts, new Ace),
+      new Card(new Hearts, new Six)
+    )
+
+    val result = new Flush().isFlush(cards)
+
+    assert(result)
+  }
 }
