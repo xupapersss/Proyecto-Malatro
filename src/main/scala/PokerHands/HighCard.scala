@@ -7,5 +7,5 @@ class HighCard extends PokerHand {
   override val basechips = 5
   override val basemult = 1
 
-  override def isValid(cards: ArrayBuffer[Card]): Boolean = true
+  def isHCard(cards: ArrayBuffer[Card]): Boolean = true
 }
