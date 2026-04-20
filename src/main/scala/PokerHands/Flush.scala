@@ -9,10 +9,10 @@ class Flush extends PokerHand {
   val basemult = 4
 
   def isFlush(cards: ArrayBuffer[Card]): Boolean = {
-    val counter = mutable.Map[Suit.Suit, Int]()
+    val counter = mutable.Map[String, Int]()
 
     for (card <- cards) {
-      val suit = card.suit
+      val suit = card.suit.label
       counter(suit) = counter.getOrElse(suit, 0) + 1
     }
     counter.values.exists(_ == cards.length)
