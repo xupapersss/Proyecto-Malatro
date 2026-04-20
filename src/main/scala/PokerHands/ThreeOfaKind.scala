@@ -4,25 +4,13 @@ package PokerHands
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-class ThreeOfaKind extends PokerHand {
+class ThreeOfaKind extends RankBasedHand {
   val basechips = 30
   val basemult = 3
-
-  def isTOaK(cards: ArrayBuffer[Card]): Boolean = {
-    val counter: mutable.Map[Int, Int] = mutable.Map()
-
-    for (card <- cards) {
-      val ord = card.rank.order
-
-      if (counter.contains(ord)) {
-        counter(ord) = counter(ord) + 1
-      } else {
-        counter(ord) = 1
-      }
-    }
-
+  
+  def isTOaK(cards: ArrayBuffer[Card]): Boolean =
+    var counter = buildCounter(cards)
+  
     counter.values.exists(_ == 3)
-
-  }
 }
 
