@@ -9,10 +9,13 @@ import scala.collection.mutable.ArrayBuffer
 
 class PokerHandTest extends FunSuite {
 
-  test("isHCard returns true for any hand") {
+  test("isHCard is detected correctly") {
     val cards = ArrayBuffer(
       new Card(new Hearts, new Two),
-      new Card(new Spades, new Five)
+      new Card(new Spades, new Queen),
+      new Card(new Clubs, new Five),
+      new Card(new Hearts, new Three),
+      new Card(new Clubs, new Jack),
     )
     val result = new HighCard().isHCard(cards)
 
@@ -29,6 +32,20 @@ class PokerHandTest extends FunSuite {
     )
 
     val result = new Pair().isPair(cards)
+
+    assert(result)
+  }
+
+  test("Three of a kind is detected correctly") {
+    val cards = ArrayBuffer(
+      new Card(new Hearts, new Jack),
+      new Card(new Spades, new Three),
+      new Card(new Clubs, new Five),
+      new Card(new Hearts, new Jack),
+      new Card(new Clubs, new Jack),
+    )
+
+    val result = new ThreeOfaKind().isTOaK(cards)
 
     assert(result)
   }
