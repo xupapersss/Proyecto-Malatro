@@ -73,7 +73,9 @@ class PokerHandTest extends FunSuite {
       new Card(new Hearts, new Six)
     )
 
-    assert(new Straight().isStraight(cards))
+    val result = new Straight().isStraight(cards)
+
+    assert(result)
   }
 
   test("Straight is detected for A-2-3-4-5") {
@@ -85,7 +87,9 @@ class PokerHandTest extends FunSuite {
       new Card(new Hearts, new Five)
     )
 
-    assert(new Straight().isStraight(cards))
+    val result = new Straight().isStraight(cards)
+
+    assert(result)
   }
 
   test("Straight is detected for 10-J-Q-K-A") {
@@ -97,7 +101,22 @@ class PokerHandTest extends FunSuite {
       new Card(new Hearts, new Ace)
     )
 
-    assert(new Straight().isStraight(cards))
+    val result = new Straight().isStraight(cards)
+
+    assert(result)
   }
 
+  test("Straight Flush is detected") {
+    val cards = ArrayBuffer(
+      new Card(new Hearts, new Two),
+      new Card(new Hearts, new Three),
+      new Card(new Hearts, new Four),
+      new Card(new Hearts, new Five),
+      new Card(new Hearts, new Six)
+    )
+
+    val result = new StraightFlush().isStraightFlush(cards)
+
+    assert(result)
+  }
 }
