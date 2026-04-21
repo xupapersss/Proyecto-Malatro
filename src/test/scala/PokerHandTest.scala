@@ -63,4 +63,18 @@ class PokerHandTest extends FunSuite {
 
     assert(result)
   }
+
+  test("Straight is detected correctly") {
+    val cards = ArrayBuffer(
+      new Card(new Hearts, new Five),
+      new Card(new Hearts, new Four),
+      new Card(new Hearts, new Three),
+      new Card(new Hearts, new Ace),
+      new Card(new Hearts, new Two)
+    )
+
+    val result = new Straight().isStraight(cards)
+
+    assert(result)
+  }
 }
