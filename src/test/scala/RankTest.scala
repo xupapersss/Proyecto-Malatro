@@ -1,7 +1,7 @@
 package cl.uchile.dcc
+
 import munit.FunSuite
 import Rank._
-
 
 class RankTest extends FunSuite {
 
@@ -12,46 +12,6 @@ class RankTest extends FunSuite {
 
   test("A Two can be created") {
     val rank = new Two
-    assert(rank != null)
-  }
-
-  test("A Three can be created") {
-    val rank = new Three
-    assert(rank != null)
-  }
-
-  test("A Four can be created") {
-    val rank = new Four
-    assert(rank != null)
-  }
-
-  test("A Five can be created") {
-    val rank = new Five
-    assert(rank != null)
-  }
-
-  test("A Six can be created") {
-    val rank = new Six
-    assert(rank != null)
-  }
-
-  test("A Seven can be created") {
-    val rank = new Seven
-    assert(rank != null)
-  }
-
-  test("An Eight can be created") {
-    val rank = new Eight
-    assert(rank != null)
-  }
-
-  test("A Nine can be created") {
-    val rank = new Nine
-    assert(rank != null)
-  }
-
-  test("A Ten can be created") {
-    val rank = new Ten
     assert(rank != null)
   }
 
@@ -70,82 +30,60 @@ class RankTest extends FunSuite {
     assert(rank != null)
   }
 
-  test("Ace has correct order and value") {
+  test("Ace has correct order, value and category") {
     val rank = new Ace
     assertEquals(rank.order, 1)
     assertEquals(rank.value, 11)
+    assertEquals(rank.category, "Odd")
   }
 
-  test("Two has correct order and value") {
+  test("Two has correct order, value and category") {
     val rank = new Two
     assertEquals(rank.order, 2)
     assertEquals(rank.value, 2)
+    assertEquals(rank.category, "Even")
   }
 
-  test("Three has correct order and value") {
+  test("Three has correct order, value and category") {
     val rank = new Three
     assertEquals(rank.order, 3)
     assertEquals(rank.value, 3)
+    assertEquals(rank.category, "Odd")
   }
 
-  test("Four has correct order and value") {
+  test("Four has correct order, value and category") {
     val rank = new Four
     assertEquals(rank.order, 4)
     assertEquals(rank.value, 4)
+    assertEquals(rank.category, "Even")
   }
 
-  test("Five has correct order and value") {
-    val rank = new Five
-    assertEquals(rank.order, 5)
-    assertEquals(rank.value, 5)
-  }
-
-  test("Six has correct order and value") {
-    val rank = new Six
-    assertEquals(rank.order, 6)
-    assertEquals(rank.value, 6)
-  }
-
-  test("Seven has correct order and value") {
-    val rank = new Seven
-    assertEquals(rank.order, 7)
-    assertEquals(rank.value, 7)
-  }
-
-  test("Eight has correct order and value") {
-    val rank = new Eight
-    assertEquals(rank.order, 8)
-    assertEquals(rank.value, 8)
-  }
-
-  test("Nine has correct order and value") {
-    val rank = new Nine
-    assertEquals(rank.order, 9)
-    assertEquals(rank.value, 9)
-  }
-
-  test("Ten has correct order and value") {
+  test("Ten has correct order, value and category") {
     val rank = new Ten
     assertEquals(rank.order, 10)
     assertEquals(rank.value, 10)
+    assertEquals(rank.category, "Even")
   }
 
-  test("Jack has correct order and value") {
+  test("Jack has correct order, value and category") {
     val rank = new Jack
     assertEquals(rank.order, 11)
     assertEquals(rank.value, 10)
+    assertEquals(rank.category, "Face Card")
   }
 
-  test("Queen has correct order and value") {
+  test("Queen has correct order, value and category") {
     val rank = new Queen
     assertEquals(rank.order, 12)
     assertEquals(rank.value, 10)
+    assertEquals(rank.category, "Face Card")
   }
 
-  test("King has correct order and value") {
+  test("King has correct order, value and category") {
     val rank = new King
     assertEquals(rank.order, 13)
     assertEquals(rank.value, 10)
+    assertEquals(rank.category, "Face Card")
   }
 
   test("Different ranks are distinguishable") {
@@ -160,24 +98,5 @@ class RankTest extends FunSuite {
     assert(two != jack)
     assert(two != king)
     assert(jack != king)
-  }
-  test("Ace has correct category") {
-    val rank = new Ace
-    assertEquals(rank.category.label, "Odd")
-  }
-
-  test("Two has correct category") {
-    val rank = new Two
-    assertEquals(rank.category.label, "Even")
-  }
-
-  test("Queen has correct category") {
-    val rank = new Queen
-    assertEquals(rank.category.label, "Face Card")
-  }
-
-  test("King has correct category") {
-    val rank = new King
-    assertEquals(rank.category.label, "Face Card")
   }
 }
