@@ -63,5 +63,4 @@ class PokerHandTest extends FunSuite {
 
     assert(result)
   }
-  
 }
