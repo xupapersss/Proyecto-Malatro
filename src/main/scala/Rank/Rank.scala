@@ -5,6 +5,6 @@ trait Rank {
   def order: Int
 
   def value: Int
-
-  def category: Category
+  
+  def category: String
 }

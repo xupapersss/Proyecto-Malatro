@@ -4,5 +4,5 @@ package Rank
 class Ten extends Rank {
   val order: Int = 10
   val value: Int = 10
-  val category: Category = new Even
+  val category = "Even"
 }

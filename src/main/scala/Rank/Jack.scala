@@ -4,5 +4,5 @@ package Rank
 class Jack extends Rank {
   val order: Int = 11
   val value: Int = 10
-  val category: Category = new FaceCard
+  override val category = "Face Card"
 }

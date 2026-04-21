@@ -4,5 +4,6 @@ package Rank
 class Three extends Rank {
   val order: Int = 3
   val value: Int = 3
-  val category: Category = new Odd
+  override val category = "Odd"
 }
+
