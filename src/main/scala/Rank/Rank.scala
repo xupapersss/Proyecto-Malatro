@@ -9,7 +9,6 @@ package Rank
  *
  * Each concrete implementation corresponds to a specific card rank (e.g., Ace, Two, Jack, etc.).
  */
-
 trait Rank {
 
   /**
@@ -20,7 +19,6 @@ trait Rank {
    * - Ace may be represented as 1
    * - Jack as 11, Queen as 12, King as 13
    */
-
   def order: Int
 
   /**
@@ -32,7 +30,6 @@ trait Rank {
    * - Face cards (Jack, Queen, King) usually have value 10
    * - Ace may have a special value (e.g., 11)
    */
-
   def value: Int
 
   /**
@@ -45,7 +42,6 @@ trait Rank {
    *
    * This can be used for special rules or card effects.
    */
-  
   def category: String
 
 

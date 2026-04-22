@@ -8,7 +8,6 @@ package Rank
  *
  * Category: Even
  */
-
 class Four extends Rank {
   val order: Int = 4
   val value: Int = 4

@@ -4,10 +4,38 @@ package PokerHands
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
+
+/**
+ * Represents the Flush poker hand.
+ *
+ * A Flush is formed when all cards in the hand share the same suit.
+ *
+ * This hand is evaluated by counting how many times each suit appears
+ * and checking if all cards belong to a single suit.
+ */
 class Flush extends PokerHand {
+
+  /**
+   * The base number of chips awarded for a Flush.
+   */
+
   val basechips = 35
+
+  /**
+   * The multiplier applied to the base chips.
+   */
   val basemult = 4
 
+
+  /**
+   * Determines if a set of cards forms a Flush.
+   *
+   * This method counts occurrences of each suit using their labels
+   * and checks whether all cards share the same suit.
+   *
+   * @param cards the cards to evaluate
+   * @return true if all cards have the same suit
+   */
   def isFlush(cards: ArrayBuffer[Card]): Boolean = {
     val counter = mutable.Map[String, Int]()
 

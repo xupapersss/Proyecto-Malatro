@@ -14,7 +14,6 @@ import Jokers._
  * @param cards  the collection of cards in the hand
  * @param jokers the collection of jokers associated with the hand
  */
-
 class Hand(var cards: ArrayBuffer[Card], var jokers: ArrayBuffer[Joker]) {
   
 }

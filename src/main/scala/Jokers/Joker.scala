@@ -11,7 +11,6 @@ package Jokers
  * - a name, used to identify it
  * - an effect, which defines its behavior in the game
  */
-
 trait Joker {
 
   /**
@@ -19,7 +18,6 @@ trait Joker {
    *
    * This is used to identify the Joker and distinguish it from others.
    */
-
   def name : String
 
   /**
@@ -30,6 +28,5 @@ trait Joker {
    *
    * NOTE: This is not yet implemented.
    */
-
   def effect = ???
 }

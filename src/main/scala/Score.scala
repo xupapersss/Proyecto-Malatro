@@ -12,7 +12,6 @@ package cl.uchile.dcc
  * @param chips the base chip value of the hand
  * @param mult  the multiplier applied to the chips
  */
-
 class Score (chips: Int, mult: Int) {
 
   /**
@@ -20,7 +19,6 @@ class Score (chips: Int, mult: Int) {
    *
    * @return the product of chips and multiplier
    */
-
   def total:Int = {
     chips * mult
   }
@@ -30,7 +28,6 @@ class Score (chips: Int, mult: Int) {
    *
    * @return a string showing the total score
    */
-
   def printScore(): String = {
     s"Total Score = $total"
   }

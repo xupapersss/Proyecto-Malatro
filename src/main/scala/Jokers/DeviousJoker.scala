@@ -10,7 +10,6 @@ package Jokers
  * The exact effect is not yet implemented, but it is expected to
  * interact with hand evaluation or scoring logic.
  */
-
 class DeviousJoker extends Joker {
 
   /**
@@ -18,7 +17,6 @@ class DeviousJoker extends Joker {
    *
    * Used to identify the Joker within the game.
    */
-
   override def name: String = "Devious Joker"
 
 }

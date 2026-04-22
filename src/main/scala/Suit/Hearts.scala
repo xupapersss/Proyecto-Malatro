@@ -6,7 +6,6 @@ package Suit
  *
  * All cards of this suit share the same label: "Hearts".
  */
-
 class Hearts extends Suit {
   override val label = "Hearts"
 }

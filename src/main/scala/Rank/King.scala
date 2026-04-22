@@ -8,7 +8,6 @@ package Rank
  *
  * Category: Face Card
  */
-
 class King extends Rank {
   val order: Int = 13
   val value: Int = 10

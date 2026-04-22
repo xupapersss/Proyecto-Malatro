@@ -8,7 +8,6 @@ package Rank
  *
  * Category: Odd
  */
-
 class Seven extends Rank {
   val order: Int = 7
   val value: Int = 7

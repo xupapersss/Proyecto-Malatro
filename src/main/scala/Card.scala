@@ -15,7 +15,6 @@ import Rank._
  * @param suit the suit of the card
  * @param rank the rank of the card
  */
-
 class Card (val suit:Suit, val rank: Rank) {
 
   /**
@@ -26,6 +25,5 @@ class Card (val suit:Suit, val rank: Rank) {
    *
    * @return the chip value associated with the card's rank
    */
-
   def chips: Int = rank.value
 }

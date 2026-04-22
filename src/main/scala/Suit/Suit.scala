@@ -10,8 +10,6 @@ package Suit
  * Suits are typically used to evaluate combinations like Flush,
  * where all cards must share the same suit.
  */
-
-
 trait Suit {
 
   /**
