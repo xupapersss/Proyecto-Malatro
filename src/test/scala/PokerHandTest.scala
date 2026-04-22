@@ -119,4 +119,94 @@ class PokerHandTest extends FunSuite {
 
     assert(result)
   }
+
+  test("HandPriority chooses StraightFlush with highest priority") {
+    val cards = ArrayBuffer(
+      new Card(new Hearts, new Ten),
+      new Card(new Hearts, new Jack),
+      new Card(new Hearts, new Queen),
+      new Card(new Hearts, new King),
+      new Card(new Hearts, new Ace)
+    )
+
+    val result = new HandPriority().bestHand(cards)
+
+    assertEquals(result.basechips, 100)
+    assertEquals(result.basemult, 8)
+  }
+
+  test("HandPriority chooses Flush correctly") {
+    val cards = ArrayBuffer(
+      new Card(new Hearts, new Two),
+      new Card(new Hearts, new Five),
+      new Card(new Hearts, new Seven),
+      new Card(new Hearts, new Nine),
+      new Card(new Hearts, new King)
+    )
+
+    val result = new HandPriority().bestHand(cards)
+
+    assertEquals(result.basechips, 35)
+    assertEquals(result.basemult, 4)
+  }
+
+  test("HandPriority chooses Straight correctly") {
+    val cards = ArrayBuffer(
+      new Card(new Hearts, new Two),
+      new Card(new Spades, new Three),
+      new Card(new Clubs, new Four),
+      new Card(new Diamonds, new Five),
+      new Card(new Hearts, new Six)
+    )
+
+    val result = new HandPriority().bestHand(cards)
+
+    assertEquals(result.basechips, 30)
+    assertEquals(result.basemult, 4)
+  }
+
+  test("HandPriority chooses ThreeOfAKind correctly") {
+    val cards = ArrayBuffer(
+      new Card(new Hearts, new Queen),
+      new Card(new Spades, new Queen),
+      new Card(new Clubs, new Queen),
+      new Card(new Diamonds, new Five),
+      new Card(new Hearts, new Two)
+    )
+
+    val result = new HandPriority().bestHand(cards)
+
+    assertEquals(result.basechips, 30)
+    assertEquals(result.basemult, 3)
+  }
+
+  test("HandPriority chooses Pair correctly") {
+    val cards = ArrayBuffer(
+      new Card(new Hearts, new Two),
+      new Card(new Spades, new Two),
+      new Card(new Clubs, new Five),
+      new Card(new Diamonds, new Seven),
+      new Card(new Hearts, new Nine)
+    )
+
+    val result = new HandPriority().bestHand(cards)
+
+    assertEquals(result.basechips, 10)
+    assertEquals(result.basemult, 2)
+  }
+
+  test("HandPriority falls back to HighCard") {
+    val cards = ArrayBuffer(
+      new Card(new Hearts, new Two),
+      new Card(new Spades, new Five),
+      new Card(new Clubs, new Seven),
+      new Card(new Diamonds, new Nine),
+      new Card(new Hearts, new King)
+    )
+
+    val result = new HandPriority().bestHand(cards)
+
+    assertEquals(result.basechips, 5)
+    assertEquals(result.basemult, 1)
+  }
 }
