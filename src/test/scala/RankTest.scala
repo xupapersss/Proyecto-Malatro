@@ -30,6 +30,18 @@ class RankTest extends FunSuite {
     assert(rank != null)
   }
 
+  test("An Eight can be created") {
+    val rank = new Eight
+    assert(rank != null)
+  }
+
+  test("Eight has correct order, value and category") {
+    val rank = new Eight
+    assertEquals(rank.order, 8)
+    assertEquals(rank.value, 8)
+    assertEquals(rank.category, "Even")
+  }
+
   test("Ace has correct order, value and category") {
     val rank = new Ace
     assertEquals(rank.order, 1)
@@ -57,6 +69,7 @@ class RankTest extends FunSuite {
     assertEquals(rank.value, 4)
     assertEquals(rank.category, "Even")
   }
+
 
   test("Ten has correct order, value and category") {
     val rank = new Ten
