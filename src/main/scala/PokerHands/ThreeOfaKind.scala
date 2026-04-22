@@ -1,7 +1,6 @@
 package cl.uchile.dcc
 package PokerHands
 
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 class ThreeOfaKind extends RankBasedHand {
