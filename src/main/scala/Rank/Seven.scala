@@ -1,6 +1,14 @@
 package cl.uchile.dcc
 package Rank
 
+/**
+ * Represents the Seven card rank.
+ *
+ * This is a numeric card used in sequences and scoring.
+ *
+ * Category: Odd
+ */
+
 class Seven extends Rank {
   val order: Int = 7
   val value: Int = 7
