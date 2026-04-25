@@ -11,16 +11,20 @@ import Jokers._
  * This class acts as a container for game data and does not
  * implement evaluation logic directly.
  *
- * @param cards  the collection of cards in the hand
- * @param jokers the collection of jokers associated with the hand
+ * @param handCards  the collection of cards in the hand
+ * @param handJokers the collection of jokers associated with the hand
  */
-class Hand(var cards: ArrayBuffer[Card], var jokers: ArrayBuffer[Joker]) {
+class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker]) {
+
+  private val _cards = handCards
+  private val _jokers = handJokers
+
+  def cards: List[Card] = _cards.toList
 
   def addCards(newCards: ArrayBuffer[Card]): Unit = {
-    cards ++= newCards
+    _cards ++= newCards
   }
 }
-
 
 
 
