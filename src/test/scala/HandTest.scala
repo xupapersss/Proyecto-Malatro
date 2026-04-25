@@ -72,4 +72,21 @@ class HandTest extends FunSuite {
     assertEquals(hand.jokers.size, 1)
     assertEquals(hand.jokers.head, joker)
   }
+
+  test("addCards preserves existing cards and adds new ones") {
+    val card1 = new Card(new Hearts, new Two)
+    val card2 = new Card(new Spades, new Three)
+
+    val newCard1 = new Card(new Clubs, new Four)
+    val newCard2 = new Card(new Diamonds, new Five)
+
+    val hand = new Hand(ArrayBuffer(card1, card2), ArrayBuffer())
+
+    hand.addCards(ArrayBuffer(newCard1, newCard2))
+
+    assert(hand.cards.contains(card1))
+    assert(hand.cards.contains(card2))
+    assert(hand.cards.contains(newCard1))
+    assert(hand.cards.contains(newCard2))
+  }
 }
