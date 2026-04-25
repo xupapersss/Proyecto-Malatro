@@ -15,5 +15,15 @@ import Jokers._
  * @param jokers the collection of jokers associated with the hand
  */
 class Hand(var cards: ArrayBuffer[Card], var jokers: ArrayBuffer[Joker]) {
-  
+
+  def addCards(newCards: ArrayBuffer[Card]): Unit = {
+    cards ++= newCards
+  }
 }
+
+
+
+
+
+  
+
