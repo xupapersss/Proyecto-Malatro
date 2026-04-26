@@ -52,4 +52,25 @@ class HandTest extends FunSuite {
     assert(result.contains(newJoker1))
     assert(result.contains(newJoker2))
   }
+
+  test("discardCards removes cards by indexes correctly") {
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+
+    val hand = new Hand(
+      ArrayBuffer(c1, c2, c3, c4),
+      ArrayBuffer()
+    )
+
+    // eliminate positions 1 y 2 (c2 y c3)
+    hand.discardCards(ArrayBuffer(1, 2))
+
+    val result = hand.cards
+
+    assertEquals(result.length, 2)
+    assert(result.contains(c1))
+    assert(result.contains(c4))
+  }
 }

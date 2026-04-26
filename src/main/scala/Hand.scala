@@ -21,6 +21,8 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
 
   def cards: List[Card] = _cards.toList
 
+  def jokers: List[Joker] = _jokers.toList
+
   def addCards(newCards: ArrayBuffer[Card]): Unit = {
     _cards ++= newCards
   }
@@ -28,10 +30,13 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
   def addJokers(newJokers: ArrayBuffer[Joker]): Unit = {
     _jokers ++= newJokers
   }
+
+  def discardCards(indexes: ArrayBuffer[Int]): Unit = {
+    val sortedIndexes = indexes.sorted.reverse
+
+    for (i <- sortedIndexes) {
+      _cards.remove(i)
+    }
+  }
 }
-
-
-
-
   
-
