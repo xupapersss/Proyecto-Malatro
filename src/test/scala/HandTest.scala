@@ -73,4 +73,20 @@ class HandTest extends FunSuite {
     assert(result.contains(c1))
     assert(result.contains(c4))
   }
+
+  test("discardJokers removes second joker correctly") {
+    val j1 = new DeviousJoker
+    val j2 = new DeviousJoker
+
+    val hand = new Hand(
+      ArrayBuffer(),
+      ArrayBuffer(j1, j2)
+    )
+
+    hand.discardJokers(ArrayBuffer(1))
+
+    val result = hand.jokers
+
+    assertEquals(result, List(j1))
+  }
 }

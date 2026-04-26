@@ -38,5 +38,12 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
       _cards.remove(i)
     }
   }
+
+  def discardJokers(indexes: ArrayBuffer[Int]): Unit = {
+    val sortedIndexes = indexes.sorted.reverse
+
+    for (i <- sortedIndexes) {
+      _jokers.remove(i)
+    }
+  }
 }
-  
