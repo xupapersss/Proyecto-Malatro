@@ -24,6 +24,10 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
   def addCards(newCards: ArrayBuffer[Card]): Unit = {
     _cards ++= newCards
   }
+
+  def addJokers(newJokers: ArrayBuffer[Joker]): Unit = {
+    _jokers ++= newJokers
+  }
 }
 
 

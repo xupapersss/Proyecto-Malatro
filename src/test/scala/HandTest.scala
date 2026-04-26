@@ -29,4 +29,27 @@ class HandTest extends FunSuite {
     assert(result.contains(newCard1))
     assert(result.contains(newCard2))
   }
+
+  test("addJokers adds jokers to the hand correctly") {
+    val joker1 = new DeviousJoker
+    val joker2 = new DeviousJoker
+
+    val newJoker1 = new DeviousJoker
+    val newJoker2 = new DeviousJoker
+
+    val hand = new Hand(
+      ArrayBuffer(),
+      ArrayBuffer(joker1, joker2)
+    )
+
+    hand.addJokers(ArrayBuffer(newJoker1, newJoker2))
+
+    val result = hand.handJokers
+
+    assertEquals(result.length, 4)
+    assert(result.contains(joker1))
+    assert(result.contains(joker2))
+    assert(result.contains(newJoker1))
+    assert(result.contains(newJoker2))
+  }
 }
