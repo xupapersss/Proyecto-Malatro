@@ -19,4 +19,5 @@ class DeviousJoker extends Joker {
    */
   override def name: String = "Devious Joker"
 
+  override def effect(): Unit = {}
 }

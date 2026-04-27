@@ -5,9 +5,30 @@ import Jokers._
 
 class JokerTest extends FunSuite {
 
-  test("A GreedyJoker can be created") {
-    val joker = new GreedyJoker
-    assert(joker != null)
+  test("Jokers can be created") {
+    val greedy = new GreedyJoker
+    val devious = new DeviousJoker
+    val even = new EvenSteven
+    val scary = new ScaryFace
+
+    assert(greedy != null)
+    assert(devious != null)
+    assert(even != null)
+    assert(scary != null)
+  }
+
+  test("Jokers have correct names") {
+    assertEquals(new GreedyJoker().name, "Greedy Joker")
+    assertEquals(new DeviousJoker().name, "Devious Joker")
+    assertEquals(new EvenSteven().name, "Even Steven")
+    assertEquals(new ScaryFace().name, "Scary Face")
+  }
+
+  test("Joker effects can be executed") {
+    new GreedyJoker().effect()
+    new DeviousJoker().effect()
+    new EvenSteven().effect()
+    new ScaryFace().effect()
   }
 
   test("Different jokers are distinguishable") {

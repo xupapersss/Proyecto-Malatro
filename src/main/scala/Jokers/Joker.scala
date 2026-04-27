@@ -28,5 +28,5 @@ trait Joker {
    *
    * NOTE: This is not yet implemented.
    */
-  def effect = ???
+  def effect(): Unit = {}
 }
