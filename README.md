@@ -1,85 +1,55 @@
-# Tarea 0 | Entrega Final
+## Design Decisions
 
-La idea de esta primera entrega es que se familiaricen con el lenguaje Scala, así como el manejo de Git, resolviendo un problema de programación sencillo.
+### Why were these design decisions made?
 
-## Problema: Encontrar el Máximo Común Divisor (mcd) entre dos números dados.
+The project was designed with a clear separation of responsibilities:
 
-El **Máximo Común Divisor (MCD)** de dos números enteros es el mayor número entero positivo que divide a ambos sin dejar residuo. Por ejemplo, el MCD de 12 y 8 es 4, ya que 4 es el mayor número que divide tanto a 12 como a 8.
+- The `Hand` class is responsible only for managing cards and jokers (adding, removing, and playing them).
+- The evaluation logic is separated into different classes (`PokerHand`, `HandPriority`), avoiding mixing data and logic.
+- Each poker hand (e.g., `Pair`, `Straight`, `Flush`) implements its own detection method, allowing independent and modular validation.
 
-Para calcularlo, utilizaremos el **algoritmo de Euclides**, que se basa en la siguiente observación:
+This design makes the system easier to extend and maintain.
 
-> mcd(a, b) = mcd(b, a mod b)
+---
 
-Es decir, el MCD de dos números es igual al MCD del segundo número y el resto de dividir el primero por el segundo. Cuando el resto es 0, el MCD es el último divisor no nulo.
+### How is the code organized?
 
-**Ejemplo paso a paso:** mcd(12, 8)
-- mcd(12, 8) → mcd(8, 12 mod 8) = mcd(8, 4)
-- mcd(8, 4) → mcd(4, 8 mod 4) = mcd(4, 0)
-- Como el segundo valor es 0, el MCD es **4**.
+The code is organized into logical components:
 
-### Comportamiento esperado
+- **Model layer**:
+    - `Card`, `Rank`, `Suit`, `Joker`
+- **Game state**:
+    - `Hand`
+- **Evaluation logic**:
+    - `PokerHand` and its subclasses
+    - `HandPriority`
+- **Scoring**:
+    - `Score`
 
-El programa debe ser **interactivo**: pedirle al usuario dos números, calcular el MCD entre ellos utilizando el algoritmo de Euclides, mostrar el resultado, y repetir el proceso. El programa termina cuando el usuario ingresa **0** como primer número.
+Each component has a clear and specific responsibility.
 
-### Ejemplo de ejecución
+---
 
-```
-Ingrese el primer número (0 para salir): 12
-Ingrese el segundo número: 8
-El MCD de 12 y 8 es 4
+### Design patterns used
 
-Ingrese el primer número (0 para salir): 15
-Ingrese el segundo número: 5
-El MCD de 15 y 5 es 5
+The project follows several design principles and patterns:
 
-Ingrese el primer número (0 para salir): 0
-Adiós!
-```
+- **Separation of concerns**:  
+  Data structures (`Card`, `Hand`) are separated from logic (`PokerHand`, `HandPriority`).
 
-## Git
+- **Strategy-like pattern**:  
+  Each poker hand (e.g., `Pair`, `Straight`) encapsulates its own detection logic.
 
-Para trabajar en esta tarea, deben crear una rama llamada `entrega-final-0` a partir de `main`
+- **Template/abstraction reuse**:  
+  `RankBasedHand` is used to avoid duplicating logic for hands based on rank counting.
 
-Una vez que hayan terminado de implementar su solución, hagan commit y push de sus cambios en esa rama
+- **Encapsulation**:  
+  Internal collections (`_cards`, `_jokers`) are protected and exposed through read-only methods.
 
-## Instrucciones de implementación
+---
 
-El archivo que deben editar es:
+### Additional considerations
 
-```
-src/main/scala/mcd/euclides.scala
-```
-
-Deben escribir su código **entre los comentarios de inicio y fin** que encontrarán en el archivo:
-
-```scala
-// Inicio de la zona donde deben editar el código
-
-// (su código va aquí)
-
-// Fin de la zona donde deben editar el código
-```
-
-Para ejecutar el programa y probar su solución, utilicen:
-
-```bash
-sbt run
-```
-
-## Entrega
-
-Para subir su entrega, deberán crear un **Pull Request** en GitHub desde la rama `entrega-final-0` hacia `main`, con el título **"Tarea 0 - Entrega Final"**.
-
-**IMPORTANTE: No hacer merge** del Pull Request. El cuerpo docente **solo revisará** la pull request realizada.
-
-Entregar por **U-Cursos** un archivo llamado `entrega-final-0.txt` que contenga:
-- Su nombre completo
-- El link al Pull Request
-   
-Este es el formato que deben seguir:
-```txt
-Nombre: Perico Los Palotes (lo cambian por su nombre)
-Pull Request: https://github.com/... (completan los "..." con el resto del link)
-```
-
-Esta tarea es **obligatoria** y corresponde al **5% de la nota de Tareas**.
+- Index-based removal uses descending order to avoid shifting issues in mutable collections.
+- `playHand` first collects selected cards and then removes them to ensure correctness.
+- Mutable collections (`ArrayBuffer`) were used to simplify operations required by the assignment.
