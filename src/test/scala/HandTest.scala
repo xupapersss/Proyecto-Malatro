@@ -89,4 +89,29 @@ class HandTest extends FunSuite {
 
     assertEquals(result, List(j1))
   }
+
+  test("playHand returns selected cards and removes them from Hand") {
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+    val c5 = new Card(new Hearts, new Six)
+    val c6 = new Card(new Spades, new Seven)
+    val c7 = new Card(new Clubs, new Eight)
+    val c8 = new Card(new Diamonds, new Nine)
+
+    val hand = new Hand(
+      ArrayBuffer(c1, c2, c3, c4, c5, c6, c7, c8),
+      ArrayBuffer()
+    )
+
+    // play cards in positions 2, 4 y 6
+    val playedCards = hand.playHand(ArrayBuffer(2, 4, 6))
+
+    // verify played cards
+    assertEquals(playedCards, ArrayBuffer(c3, c5, c7))
+
+    // verify that played cards were deleted from hand
+    assertEquals(hand.cards, List(c1, c2, c4, c6, c8))
+  }
 }
