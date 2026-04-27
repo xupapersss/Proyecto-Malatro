@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 import scala.collection.mutable.ArrayBuffer
-import Jokers._
+import Jokers.*
+
+import scala.math.Ordered.orderingToOrdered
 
 /**
  * Represents a player's hand in the game.
@@ -45,5 +47,17 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     for (i <- sortedIndexes) {
       _jokers.remove(i)
     }
+  }
+
+  def playHand(indexes: ArrayBuffer[Int]): ArrayBuffer[Card] = {
+    val playedCards = ArrayBuffer[Card]()
+
+    for (i <- indexes) {
+      playedCards += _cards(i)
+    }
+
+    discardCards(indexes)
+
+    playedCards
   }
 }
