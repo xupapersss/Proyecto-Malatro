@@ -70,6 +70,8 @@ class Straight extends PokerHand {
    * @return true if the cards form a valid Straight
    */
   def isStraight(cards: ArrayBuffer[Card]): Boolean = {
+
+    if (cards.length != 5) return false
     val orders = cards.map(_.rank.order)
 
     if (isConsecutive(orders)) {

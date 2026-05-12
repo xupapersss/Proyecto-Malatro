@@ -37,6 +37,6 @@ class ThreeOfaKind extends RankBasedHand {
   def isTOaK(cards: ArrayBuffer[Card]): Boolean =
     var counter = buildCounter(cards)
   
-    counter.values.exists(_ == 3)
+    counter.values.exists(_ >= 3)
 }
 

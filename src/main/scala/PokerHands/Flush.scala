@@ -37,12 +37,14 @@ class Flush extends PokerHand {
    * @return true if all cards have the same suit
    */
   def isFlush(cards: ArrayBuffer[Card]): Boolean = {
+
+    if (cards.length != 5) return false
     val counter = mutable.Map[String, Int]()
 
     for (card <- cards) {
       val suit = card.suit.label
       counter(suit) = counter.getOrElse(suit, 0) + 1
     }
-    counter.values.exists(_ == cards.length)
+    counter.values.exists(_ == 5)
   }
 }
