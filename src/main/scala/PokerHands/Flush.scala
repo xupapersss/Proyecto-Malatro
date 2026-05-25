@@ -22,7 +22,7 @@ class Flush extends PokerHand {
   val basechips = 35
 
   /**
-   * The multiplier applied to the base chips.
+   *  The multiplier applied to the base chips.
    */
   val basemult = 4
 
