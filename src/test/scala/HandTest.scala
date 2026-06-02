@@ -114,7 +114,7 @@ class HandTest extends FunSuite {
     // verify that played cards were deleted from hand
     assertEquals(hand.cards, List(c1, c2, c4, c6, c8))
   }
-  test("Hand cannot have 8 or more cards") {
+  test("Hand cannot start 8 or more cards") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
     val c3 = new Card(new Clubs, new Four)
@@ -151,5 +151,34 @@ class HandTest extends FunSuite {
     intercept[MoreThan8Cards]{
       hand.addCards(ArrayBuffer(c7, c8, c9))
     }
+  }
+
+  test("Hand cannot start with more than 2 Jokers") {
+    val j1 = new DeviousJoker
+    val j2 = new EvenSteven
+    val j3 = new GreedyJoker
+
+
+    intercept[MoreThan2Jokers] {
+      val hand = new Hand(
+        ArrayBuffer(),
+        ArrayBuffer(j1, j2, j3)
+      )
+    }
+  }
+
+  test("Hand cannot have more than 2 jokers when adding new ones"){
+    val j1 = new DeviousJoker
+    val j2 = new EvenSteven
+    val j3 = new GreedyJoker
+
+    val hand = new Hand(
+      ArrayBuffer(),
+      ArrayBuffer(j1)
+    )
+
+    intercept[MoreThan2Jokers](
+      hand.addJokers(ArrayBuffer(j2, j3))
+    )
   }
 }

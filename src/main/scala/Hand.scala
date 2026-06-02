@@ -17,6 +17,7 @@ import Jokers.*
  */
 
 class MoreThan8Cards(s: String) extends Exception(s)
+class MoreThan2Jokers(s: String) extends Exception(s)
 
 class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker]) {
 
@@ -26,6 +27,12 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
   if (_cards.length > 8){
     throw new MoreThan8Cards(
       s"Limit exceeded: The base hand cannot start with more than 8 cards."
+    )
+  }
+
+  if (_jokers.length > 2) {
+    throw new MoreThan2Jokers(
+      s"Limit exceeded: The base hand cannot start with more than 2 Jokers."
     )
   }
   /**
@@ -58,6 +65,12 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
    * @param newJokers the jokers to be added
    */
   def addJokers(newJokers: ArrayBuffer[Joker]): Unit = {
+    if (_jokers.length + newJokers.length > 2) {
+      throw new MoreThan2Jokers(
+        s"Limit exceeded: You have ${_jokers.length} jokers and you are trying to add ${newJokers.length}. The maximum allowed is 2"
+      )
+    }
+    
     _jokers ++= newJokers
   }
 
