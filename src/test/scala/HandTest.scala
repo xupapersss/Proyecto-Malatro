@@ -32,25 +32,21 @@ class HandTest extends FunSuite {
 
   test("addJokers adds jokers to the hand correctly") {
     val joker1 = new DeviousJoker
-    val joker2 = new DeviousJoker
+    val joker2 = new GreedyJoker
 
-    val newJoker1 = new DeviousJoker
-    val newJoker2 = new DeviousJoker
 
     val hand = new Hand(
       ArrayBuffer(),
-      ArrayBuffer(joker1, joker2)
+      ArrayBuffer(joker1)
     )
 
-    hand.addJokers(ArrayBuffer(newJoker1, newJoker2))
+    hand.addJokers(ArrayBuffer(joker2))
 
     val result = hand.handJokers
 
-    assertEquals(result.length, 4)
+    assertEquals(result.length, 2)
     assert(result.contains(joker1))
     assert(result.contains(joker2))
-    assert(result.contains(newJoker1))
-    assert(result.contains(newJoker2))
   }
 
   test("discardCards removes cards by indexes correctly") {
@@ -125,7 +121,7 @@ class HandTest extends FunSuite {
     val c8 = new Card(new Diamonds, new Nine)
     val c9 = new Card(new Hearts, new Ace)
 
-    intercept[MoreThan8Cards] {
+    intercept[InvalidHand] {
       new Hand(
         ArrayBuffer(c1, c2, c3, c4, c5, c6, c7, c8, c9),
         ArrayBuffer())
@@ -148,7 +144,7 @@ class HandTest extends FunSuite {
       ArrayBuffer()
     )
 
-    intercept[MoreThan8Cards]{
+    intercept[InvalidHand]{
       hand.addCards(ArrayBuffer(c7, c8, c9))
     }
   }
@@ -159,7 +155,7 @@ class HandTest extends FunSuite {
     val j3 = new GreedyJoker
 
 
-    intercept[MoreThan2Jokers] {
+    intercept[InvalidHand] {
       val hand = new Hand(
         ArrayBuffer(),
         ArrayBuffer(j1, j2, j3)
@@ -177,8 +173,8 @@ class HandTest extends FunSuite {
       ArrayBuffer(j1)
     )
 
-    intercept[MoreThan2Jokers](
+    intercept[InvalidHand]{
       hand.addJokers(ArrayBuffer(j2, j3))
-    )
+    }
   }
 }
