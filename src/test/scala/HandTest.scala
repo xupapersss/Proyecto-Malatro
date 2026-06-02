@@ -114,4 +114,42 @@ class HandTest extends FunSuite {
     // verify that played cards were deleted from hand
     assertEquals(hand.cards, List(c1, c2, c4, c6, c8))
   }
+  test("Hand cannot have 8 or more cards") {
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+    val c5 = new Card(new Hearts, new Six)
+    val c6 = new Card(new Spades, new Seven)
+    val c7 = new Card(new Clubs, new Eight)
+    val c8 = new Card(new Diamonds, new Nine)
+    val c9 = new Card(new Hearts, new Ace)
+
+    intercept[MoreThan8Cards] {
+      new Hand(
+        ArrayBuffer(c1, c2, c3, c4, c5, c6, c7, c8, c9),
+        ArrayBuffer())
+    }
+  }
+
+  test("Hand cannot have more than 8 cards when adding new ones"){
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+    val c5 = new Card(new Hearts, new Six)
+    val c6 = new Card(new Spades, new Seven)
+    val c7 = new Card(new Clubs, new Eight)
+    val c8 = new Card(new Diamonds, new Nine)
+    val c9 = new Card(new Hearts, new Ace)
+
+    val hand = new Hand(
+      ArrayBuffer(c1, c2, c3, c4, c5, c6),
+      ArrayBuffer()
+    )
+
+    intercept[MoreThan8Cards]{
+      hand.addCards(ArrayBuffer(c7, c8, c9))
+    }
+  }
 }

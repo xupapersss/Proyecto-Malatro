@@ -15,11 +15,19 @@ import Jokers.*
  * @param handCards  the collection of cards in the hand
  * @param handJokers the collection of jokers associated with the hand
  */
+
+class MoreThan8Cards(s: String) extends Exception(s)
+
 class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker]) {
 
   private val _cards = handCards
   private val _jokers = handJokers
 
+  if (_cards.length > 8){
+    throw new MoreThan8Cards(
+      s"Limit exceeded: The base hand cannot start with more than 8 cards."
+    )
+  }
   /**
    * Returns the current cards in the hand as an immutable list.
    */
@@ -36,6 +44,11 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
    * @param newCards the cards to be added
    */
   def addCards(newCards: ArrayBuffer[Card]): Unit = {
+    if (_cards.length + newCards.length > 8){
+      throw new MoreThan8Cards(
+        s"Limit exceeded: You have ${_cards.length} cards and you are trying to add ${newCards.length}. The maximum allowed is 8"
+      )
+    }
     _cards ++= newCards
   }
 
