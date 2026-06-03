@@ -84,7 +84,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
    */
   def discardCards(indexes: ArrayBuffer[Int]): Unit = {
     for (i <- indexes) {
-      if (i >= _cards.length) {
+      if (i < 0 || i >= _cards.length) {
         throw new InvalidHand(s"Invalid index: the hand does not have an index card $i")
       }
     }
@@ -127,8 +127,11 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
    * @return the cards that were played
    */
   def playHand(indexes: ArrayBuffer[Int]): ArrayBuffer[Card] = {
+    if (indexes.length > 5){
+      throw new InvalidHand("Limit exceeded: you cannot play more than 5 cards")
+    }
     val playedCards = ArrayBuffer[Card]()
-
+    
     for (i <- indexes) {
       playedCards += _cards(i)
     }
