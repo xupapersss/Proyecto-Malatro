@@ -130,6 +130,13 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     if ((indexes.length > 5 )||(indexes.length < 1) ){
       throw new InvalidHand("Invalid play: played hand must have between 1 and 5 cards")
     }
+    
+    for (i <- indexes) {
+      if (i >= _cards.length) {
+        throw new InvalidHand(s"Invalid index: the hand does not have an index card $i")
+      }
+    }
+    
     val playedCards = ArrayBuffer[Card]()
 
     for (i <- indexes) {

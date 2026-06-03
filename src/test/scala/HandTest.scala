@@ -253,4 +253,26 @@ class HandTest extends FunSuite {
       hand.playHand(ArrayBuffer())
     }
   }
+
+  test("playHand cannot have an index that doesn't exist in the hand") {
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+    val c5 = new Card(new Hearts, new Six)
+    val c6 = new Card(new Spades, new Seven)
+    val c7 = new Card(new Clubs, new Eight)
+    val c8 = new Card(new Diamonds, new Nine)
+
+    val hand = new Hand(
+      ArrayBuffer(c1, c2, c3, c4, c5, c6, c7, c8),
+      ArrayBuffer()
+    )
+
+    intercept[InvalidHand] {
+      hand.playHand(ArrayBuffer(10,2,3,4))
+    }
+  }
+
+
 }
