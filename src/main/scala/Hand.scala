@@ -83,6 +83,12 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
    * @param indexes the positions of the cards to be removed
    */
   def discardCards(indexes: ArrayBuffer[Int]): Unit = {
+
+    for (i <- indexes) {
+      if (i >= _cards.length) {
+        throw new InvalidHand(s"Invalid index: Hand doesn't have index $i")
+      }
+    }
     val sortedIndexes = indexes.sorted.reverse
 
     for (i <- sortedIndexes) {

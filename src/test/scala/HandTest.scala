@@ -177,4 +177,19 @@ class HandTest extends FunSuite {
       hand.addJokers(ArrayBuffer(j2, j3))
     }
   }
+
+  test("discardCards cannot have an invalid index"){
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+
+    val hand = new Hand(
+      ArrayBuffer(c1, c2, c3, c4),
+      ArrayBuffer())
+
+    intercept[InvalidHand]{
+      hand.discardCards(ArrayBuffer(2,3,6))
+    }
+  }
 }
