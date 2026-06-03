@@ -128,7 +128,7 @@ class HandTest extends FunSuite {
     }
   }
 
-  test("Hand cannot have more than 8 cards when adding new ones"){
+  test("Hand cannot have more than 8 cards when adding new ones") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
     val c3 = new Card(new Clubs, new Four)
@@ -144,7 +144,7 @@ class HandTest extends FunSuite {
       ArrayBuffer()
     )
 
-    intercept[InvalidHand]{
+    intercept[InvalidHand] {
       hand.addCards(ArrayBuffer(c7, c8, c9))
     }
   }
@@ -163,7 +163,7 @@ class HandTest extends FunSuite {
     }
   }
 
-  test("Hand cannot have more than 2 jokers when adding new ones"){
+  test("Hand cannot have more than 2 jokers when adding new ones") {
     val j1 = new DeviousJoker
     val j2 = new EvenSteven
     val j3 = new GreedyJoker
@@ -173,23 +173,44 @@ class HandTest extends FunSuite {
       ArrayBuffer(j1)
     )
 
-    intercept[InvalidHand]{
+    intercept[InvalidHand] {
       hand.addJokers(ArrayBuffer(j2, j3))
     }
   }
 
-  test("discardCards cannot have an invalid index"){
+  test("discardCards cannot have an invalid index") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
     val c3 = new Card(new Clubs, new Four)
     val c4 = new Card(new Diamonds, new Five)
+    val j1 = new DeviousJoker
+    val j2 = new GreedyJoker
+
 
     val hand = new Hand(
       ArrayBuffer(c1, c2, c3, c4),
-      ArrayBuffer())
+      ArrayBuffer(j1, j2))
 
-    intercept[InvalidHand]{
-      hand.discardCards(ArrayBuffer(2,3,6))
+    intercept[InvalidHand] {
+      hand.discardCards(ArrayBuffer(2, 3, 6))
+    }
+  }
+
+  test("discardJokers cannot have an invalid index") {
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+    val j1 = new DeviousJoker
+    val j2 = new GreedyJoker
+
+
+    val hand = new Hand(
+      ArrayBuffer(c1, c2, c3, c4),
+      ArrayBuffer(j1, j2))
+
+    intercept[InvalidHand] {
+      hand.discardJokers(ArrayBuffer(6))
     }
   }
 }
