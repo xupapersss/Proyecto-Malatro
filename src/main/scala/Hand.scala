@@ -83,6 +83,10 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
    * @param indexes the positions of the cards to be removed
    */
   def discardCards(indexes: ArrayBuffer[Int]): Unit = {
+    if ((indexes.length > 5) || (indexes.length < 1)) {
+      throw new InvalidHand("Invalid discard: the number of discarded cards must be more than 1 and less than 4")
+    }
+    
     for (i <- indexes) {
       if (i < 0 || i >= _cards.length) {
         throw new InvalidHand(s"Invalid index: the hand does not have an index card $i")
