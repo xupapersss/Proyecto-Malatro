@@ -313,4 +313,46 @@ class HandTest extends FunSuite {
       hand.discardCards(ArrayBuffer())
     }
   }
+
+  test("discardCards cannot have an index that doesn't exist in the hand") {
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+    val j1 = new DeviousJoker
+    val j2 = new GreedyJoker
+
+
+    val hand = new Hand(
+      ArrayBuffer(c1, c2, c3, c4),
+      ArrayBuffer(j1, j2))
+
+    intercept[InvalidHand] {
+      hand.discardCards(ArrayBuffer(6))
+    }
+  }
+
+  test("you cannot play a set of cards more than 3 times"){
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+    val c5 = new Card(new Hearts, new Six)
+
+    val hand = new Hand(
+      ArrayBuffer(c1, c2, c3, c4, c5),
+      ArrayBuffer()
+    )
+
+    hand.playHand(ArrayBuffer(0))
+
+    hand.playHand(ArrayBuffer(0))
+
+    hand.playHand(ArrayBuffer(0))
+
+    intercept[InvalidHand] {
+      hand.playHand(ArrayBuffer(0))
+    }
+  }
+
 }

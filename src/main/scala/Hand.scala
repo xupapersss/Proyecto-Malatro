@@ -23,6 +23,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
 
   private val _cards = handCards
   private val _jokers = handJokers
+  private var playCount: Int = 0
 
   if (_cards.length > 8){
     throw new InvalidHand(
@@ -86,6 +87,13 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     if ((indexes.length > 5) || (indexes.length < 1)) {
       throw new InvalidHand("Invalid discard: the number of discarded cards must be more than 1 and less than 4")
     }
+
+    for (i <- indexes) {
+      if (i >= _cards.length) {
+        throw new InvalidHand(s"Invalid index: the hand does not have an index card $i")
+      }
+    }
+    
     
     for (i <- indexes) {
       if (i < 0 || i >= _cards.length) {
@@ -131,6 +139,11 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
    * @return the cards that were played
    */
   def playHand(indexes: ArrayBuffer[Int]): ArrayBuffer[Card] = {
+
+    if (playCount >= 3){
+      throw new InvalidHand("Invalid play: You cannot play a hand more than 3 times.")
+    }
+
     if ((indexes.length > 5 )||(indexes.length < 1) ){
       throw new InvalidHand("Invalid play: played hand must have between 1 and 5 cards")
     }
@@ -148,6 +161,8 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     }
 
     discardCards(indexes)
+
+    playCount += 1
 
     playedCards
   }
