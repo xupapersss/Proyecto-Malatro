@@ -24,9 +24,4 @@ trait  Suit extends Scorable {
    * - "Diamonds"
    */
   def label : String
-  
-  override def applyScore(score: Score, j: Joker): Score = {
-    j.suitScore(score, this)
-  }
-  
 }

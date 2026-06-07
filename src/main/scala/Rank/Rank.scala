@@ -45,8 +45,4 @@ trait Rank extends Scorable {
    * This can be used for special rules or card effects.
    */
   def category: String
-
-  override def applyScore(score: Score, j: Joker): Score = {
-    j.rankScore(score, this)
-  }
 }

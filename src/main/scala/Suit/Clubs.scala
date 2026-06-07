@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package Suit
 
+import Jokers._
+
 /**
  * Represents the Clubs suit.
  *
@@ -8,4 +10,8 @@ package Suit
  */
 class Clubs extends Suit {
   override val label = "Clubs"
+
+  override def applyScore(score: Score, j: Joker): Score = {
+    j.clubsScore(score, this)
+  }
 }
