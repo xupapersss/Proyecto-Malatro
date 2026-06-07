@@ -29,8 +29,5 @@ trait PokerHand extends Scorable {
    * basechips * basemult
    */
   def basemult: Int
-
-  override def applyScore(score: Score, j: Joker): Score = {
-    j.pokerHandScore(score, this)
   }
 }

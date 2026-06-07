@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package PokerHands
 
+import cl.uchile.dcc.Jokers.Joker
+
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 

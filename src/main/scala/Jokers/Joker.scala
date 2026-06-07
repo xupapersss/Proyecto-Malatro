@@ -35,9 +35,30 @@ trait Joker {
    */
   def effect(): Unit = {}
 
-  def pokerHandScore(score: Score, hand: PokerHand): Score
+  def flushScore(score: Score, hand: Flush): Score
+  def highCardScore(score: Score, hand: HighCard): Score
+  def pairScore(score: Score, hand: Pair): Score
+  def straightScore(score: Score, hand: Straight): Score
+  def straightFlushScore(score: Score, hand: StraightFlush): Score
+  def threeOfaKindScore(score: Score, hand: ThreeOfaKind): Score
 
-  def suitScore(score: Score, suit: Suit): Score
 
-  def rankScore(score: Score, rank: Rank): Score
+  def clubsScore(score: Score, suit: Clubs): Score
+  def diamondsScore(score: Score, suit: Diamonds): Score
+  def heartsScore(score: Score, suit: Hearts): Score
+  def spadesScore(score: Score, suit: Spades): Score
+
+  def aceScore(score: Score, rank: Ace): Score
+  def twoScore(score: Score, rank: Two): Score
+  def threeScore(score: Score, rank: Three): Score
+  def fourScore(score: Score, rank: Four): Score
+  def fiveScore(score: Score, rank: Five): Score
+  def sixScore(score: Score, rank: Six): Score
+  def sevenScore(score: Score, rank: Seven): Score
+  def eightScore(score: Score, rank: Eight): Score
+  def nineScore(score: Score, rank: Nine): Score
+  def tenScore(score: Score, rank: Ten): Score
+  def jackScore(score: Score, rank: Jack): Score
+  def queenScore(score: Score, rank: Queen): Score
+  def kingScore(score: Score, rank: King): Score
 }
