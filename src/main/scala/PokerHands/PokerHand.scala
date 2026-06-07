@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package PokerHands
 
+import Jokers.Joker
+
 /**
  * Represents a poker hand combination in the game.
  *
@@ -10,7 +12,7 @@ package PokerHands
  * Each implementation corresponds to a particular hand type
  * and provides the base score used to calculate the final result.
  */
-trait PokerHand {
+trait PokerHand extends Scorable {
 
   /**
    * The base number of chips awarded for this hand.
@@ -27,4 +29,6 @@ trait PokerHand {
    * basechips * basemult
    */
   def basemult: Int
+
+  override def applyScore(score: Score, j: Joker): Score = ???
 }

@@ -1,5 +1,10 @@
 package cl.uchile.dcc
 package Jokers
+import PokerHands._
+import Rank._
+import Suit._
+
+
 
 /**
  * Represents a Joker card with special behavior in the game.
@@ -18,7 +23,7 @@ trait Joker {
    *
    * This is used to identify the Joker and distinguish it from others.
    */
-  def name : String
+  def name: String
 
   /**
    * The effect of the Joker.

@@ -1,4 +1,5 @@
 package cl.uchile.dcc
+import Jokers._
 
 /**
  * Represents the score obtained from a hand.

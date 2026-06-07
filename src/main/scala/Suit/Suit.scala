@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package Suit
 
+import Jokers._
+
 /**
  * Represents the suit of a playing card.
  *
@@ -10,7 +12,7 @@ package Suit
  * Suits are typically used to evaluate combinations like Flush,
  * where all cards must share the same suit.
  */
-trait Suit {
+trait  Suit extends Scorable {
 
   /**
    * A human-readable label that identifies the suit.
@@ -22,4 +24,7 @@ trait Suit {
    * - "Diamonds"
    */
   def label : String
+  
+  override def applyScore(score: Score, j: Joker): Score = ???
+  
 }
