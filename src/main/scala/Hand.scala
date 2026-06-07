@@ -23,7 +23,8 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
 
   private val _cards = handCards
   private val _jokers = handJokers
-  private var playCount: Int = 0
+  private var playCount: Int = 1
+  private var discardCount: Int = 1
 
   if (_cards.length > 8){
     throw new InvalidHand(
@@ -84,6 +85,10 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
    * @param indexes the positions of the cards to be removed
    */
   def discardCards(indexes: ArrayBuffer[Int]): Unit = {
+
+    if (discardCount > 3){
+      throw new InvalidHand("Invalid play: you cannot discard more than 3 times")
+    }
     if ((indexes.length > 5) || (indexes.length < 1)) {
       throw new InvalidHand("Invalid discard: the number of discarded cards must be more than 1 and less than 4")
     }
@@ -105,6 +110,8 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     for (i <- sortedIndexes) {
       _cards.remove(i)
     }
+
+    discardCount += 1
   }
 
   /**
@@ -140,8 +147,8 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
    */
   def playHand(indexes: ArrayBuffer[Int]): ArrayBuffer[Card] = {
 
-    if (playCount >= 3){
-      throw new InvalidHand("Invalid play: You cannot play a hand more than 3 times.")
+    if (playCount > 3){
+      throw new InvalidHand("Invalid play: you cannot play a hand more than 3 times.")
     }
 
     if ((indexes.length > 5 )||(indexes.length < 1) ){

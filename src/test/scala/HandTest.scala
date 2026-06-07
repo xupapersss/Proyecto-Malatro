@@ -355,4 +355,26 @@ class HandTest extends FunSuite {
     }
   }
 
+  test("you cannot discard more than 3 times"){
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+    val c5 = new Card(new Hearts, new Six)
+
+    val hand = new Hand(
+      ArrayBuffer(c1, c2, c3, c4, c5),
+      ArrayBuffer()
+    )
+
+    hand.discardCards(ArrayBuffer(0))
+
+    hand.discardCards(ArrayBuffer(0))
+
+    hand.discardCards(ArrayBuffer(0))
+
+    intercept[InvalidHand] {
+      hand.discardCards(ArrayBuffer(0))
+    }
+  }
 }
