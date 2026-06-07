@@ -1,5 +1,6 @@
 package cl.uchile.dcc
 package Rank
+import Jokers._
 
 /**
  * Represents the King card rank.
@@ -12,4 +13,8 @@ class King extends Rank {
   val order: Int = 13
   val value: Int = 10
   override val category = "Face Card"
+
+  override def applyScore(score: Score, j: Joker): Score = {
+    j.kingScore(score, this)
+  }
 }

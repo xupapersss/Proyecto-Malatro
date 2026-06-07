@@ -1,8 +1,6 @@
 package cl.uchile.dcc
 package Rank
 
-import Jokers.Joker
-
 /**
  * Represents the rank of a playing card in the game.
  *

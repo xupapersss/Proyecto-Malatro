@@ -1,5 +1,6 @@
 package cl.uchile.dcc
 package Rank
+import Jokers._
 
 /**
  * Represents the Three card rank.
@@ -12,5 +13,9 @@ class Three extends Rank {
   val order: Int = 3
   val value: Int = 3
   override val category = "Odd"
+
+  override def applyScore(score: Score, j: Joker): Score = {
+    j.threeScore(score, this)
+  }
 }
 
