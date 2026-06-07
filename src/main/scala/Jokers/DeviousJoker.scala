@@ -1,6 +1,9 @@
 package cl.uchile.dcc
 package Jokers
 
+import Suit._
+import Rank._
+
 /**
  * Represents the Devious Joker.
  *

@@ -30,5 +30,7 @@ trait PokerHand extends Scorable {
    */
   def basemult: Int
 
-  override def applyScore(score: Score, j: Joker): Score = ???
+  override def applyScore(score: Score, j: Joker): Score = {
+    j.pokerHandScore(score, this)
+  }
 }

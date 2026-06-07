@@ -39,6 +39,5 @@ trait Joker {
 
   def suitScore(score: Score, suit: Suit): Score
 
-  def rankScore(score: Score, suit: Suit): Score
-
+  def rankScore(score: Score, rank: Rank): Score
 }
