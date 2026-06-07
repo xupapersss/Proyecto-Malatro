@@ -34,4 +34,11 @@ trait Joker {
    * NOTE: This is not yet implemented.
    */
   def effect(): Unit = {}
+
+  def pokerHandScore(score: Score, hand: PokerHand): Score
+
+  def suitScore(score: Score, suit: Suit): Score
+
+  def rankScore(score: Score, suit: Suit): Score
+
 }
