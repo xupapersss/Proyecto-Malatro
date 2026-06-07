@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package PokerHands
 
+import cl.uchile.dcc.Jokers.Joker
+
 import scala.collection.mutable.ArrayBuffer
 
 
@@ -35,8 +37,12 @@ class Pair extends RankBasedHand {
    * @return true if there is at least one pair in the cards
    */
   def isPair(cards: ArrayBuffer[Card]): Boolean = {
-    var counter = buildCounter(cards)
+    val counter = buildCounter(cards)
 
     counter.values.exists(_ == 2)
+  }
+
+  override def applyScore(score: Score, j: Joker): Score = {
+    j.pairScore(score, this)
   }
 }

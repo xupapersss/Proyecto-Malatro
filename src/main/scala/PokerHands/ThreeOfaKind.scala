@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package PokerHands
 
+import Jokers._
+
 import scala.collection.mutable.ArrayBuffer
 
 
@@ -34,9 +36,15 @@ class ThreeOfaKind extends RankBasedHand {
    * @param cards the cards to evaluate
    * @return true if there is a Three of a Kind in the cards
    */
-  def isTOaK(cards: ArrayBuffer[Card]): Boolean =
-    var counter = buildCounter(cards)
-  
+  def isTOaK(cards: ArrayBuffer[Card]): Boolean = {
+    val counter = buildCounter(cards)
+
     counter.values.exists(_ >= 3)
+  }
+
+  override def applyScore(score: Score, j: Joker): Score = {
+    j.threeOfaKindScore(score, this)
+    
+  }
 }
 

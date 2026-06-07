@@ -29,5 +29,5 @@ trait PokerHand extends Scorable {
    * basechips * basemult
    */
   def basemult: Int
-  }
 }
+

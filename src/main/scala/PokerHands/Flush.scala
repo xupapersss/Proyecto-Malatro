@@ -1,7 +1,7 @@
 package cl.uchile.dcc
 package PokerHands
 
-import cl.uchile.dcc.Jokers.Joker
+import Jokers._
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
@@ -48,5 +48,8 @@ class Flush extends PokerHand {
       counter(suit) = counter.getOrElse(suit, 0) + 1
     }
     counter.values.exists(_ == 5)
+  }
+  override def applyScore(score: Score, j: Joker): Score = {
+    j.flushScore(score, this)
   }
 }

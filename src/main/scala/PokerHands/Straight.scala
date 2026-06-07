@@ -2,7 +2,7 @@ package cl.uchile.dcc
 package PokerHands
 
 import scala.collection.mutable.ArrayBuffer
-
+import Jokers._
 
 /**
  * Represents the Straight poker hand.
@@ -80,5 +80,9 @@ class Straight extends PokerHand {
       val highAceOrders = orders.map(order => if (order == 1) 14 else order)
       isConsecutive(highAceOrders)
     }
+  }
+
+  override def applyScore(score: Score, j: Joker): Score = {
+    j.straightScore(score, this)
   }
 }

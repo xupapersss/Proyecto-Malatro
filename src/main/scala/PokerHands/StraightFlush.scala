@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package PokerHands
 
+import Jokers._
+
 import scala.collection.mutable.ArrayBuffer
 
 
@@ -40,5 +42,9 @@ class StraightFlush extends PokerHand {
     val flush = new Flush
 
     straight.isStraight(cards) && flush.isFlush(cards)
+  }
+
+  override def applyScore(score: Score, j: Joker): Score = {
+    j.straightFlushScore(score, this)
   }
 }

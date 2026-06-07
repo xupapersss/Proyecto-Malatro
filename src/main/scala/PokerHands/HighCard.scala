@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package PokerHands
 
+import cl.uchile.dcc.Jokers.Joker
+
 import scala.collection.mutable.ArrayBuffer
 
 /**
@@ -33,4 +35,8 @@ class HighCard extends PokerHand {
    * @return true for any set of cards
    */
   def isHCard(cards: ArrayBuffer[Card]): Boolean = true
+
+  override def applyScore(score: Score, j: Joker): Score = {
+    j.highCardScore(score, this)
+  }
 }
