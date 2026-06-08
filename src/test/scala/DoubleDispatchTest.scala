@@ -1,10 +1,13 @@
 package cl.uchile.dcc
 
-import pokerhands._
-import rank._
-import suit._
-import jokers._
+import pokerhands.*
+import rank.*
+import suit.*
+import jokers.*
+
 import munit.FunSuite
+
+import scala.collection.mutable.ArrayBuffer
 
 class DoubleDispatchTest extends FunSuite {
 

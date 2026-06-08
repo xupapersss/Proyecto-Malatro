@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package rank
 
+import jokers.*
+
 /**
  * Represents the rank of a playing card in the game.
  *
@@ -9,7 +11,7 @@ package rank
  *
  * Each concrete implementation corresponds to a specific card rank (e.g., Ace, Two, Jack, etc.).
  */
-trait Rank extends Scorable {
+trait Rank{
 
   /**
    * The relative order of the rank in a sequence.
@@ -43,4 +45,6 @@ trait Rank extends Scorable {
    * This can be used for special rules or card effects.
    */
   def category: String
+  
+  def applyScore(score: Score, j: Joker): Score
 }

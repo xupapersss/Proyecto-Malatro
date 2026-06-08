@@ -12,7 +12,7 @@ import jokers._
  * Suits are typically used to evaluate combinations like Flush,
  * where all cards must share the same suit.
  */
-trait Suit extends Scorable {
+trait Suit{
 
   /**
    * A human-readable label that identifies the suit.
@@ -24,4 +24,6 @@ trait Suit extends Scorable {
    * - "Diamonds"
    */
   def label : String
+  
+  def applyScore(score: Score, j: Joker): Score
 }

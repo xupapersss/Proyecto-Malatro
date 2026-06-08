@@ -12,7 +12,7 @@ import jokers.Joker
  * Each implementation corresponds to a particular hand type
  * and provides the base score used to calculate the final result.
  */
-trait PokerHand extends Scorable {
+trait PokerHand{
 
   /**
    * The base number of chips awarded for this hand.
@@ -29,5 +29,7 @@ trait PokerHand extends Scorable {
    * basechips * basemult
    */
   def basemult: Int
+  
+  def applyScore(score: Score, j : Joker): Score
 }
 

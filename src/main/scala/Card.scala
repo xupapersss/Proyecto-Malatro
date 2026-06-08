@@ -18,7 +18,7 @@ import scala.collection.mutable.ArrayBuffer
  * @param suit the suit of the card
  * @param rank the rank of the card
  */
-class Card (val rank: Rank, val suit:Suit) extends Scorable {
+class Card (val suit:Suit, val rank: Rank){
 
   /**
    * The chip value of the card.
@@ -30,17 +30,17 @@ class Card (val rank: Rank, val suit:Suit) extends Scorable {
    */
   def chips: Int = rank.value
 
-  override def applyScore(score: Score, joker: ArrayBuffer[Joker]): Score ={
+  def applyScore(score: Score, jokers: ArrayBuffer[Joker]): Score ={
     var actualScore = score
     var i = 0
-    
-    while (i < joker.length){
-      val actualJoker = joker(i)
-      
-      rank.applyScore(actualScore, actualJoker)
-      
-      suit.applyScore(actualScore,actualJoker)
-      
+
+    while (i < jokers.length){
+      val actualJoker = jokers(i)
+
+      actualScore = rank.applyScore(actualScore, actualJoker)
+
+      actualScore = suit.applyScore(actualScore,actualJoker)
+
       i += 1
     }
     actualScore
