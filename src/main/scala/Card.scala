@@ -30,7 +30,19 @@ class Card (val rank: Rank, val suit:Suit) extends Scorable {
    */
   def chips: Int = rank.value
 
-  override def applyScore(score: Score, joker: Joker): Score ={
-    joker.cardScore(score, this)
+  override def applyScore(score: Score, joker: ArrayBuffer[Joker]): Score ={
+    var actualScore = score
+    var i = 0
+    
+    while (i < joker.length){
+      val actualJoker = joker(i)
+      
+      rank.applyScore(actualScore, actualJoker)
+      
+      suit.applyScore(actualScore,actualJoker)
+      
+      i += 1
+    }
+    actualScore
   }
 }
