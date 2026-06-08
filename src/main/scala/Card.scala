@@ -1,6 +1,6 @@
 package cl.uchile.dcc
-import Suit._
-import Rank._
+import suit._
+import rank._
 
 /**
  * Represents a playing card in the game.

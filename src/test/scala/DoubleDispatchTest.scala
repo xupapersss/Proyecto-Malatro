@@ -1,9 +1,9 @@
 package cl.uchile.dcc
 
-import PokerHands._
-import Rank._
-import Suit._
-import Jokers._
+import pokerhands._
+import rank._
+import suit._
+import jokers._
 import munit.FunSuite
 
 class DoubleDispatchTest extends FunSuite {

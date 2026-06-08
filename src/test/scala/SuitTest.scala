@@ -1,6 +1,6 @@
 package cl.uchile.dcc
 import munit.FunSuite
-import Suit._
+import suit._
 
 class SuitTest extends FunSuite {
 

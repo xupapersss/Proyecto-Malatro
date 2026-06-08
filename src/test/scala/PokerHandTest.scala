@@ -1,8 +1,8 @@
 package cl.uchile.dcc
 
-import PokerHands._
-import Rank._
-import Suit._
+import pokerhands._
+import rank._
+import suit._
 import munit.FunSuite
 
 import scala.collection.mutable.ArrayBuffer

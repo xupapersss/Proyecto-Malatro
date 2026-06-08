@@ -1,7 +1,7 @@
 package cl.uchile.dcc
 
 import munit.FunSuite
-import Rank._
+import rank._
 
 class RankTest extends FunSuite {
 

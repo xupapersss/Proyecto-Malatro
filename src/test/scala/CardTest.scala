@@ -1,7 +1,7 @@
 package cl.uchile.dcc
 import munit.FunSuite
-import Suit._
-import Rank._
+import suit._
+import rank._
 
 class CardTest extends FunSuite {
 

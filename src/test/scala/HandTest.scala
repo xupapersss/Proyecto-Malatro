@@ -1,9 +1,9 @@
 package cl.uchile.dcc
 import munit.FunSuite
 import scala.collection.mutable.ArrayBuffer
-import Suit._
-import Rank._
-import Jokers._
+import suit._
+import rank._
+import jokers._
 
 class HandTest extends FunSuite {
 
