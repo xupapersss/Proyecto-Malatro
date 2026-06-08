@@ -12,7 +12,7 @@ import jokers._
  * Suits are typically used to evaluate combinations like Flush,
  * where all cards must share the same suit.
  */
-trait  Suit extends Scorable {
+trait Suit extends Scorable {
 
   /**
    * A human-readable label that identifies the suit.

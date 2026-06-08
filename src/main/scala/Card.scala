@@ -1,6 +1,9 @@
 package cl.uchile.dcc
-import suit._
-import rank._
+import suit.*
+import rank.*
+import jokers.*
+
+import scala.collection.mutable.ArrayBuffer
 
 /**
  * Represents a playing card in the game.
@@ -15,7 +18,7 @@ import rank._
  * @param suit the suit of the card
  * @param rank the rank of the card
  */
-class Card (val suit:Suit, val rank: Rank) {
+class Card (val rank: Rank, val suit:Suit) extends Scorable {
 
   /**
    * The chip value of the card.
@@ -26,4 +29,8 @@ class Card (val suit:Suit, val rank: Rank) {
    * @return the chip value associated with the card's rank
    */
   def chips: Int = rank.value
+
+  override def applyScore(score: Score, joker: Joker): Score ={
+    joker.cardScore(score, this)
+  }
 }

@@ -62,4 +62,6 @@ trait Joker {
   def jackScore(score: Score, rank: Jack): Score = score
   def queenScore(score: Score, rank: Queen): Score = score
   def kingScore(score: Score, rank: King): Score = score
+  
+  def cardScore(score: Score, card: Card): Score = score
 }

@@ -1,6 +1,6 @@
 package cl.uchile.dcc
 import scala.collection.mutable.ArrayBuffer
-import jokers.*
+import jokers._
 
 
 /**
