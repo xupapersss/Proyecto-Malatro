@@ -9,10 +9,9 @@ import jokers._
  *
  * Category: Face Card
  */
-class King extends Rank {
+class King extends FaceCard {
   val order: Int = 13
   val value: Int = 10
-  override val category = "Face Card"
 
   override def applyScore(score: Score, j: Joker): Score = {
     j.kingScore(score, this)

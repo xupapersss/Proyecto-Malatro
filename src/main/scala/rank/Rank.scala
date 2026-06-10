@@ -44,7 +44,11 @@ trait Rank{
    *
    * This can be used for special rules or card effects.
    */
-  def category: String
-  
   def applyScore(score: Score, j: Joker): Score
 }
+
+trait Odd extends Rank
+
+trait Even extends Rank
+
+trait FaceCard extends Rank

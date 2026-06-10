@@ -9,10 +9,9 @@ import jokers._
  *
  * Category: Odd
  */
-class Five extends Rank {
+class Five extends Odd {
   val order: Int = 5
   val value: Int = 5
-  override val category = "Odd"
 
   override def applyScore(score: Score, j: Joker): Score = {
     j.fiveScore(score, this)
