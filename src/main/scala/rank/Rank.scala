@@ -35,20 +35,29 @@ trait Rank{
   def value: Int
 
   /**
-   * The category of the rank.
+   * Applies the scoring effect of a Joker to this rank.
    *
-   * This classifies the rank into a general group, such as:
-   * - "Even"
-   * - "Odd"
-   * - "Face Card"
+   * This method acts as the entry point for double dispatch, allowing the rank
+   * to pass itself to the Joker for specific score evaluations.
    *
-   * This can be used for special rules or card effects.
+   * @param score the current score before applying the joker's effect
+   * @param j     the Joker being applied
+   * @return the updated score after the joker's effect is calculated
    */
   def applyScore(score: Score, j: Joker): Score
 }
 
+/**
+ * Represents a rank category for odd-valued cards.
+ */
 trait Odd extends Rank
 
+/**
+ * Represents a rank category for even-valued cards.
+ */
 trait Even extends Rank
 
+/**
+ * Represents a rank category for face cards (e.g., Jack, Queen, King).
+ */
 trait FaceCard extends Rank

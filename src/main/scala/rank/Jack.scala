@@ -13,6 +13,13 @@ class Jack extends FaceCard {
   val order: Int = 11
   val value: Int = 10
 
+  /**
+   * Applies the scoring effect of a Joker specifically to a Jack rank via double dispatch.
+   *
+   * @param score the current score
+   * @param j     the Joker being applied
+   * @return the updated score after the joker evaluates the Jack
+   */
   override def applyScore(score: Score, j: Joker): Score = {
     j.jackScore(score, this)
   }

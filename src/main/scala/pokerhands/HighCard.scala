@@ -36,6 +36,13 @@ class HighCard extends PokerHand {
    */
   def isHCard(cards: ArrayBuffer[Card]): Boolean = true
 
+  /**
+   * Applies the scoring effect of a Joker specifically to a High Card hand via double dispatch.
+   *
+   * @param score the current score
+   * @param j     the Joker being applied
+   * @return the updated score after the joker evaluates the High Card
+   */
   override def applyScore(score: Score, j: Joker): Score = {
     j.highCardScore(score, this)
   }

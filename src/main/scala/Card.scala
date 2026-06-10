@@ -30,6 +30,16 @@ class Card (val suit:Suit, val rank: Rank){
    */
   def chips: Int = rank.value
 
+  /**
+   * Applies the scoring effects of a collection of jokers to this card.
+   *
+   * It iterates through the provided array of jokers, delegating the score calculation
+   * to the card's rank and suit via double dispatch.
+   *
+   * @param score  the current score before applying the jokers' effects
+   * @param jokers a buffer containing the jokers that will potentially modify the score
+   * @return the final calculated score after all applicable joker effects have been processed
+   */
   def applyScore(score: Score, jokers: ArrayBuffer[Joker]): Score ={
     var actualScore = score
     var i = 0

@@ -24,7 +24,7 @@ class Flush extends PokerHand {
   val basechips = 35
 
   /**
-   *  The multiplier applied to the base chips.
+   * The multiplier applied to the base chips.
    */
   val basemult = 4
 
@@ -49,6 +49,14 @@ class Flush extends PokerHand {
     }
     counter.values.exists(_ == 5)
   }
+
+  /**
+   * Applies the scoring effect of a Joker specifically to a Flush hand via double dispatch.
+   *
+   * @param score the current score
+   * @param j     the Joker being applied
+   * @return the updated score after the joker evaluates the Flush
+   */
   override def applyScore(score: Score, j: Joker): Score = {
     j.flushScore(score, this)
   }

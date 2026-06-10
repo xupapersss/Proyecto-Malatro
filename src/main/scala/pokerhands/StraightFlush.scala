@@ -44,6 +44,13 @@ class StraightFlush extends PokerHand {
     straight.isStraight(cards) && flush.isFlush(cards)
   }
 
+  /**
+   * Applies the scoring effect of a Joker specifically to a Straight Flush hand via double dispatch.
+   *
+   * @param score the current score
+   * @param j     the Joker being applied
+   * @return the updated score after the joker evaluates the Straight Flush
+   */
   override def applyScore(score: Score, j: Joker): Score = {
     j.straightFlushScore(score, this)
   }

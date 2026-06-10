@@ -42,9 +42,14 @@ class ThreeOfaKind extends RankBasedHand {
     counter.values.exists(_ >= 3)
   }
 
+  /**
+   * Applies the scoring effect of a Joker specifically to a Three of a Kind hand via double dispatch.
+   *
+   * @param score the current score
+   * @param j     the Joker being applied
+   * @return the updated score after the joker evaluates the Three of a Kind
+   */
   override def applyScore(score: Score, j: Joker): Score = {
     j.threeOfaKindScore(score, this)
-    
   }
 }
-

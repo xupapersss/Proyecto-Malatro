@@ -16,8 +16,18 @@ class EvenSteven extends Joker {
    * The name of this Joker.
    *
    * Used to identify the Joker within the game.
+   *
+   * @return a string representing the name "Even Steven"
    */
   override def name: String = "Even Steven"
 
+  /**
+   * Applies the specific effect of the Even Steven.
+   *
+   * This method is intended to define how this particular Joker modifies the game,
+   * such as altering scoring multipliers or chips.
+   *
+   * NOTE: This is not yet implemented.
+   */
   override def effect(): Unit = {}
 }

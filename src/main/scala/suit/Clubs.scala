@@ -11,6 +11,13 @@ import jokers._
 class Clubs extends Suit {
   override val label = "Clubs"
 
+  /**
+   * Applies the scoring effect of a Joker specifically to a Clubs suit via double dispatch.
+   *
+   * @param score the current score
+   * @param j     the Joker being applied
+   * @return the updated score after the joker evaluates the Clubs suit
+   */
   override def applyScore(score: Score, j: Joker): Score = {
     j.clubsScore(score, this)
   }

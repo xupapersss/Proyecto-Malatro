@@ -2,6 +2,15 @@ package cl.uchile.dcc
 import scala.collection.mutable.ArrayBuffer
 import jokers._
 
+/**
+ * Exception thrown when an invalid hand operation is attempted.
+ *
+ * This covers cases such as exceeding the maximum allowed cards or jokers,
+ * or attempting to discard more times than permitted.
+ *
+ * @param s the detail message explaining the reason for the exception
+ */
+class InvalidHand(s: String) extends Exception(s)
 
 /**
  * Represents a player's hand in the game.
@@ -15,10 +24,6 @@ import jokers._
  * @param handCards  the collection of cards in the hand
  * @param handJokers the collection of jokers associated with the hand
  */
-
-class InvalidHand(s: String) extends Exception(s)
-
-
 class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker]) {
 
   private val _cards = handCards
@@ -37,6 +42,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
       s"Limit exceeded: The base hand cannot start with more than 2 Jokers."
     )
   }
+
   /**
    * Returns the current cards in the hand as an immutable list.
    */
@@ -72,7 +78,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
         s"Limit exceeded: You have ${_jokers.length} jokers and you are trying to add ${newJokers.length}. The maximum allowed is 2"
       )
     }
-    
+
     _jokers ++= newJokers
   }
 
@@ -98,8 +104,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
         throw new InvalidHand(s"Invalid index: the hand does not have an index card $i")
       }
     }
-    
-    
+
     for (i <- indexes) {
       if (i < 0 || i >= _cards.length) {
         throw new InvalidHand(s"Invalid index: the hand does not have an index card $i")
@@ -134,6 +139,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
       _jokers.remove(i)
     }
   }
+
   /**
    * Plays a subset of cards from the hand.
    *
@@ -154,13 +160,13 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     if ((indexes.length > 5 )||(indexes.length < 1) ){
       throw new InvalidHand("Invalid play: played hand must have between 1 and 5 cards")
     }
-    
+
     for (i <- indexes) {
       if (i >= _cards.length) {
         throw new InvalidHand(s"Invalid index: the hand does not have an index card $i")
       }
     }
-    
+
     val playedCards = ArrayBuffer[Card]()
 
     for (i <- indexes) {

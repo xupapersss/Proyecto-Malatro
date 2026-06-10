@@ -42,6 +42,13 @@ class Pair extends RankBasedHand {
     counter.values.exists(_ == 2)
   }
 
+  /**
+   * Applies the scoring effect of a Joker specifically to a Pair hand via double dispatch.
+   *
+   * @param score the current score
+   * @param j     the Joker being applied
+   * @return the updated score after the joker evaluates the Pair
+   */
   override def applyScore(score: Score, j: Joker): Score = {
     j.pairScore(score, this)
   }

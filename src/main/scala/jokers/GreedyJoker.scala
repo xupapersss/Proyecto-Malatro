@@ -16,8 +16,17 @@ class GreedyJoker extends Joker {
    * The name of this Joker.
    *
    * Used to identify the Joker within the game.
+   * * @return a string representing the name "Greedy Joker"
    */
   override def name: String = "Greedy Joker"
 
+  /**
+   * Applies the specific effect of the Greedy Joker.
+   *
+   * This method is intended to define how this particular Joker modifies the game,
+   * such as altering scoring multipliers or chips.
+   *
+   * NOTE: This is not yet implemented.
+   */
   override def effect(): Unit = {}
 }

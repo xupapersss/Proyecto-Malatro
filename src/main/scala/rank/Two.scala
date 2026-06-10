@@ -13,6 +13,13 @@ class Two extends Even {
   val order: Int = 2
   val value: Int = 2
 
+  /**
+   * Applies the scoring effect of a Joker specifically to a Two rank via double dispatch.
+   *
+   * @param score the current score
+   * @param j     the Joker being applied
+   * @return the updated score after the joker evaluates the Two
+   */
   override def applyScore(score: Score, j: Joker): Score = {
     j.twoScore(score, this)
   }
