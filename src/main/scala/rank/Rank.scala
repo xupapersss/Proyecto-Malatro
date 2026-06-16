@@ -47,6 +47,7 @@ trait Rank{
   def applyScore(score: Score, j: Joker): Score
 }
 
+
 /**
  * Represents a rank category for odd-valued cards.
  */
