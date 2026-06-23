@@ -36,4 +36,6 @@ trait Suit{
    * @return the updated score after the joker's effect is calculated
    */
   def applyScore(score: Score, j: Joker): Score
+  
+  def isDiamond : Boolean = false
 }

@@ -20,4 +20,6 @@ class Diamonds extends Suit {
   override def applyScore(score: Score, j: Joker): Score = {
     j.diamondsScore(score, this)
   }
+
+  override def isDiamond: Boolean = true
 }
