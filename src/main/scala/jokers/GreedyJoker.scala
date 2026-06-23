@@ -29,4 +29,8 @@ class GreedyJoker extends Joker {
    * NOTE: This is not yet implemented.
    */
   override def effect(): Unit = {}
+
+  /**
+   * por cada diamante suma +3 al mult
+   */
 }

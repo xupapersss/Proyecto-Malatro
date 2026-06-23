@@ -13,7 +13,9 @@ package cl.uchile.dcc
  * @param mult  the multiplier applied to the chips
  */
 class Score (chips: Int, mult: Int) {
-
+  
+  def getChips : Int = chips
+  def getMult : Int = mult
   /**
    * Computes the total score.
    *

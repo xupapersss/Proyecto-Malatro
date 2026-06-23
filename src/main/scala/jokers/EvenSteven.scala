@@ -30,4 +30,9 @@ class EvenSteven extends Joker {
    * NOTE: This is not yet implemented.
    */
   override def effect(): Unit = {}
+
+  /**
+   * por cada carta par, +4 de mult
+   */
+
 }
