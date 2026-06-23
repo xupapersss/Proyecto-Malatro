@@ -38,6 +38,7 @@ class DeviousJoker extends Joker {
     new Score(score.getChips + 100, score.getMult)
   }
 
-  override def straightFlushScore(score: Score, hand: StraightFlush): Score =
-    new Score(score.getChips +100, score.getMult)
+  override def straightFlushScore(score: Score, hand: StraightFlush): Score = {
+    new Score(score.getChips + 100, score.getMult)
+  }
 }

@@ -45,20 +45,32 @@ trait Rank{
    * @return the updated score after the joker's effect is calculated
    */
   def applyScore(score: Score, j: Joker): Score
+
+  def isEven: Boolean = false
+
+  def isOdd : Boolean = false
+
+  def isFaceCard : Boolean = false
 }
 
 
 /**
  * Represents a rank category for odd-valued cards.
  */
-trait Odd extends Rank
+trait Odd extends Rank {
+  override def isOdd: Boolean = true
+}
 
 /**
  * Represents a rank category for even-valued cards.
  */
-trait Even extends Rank
+trait Even extends Rank {
+  override def isEven: Boolean = true
+}
 
 /**
  * Represents a rank category for face cards (e.g., Jack, Queen, King).
  */
-trait FaceCard extends Rank
+trait FaceCard extends Rank {
+  override def isFaceCard: Boolean = true
+}
