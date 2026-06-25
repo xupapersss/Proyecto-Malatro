@@ -31,7 +31,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
   private var playCount: Int = 1
   private var discardCount: Int = 1
   
-  def evenCounter(): Int ={
+  def evenCounter: Int ={
     var total = 0
     for (card <- _cards) {
       if (card.rank.isEven) {
@@ -41,7 +41,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     total
   }
   
-  def faceCardCounter(): Int = {
+  def faceCardCounter: Int = {
     var total = 0
     for (card <- _cards) {
       if (card.rank.isFaceCard) {
@@ -51,7 +51,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     total
   }
   
-  def diamondCounter(): Int ={
+  def diamondCounter: Int ={
     var total = 0
     for (card <- _cards) {
       if (card.suit.isDiamond) {

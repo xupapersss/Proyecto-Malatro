@@ -29,8 +29,7 @@ class ScaryFace extends Joker {
    *
    * NOTE: This is not yet implemented.
    */
-  override def effect(): Unit = {}
-
+  override def effect(): Score = ???
   /**
    * por cada facecard añade +30 chips
    */

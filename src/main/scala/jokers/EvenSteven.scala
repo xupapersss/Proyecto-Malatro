@@ -29,7 +29,7 @@ class EvenSteven extends Joker {
    *
    * NOTE: This is not yet implemented.
    */
-
+  override def effect(): Score = ???
   /**
    * por cada carta par, +4 de mult
    */

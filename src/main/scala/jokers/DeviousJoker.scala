@@ -26,6 +26,8 @@ class DeviousJoker extends Joker {
    */
   override def name: String = "Devious Joker"
 
+
+  override def effect(): Score = ???
   /**
    * Applies the specific effect of the Devious Joker.
    *

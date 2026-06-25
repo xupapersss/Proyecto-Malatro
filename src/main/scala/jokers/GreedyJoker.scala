@@ -28,9 +28,18 @@ class GreedyJoker extends Joker {
    *
    * NOTE: This is not yet implemented.
    */
-  override def effect(): Unit = {}
 
   /**
    * por cada diamante suma +3 al mult
    */
+
+  /**
+   * The effect of the Joker.
+   *
+   * This method is intended to define how the Joker modifies the game,
+   * such as altering scoring, changing card behavior, or affecting hand evaluation.
+   *
+   * NOTE: This is not yet implemented.
+   */
+  override def effect(): Score = ???
 }
