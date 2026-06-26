@@ -31,7 +31,7 @@ trait Joker {
    *
    * NOTE: This is not yet implemented.
    */
-  def effect(): Score
+  def effect(score: Score, hand: PokerHand, cards: List[Card]): Score
 
   /**
    * Evaluates and applies score modifications when interacting with a Flush hand.

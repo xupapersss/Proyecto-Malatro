@@ -41,10 +41,15 @@ class EvenSteven extends Joker {
     }
   }
   
-  override def effect() :Score = ???
-  
-  /**
-   * por cada carta par, +4 de mult
-   */
-
+  override def effect(score: Score, hand: PokerHand, cards: List[Card]): Score = {
+    hand match {
+      case _ =>
+        val evenCount = evenCounter(cards)
+        if (evenCount > 0) {
+          new Score(score.getChips, score.getMult + (4 * evenCount))
+        } else {
+          score
+        }
+    }
+  }
 }

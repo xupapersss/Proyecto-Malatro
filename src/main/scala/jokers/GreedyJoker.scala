@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package jokers
 
+import pokerhands.PokerHand
+
 /**
  * Represents the Greedy Joker.
  *
@@ -49,5 +51,15 @@ class GreedyJoker extends Joker {
    *
    * NOTE: This is not yet implemented.
    */
-  override def effect(): Score = ???
+  override def effect(score: Score, hand: PokerHand, cards: List[Card]): Score = {
+    hand match {
+      case _ =>
+        val diamondCount = diamondCounter(cards)
+        if (diamondCount > 0) {
+          new Score(score.getChips, score.getMult + (3 * diamondCount))
+        } else {
+          score
+        }
+    }
+  }
 }

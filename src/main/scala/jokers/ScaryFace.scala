@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package jokers
 
+import pokerhands.PokerHand
+
 /**
  * Represents the Scary Face.
  *
@@ -38,11 +40,18 @@ class ScaryFace extends Joker {
         isFaceCardValue + faceCardCounter(tail)
     }
   }
-  
-  
-  
-  
-  override def effect(): Score = ???
+
+  override def effect(score: Score, hand: PokerHand, cards: List[Card]): Score = {
+    hand match {
+      case _ =>
+        val faceCardCount = faceCardCounter(cards)
+        if (faceCardCount > 0) {
+          new Score(score.getChips + (30 * faceCardCount), score.getMult)
+        } else {
+          score
+        }
+    }
+  }
   /**
    * por cada facecard añade +30 chips
    */

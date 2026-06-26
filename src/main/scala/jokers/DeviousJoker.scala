@@ -1,7 +1,7 @@
 package cl.uchile.dcc
 package jokers
 
-import pokerhands.{Straight, StraightFlush}
+import pokerhands.{PokerHand, Straight, StraightFlush}
 
 import cl.uchile.dcc.Score
 
@@ -25,9 +25,7 @@ class DeviousJoker extends Joker {
    * @return a string representing the name "Devious Joker"
    */
   override def name: String = "Devious Joker"
-
-
-  override def effect(): Score = ???
+  
   /**
    * Applies the specific effect of the Devious Joker.
    *
@@ -36,6 +34,16 @@ class DeviousJoker extends Joker {
    *
    * NOTE: This is not yet implemented.
    */
+
+  override def effect(score: Score, hand: PokerHand, cards: List[Card]): Score = {
+    hand match {
+      case _: Straight => new Score(score.getChips + 100, score.getMult)
+      case _: StraightFlush => new Score(score.getChips + 100, score.getMult)
+      case _ => score
+    }
+  }
+  
+  
   override def straightScore(score: Score, hand: Straight): Score = {
     new Score(score.getChips + 100, score.getMult)
   }
