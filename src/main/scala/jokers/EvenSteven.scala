@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 package jokers
 
+import pokerhands.PokerHand
+
 /**
  * Represents the Even Steven.
  *
@@ -29,7 +31,18 @@ class EvenSteven extends Joker {
    *
    * NOTE: This is not yet implemented.
    */
-  override def effect(): Score = ???
+  
+  private def evenCounter(cards: List[Card]): Int = {
+    cards match {
+      case Nil => 0
+      case head :: tail =>
+        val isEvenValue = if (head.rank.isEven) 1 else 0
+        isEvenValue + evenCounter(tail)
+    }
+  }
+  
+  override def effect() :Score = ???
+  
   /**
    * por cada carta par, +4 de mult
    */

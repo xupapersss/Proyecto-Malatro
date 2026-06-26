@@ -31,37 +31,6 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
   private var playCount: Int = 1
   private var discardCount: Int = 1
   
-  def evenCounter: Int ={
-    var total = 0
-    for (card <- _cards) {
-      if (card.rank.isEven) {
-        total += 1
-      }
-    }
-    total
-  }
-  
-  def faceCardCounter: Int = {
-    var total = 0
-    for (card <- _cards) {
-      if (card.rank.isFaceCard) {
-        total += 1
-      }
-    }
-    total
-  }
-  
-  def diamondCounter: Int ={
-    var total = 0
-    for (card <- _cards) {
-      if (card.suit.isDiamond) {
-        total += 1
-      }
-    }
-    total
-  }
-  
-
   if (_cards.length > 8){
     throw new InvalidHand(
       s"Limit exceeded: The base hand cannot start with more than 8 cards."

@@ -1,7 +1,7 @@
 package cl.uchile.dcc
-import suit.*
-import rank.*
-import jokers.*
+import suit._
+import rank._
+import jokers._
 
 import scala.collection.mutable.ArrayBuffer
 

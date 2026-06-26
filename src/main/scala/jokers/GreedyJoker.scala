@@ -33,6 +33,14 @@ class GreedyJoker extends Joker {
    * por cada diamante suma +3 al mult
    */
 
+  private def diamondCounter(cards: List[Card]): Int = {
+    cards match {
+      case Nil => 0
+      case head :: tail =>
+        val isDiamondValue = if (head.suit.isDiamond) 1 else 0
+        isDiamondValue + diamondCounter(tail)
+    }
+  }
   /**
    * The effect of the Joker.
    *

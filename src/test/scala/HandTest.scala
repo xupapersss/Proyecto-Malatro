@@ -377,49 +377,4 @@ class HandTest extends FunSuite {
       hand.discardCards(ArrayBuffer(0))
     }
   }
-
-  test("evenCounter works as intended"){
-    val c1 = new Card(new Hearts, new Two)
-    val c2 = new Card(new Spades, new Three)
-    val c3 = new Card(new Clubs, new Four)
-    val c4 = new Card(new Diamonds, new Five)
-    val c5 = new Card(new Hearts, new Six)
-
-    val hand = new Hand(
-      ArrayBuffer(c1, c2, c3, c4, c5),
-      ArrayBuffer()
-    )
-
-    assertEquals(hand.evenCounter,3)
-  }
-
-  test("faceCardCounter works as intended") {
-    val c1 = new Card(new Hearts, new Two)
-    val c2 = new Card(new Spades, new Three)
-    val c3 = new Card(new Clubs, new King)
-    val c4 = new Card(new Diamonds, new Queen)
-    val c5 = new Card(new Hearts, new Six)
-
-    val hand = new Hand(
-      ArrayBuffer(c1, c2, c3, c4, c5),
-      ArrayBuffer()
-    )
-
-    assertEquals(hand.faceCardCounter, 2)
-  }
-
-  test("diamondCounter works as intended") {
-    val c1 = new Card(new Hearts, new Two)
-    val c2 = new Card(new Spades, new Three)
-    val c3 = new Card(new Clubs, new King)
-    val c4 = new Card(new Diamonds, new Queen)
-    val c5 = new Card(new Hearts, new Six)
-
-    val hand = new Hand(
-      ArrayBuffer(c1, c2, c3, c4, c5),
-      ArrayBuffer()
-    )
-
-    assertEquals(hand.diamondCounter, 1)
-  }
 }

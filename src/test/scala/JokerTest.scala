@@ -1,6 +1,6 @@
 package cl.uchile.dcc
 import munit.FunSuite
-import jokers._
+import jokers.*
 
 
 class JokerTest extends FunSuite {

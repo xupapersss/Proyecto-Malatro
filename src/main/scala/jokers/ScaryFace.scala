@@ -29,6 +29,19 @@ class ScaryFace extends Joker {
    *
    * NOTE: This is not yet implemented.
    */
+  
+  private def faceCardCounter(cards: List[Card]) : Int = {
+    cards match {
+      case Nil => 0
+      case head :: tail =>
+        val isFaceCardValue = if (head.rank.isFaceCard) 1 else 0
+        isFaceCardValue + faceCardCounter(tail)
+    }
+  }
+  
+  
+  
+  
   override def effect(): Score = ???
   /**
    * por cada facecard añade +30 chips
