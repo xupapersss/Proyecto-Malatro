@@ -42,9 +42,9 @@ class JokerTest extends FunSuite {
     assert(even != scary)
   }
 
-  test("EvenSteven works as intended for a straight"){
+  test("EvenSteven works as intended"){
     val c1 = new Card(new Hearts, new Two)
-    val c2 = new Card(new Spades, new Three)
+    val c2 = new Card(new Spades, new Two)
     val c3 = new Card(new Clubs, new Four)
     val c4 = new Card(new Diamonds, new Five)
     val c5 = new Card(new Hearts, new Six)
@@ -58,18 +58,14 @@ class JokerTest extends FunSuite {
     val baseMult = playedPokerHand.basemult
     val baseScore = new Score(baseChips, baseMult)
 
-    assertEquals(baseScore.getChips, 30)
-    assertEquals(baseScore.getMult, 4)
-    assertEquals(baseScore.total, 120)
-
     val finalScore = j1.effect(baseScore, playedPokerHand, hand.cards)
 
-    assertEquals(finalScore.total, 480)
+    assertEquals(finalScore.getMult, baseScore.getMult + 16)
   }
 
-  test("GreedyJoker works as intended for a straight") {
+  test("GreedyJoker works as intended") {
     val c1 = new Card(new Hearts, new Two)
-    val c2 = new Card(new Spades, new Three)
+    val c2 = new Card(new Diamonds, new Three)
     val c3 = new Card(new Clubs, new Four)
     val c4 = new Card(new Diamonds, new Five)
     val c5 = new Card(new Hearts, new Six)
@@ -83,21 +79,18 @@ class JokerTest extends FunSuite {
     val baseMult = playedPokerHand.basemult
     val baseScore = new Score(baseChips, baseMult)
 
-    assertEquals(baseScore.getChips, 30)
-    assertEquals(baseScore.getMult, 4)
-    assertEquals(baseScore.total, 120)
 
     val finalScore = j1.effect(baseScore, playedPokerHand, hand.cards)
 
-    assertEquals(finalScore.total, 210)
+    assertEquals(finalScore.getMult, baseScore.getMult + 6)
   }
 
-  test("ScaryFace works as intended for a straight") {
+  test("ScaryFace works as intended") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
     val c3 = new Card(new Clubs, new Four)
     val c4 = new Card(new Diamonds, new Five)
-    val c5 = new Card(new Hearts, new Six)
+    val c5 = new Card(new Hearts, new Jack)
     val j1 = new ScaryFace
 
     val hand = new Hand(ArrayBuffer(c1, c2, c3, c4, c5),
@@ -108,13 +101,9 @@ class JokerTest extends FunSuite {
     val baseMult = playedPokerHand.basemult
     val baseScore = new Score(baseChips, baseMult)
 
-    assertEquals(baseScore.getChips, 30)
-    assertEquals(baseScore.getMult, 4)
-    assertEquals(baseScore.total, 120)
-
     val finalScore = j1.effect(baseScore, playedPokerHand, hand.cards)
 
-    assertEquals(finalScore.total, 120)
+    assertEquals(finalScore.getChips, baseScore.getChips + 30)
   }
 
   test("DeviousJoker works as intended for a straight") {
@@ -165,5 +154,26 @@ class JokerTest extends FunSuite {
     val finalScore = j1.effect(baseScore, playedPokerHand, hand.cards)
 
     assertEquals(finalScore.total, 1600)
+  }
+
+  test("DeviousJoker works as intended for any other PokerHand") {
+    val c2 = new Card(new Hearts, new Three)
+    val c1 = new Card(new Hearts, new Two)
+    val c3 = new Card(new Hearts, new Four)
+    val c4 = new Card(new Hearts, new Nine)
+    val c5 = new Card(new Hearts, new Six)
+    val j1 = new DeviousJoker
+
+    val hand = new Hand(ArrayBuffer(c1, c2, c3, c4, c5),
+      ArrayBuffer(j1))
+
+    val playedPokerHand = new HandPriority(hand).bestHand
+    val baseChips = playedPokerHand.basechips
+    val baseMult = playedPokerHand.basemult
+    val baseScore = new Score(baseChips, baseMult)
+
+    val finalScore = j1.effect(baseScore, playedPokerHand, hand.cards)
+
+    assertEquals(finalScore.total, baseScore.total)
   }
 }
