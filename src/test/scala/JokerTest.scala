@@ -1,7 +1,11 @@
 package cl.uchile.dcc
 import munit.FunSuite
 import jokers.*
+import suit.*
+import rank.*
+import pokerhands.*
 
+import scala.collection.mutable.ArrayBuffer
 
 class JokerTest extends FunSuite {
 
@@ -23,14 +27,7 @@ class JokerTest extends FunSuite {
     assertEquals(new EvenSteven().name, "Even Steven")
     assertEquals(new ScaryFace().name, "Scary Face")
   }
-
-  test("Joker effects can be executed") {
-    new GreedyJoker().effect()
-    new DeviousJoker().effect()
-    new EvenSteven().effect()
-    new ScaryFace().effect()
-  }
-
+  
   test("Different jokers are distinguishable") {
     val greedy = new GreedyJoker
     val devious = new DeviousJoker

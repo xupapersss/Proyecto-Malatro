@@ -1,11 +1,12 @@
 package cl.uchile.dcc
 
-import pokerhands._
-import rank._
-import suit._
+import pokerhands.*
+import rank.*
+import suit.*
+
 import munit.FunSuite
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.{ArrayBuffer, ArrayStack}
 
 class PokerHandTest extends FunSuite {
 
@@ -128,8 +129,11 @@ class PokerHandTest extends FunSuite {
       new Card(new Hearts, new King),
       new Card(new Hearts, new Ace)
     )
+    
+    val hand = new Hand(cards,
+      ArrayBuffer())
 
-    val result = new HandPriority().bestHand(cards)
+    val result = new HandPriority().bestHand(hand)
 
     assertEquals(result.basechips, 100)
     assertEquals(result.basemult, 8)
@@ -144,7 +148,10 @@ class PokerHandTest extends FunSuite {
       new Card(new Hearts, new King)
     )
 
-    val result = new HandPriority().bestHand(cards)
+    val hand = new Hand(cards,
+      ArrayBuffer())
+      
+    val result = new HandPriority().bestHand(hand)
 
     assertEquals(result.basechips, 35)
     assertEquals(result.basemult, 4)
@@ -159,7 +166,10 @@ class PokerHandTest extends FunSuite {
       new Card(new Hearts, new Six)
     )
 
-    val result = new HandPriority().bestHand(cards)
+    val hand = new Hand(cards,
+      ArrayBuffer())
+
+    val result = new HandPriority().bestHand(hand)
 
     assertEquals(result.basechips, 30)
     assertEquals(result.basemult, 4)
@@ -174,7 +184,10 @@ class PokerHandTest extends FunSuite {
       new Card(new Hearts, new Two)
     )
 
-    val result = new HandPriority().bestHand(cards)
+    val hand = new Hand(cards,
+      ArrayBuffer())
+
+    val result = new HandPriority().bestHand(hand)
 
     assertEquals(result.basechips, 30)
     assertEquals(result.basemult, 3)
@@ -189,7 +202,10 @@ class PokerHandTest extends FunSuite {
       new Card(new Hearts, new Nine)
     )
 
-    val result = new HandPriority().bestHand(cards)
+    val hand = new Hand(cards,
+      ArrayBuffer())
+
+    val result = new HandPriority().bestHand(hand)
 
     assertEquals(result.basechips, 10)
     assertEquals(result.basemult, 2)
@@ -204,7 +220,10 @@ class PokerHandTest extends FunSuite {
       new Card(new Hearts, new King)
     )
 
-    val result = new HandPriority().bestHand(cards)
+    val hand = new Hand(cards,
+      ArrayBuffer())
+
+    val result = new HandPriority().bestHand(hand)
 
     assertEquals(result.basechips, 5)
     assertEquals(result.basemult, 1)

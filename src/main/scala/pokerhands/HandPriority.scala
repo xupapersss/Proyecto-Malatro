@@ -30,7 +30,9 @@ class HandPriority {
    * @param cards the cards to evaluate
    * @return the highest-ranking PokerHand that applies to the given cards
    */
-  def bestHand(cards: ArrayBuffer[Card]): PokerHand = {
+  def bestHand(hand: Hand): PokerHand = {
+    val cards = hand.handCards
+    
     if (new StraightFlush().isStraightFlush(cards)) {
       new StraightFlush
     } else if (new Flush().isFlush(cards)) {
