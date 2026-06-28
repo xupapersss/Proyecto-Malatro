@@ -182,7 +182,22 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     playedCards
   }
   
-  def sumChips(playedCards: ArrayBuffer[Card]): Int = {
+  private def sumChips(playedCards: ArrayBuffer[Card]): Int = {
     playedCards.map(card => card.rank.value).sum
+  }
+  
+  def handScore(playedCards: ArrayBuffer[Card], playedPokerHand: PokerHand): Int = {
+
+    val baseScore = playedPokerHand.baseScore
+
+    val sumCards = new Score(playedPokerHand.basechips + sumChips(playedCards), playedPokerHand.basemult)
+    
+    var finalScore = sumCards
+    
+    for (joker <- _jokers) {
+      finalScore = joker.effect(finalScore, playedPokerHand, playedCards.toList)
+    }
+    
+    finalScore.getChips
   }
 }

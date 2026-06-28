@@ -1,8 +1,8 @@
 package cl.uchile.dcc
 package jokers
-import pokerhands._
-import rank._
-import suit._
+import pokerhands.*
+import rank.*
+import suit.*
 
 /**
  * Represents a Joker card with special behavior in the game.
