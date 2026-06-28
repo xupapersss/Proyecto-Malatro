@@ -1,6 +1,8 @@
 package cl.uchile.dcc
 import scala.collection.mutable.ArrayBuffer
-import jokers._
+import jokers.*
+
+import cl.uchile.dcc.pokerhands.PokerHand
 
 /**
  * Exception thrown when an invalid hand operation is attempted.
@@ -178,5 +180,9 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     playCount += 1
 
     playedCards
+  }
+  
+  def sumChips(playedCards: ArrayBuffer[Card]): Int = {
+    playedCards.map(card => card.rank.value).sum
   }
 }

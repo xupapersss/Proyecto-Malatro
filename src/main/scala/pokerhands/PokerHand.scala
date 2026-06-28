@@ -29,7 +29,7 @@ trait PokerHand{
    * basechips * basemult
    */
   def basemult: Int
-
+  
   /**
    * Applies the scoring effect of a Joker to this poker hand.
    *
@@ -41,4 +41,8 @@ trait PokerHand{
    * @return the updated score after the joker's effect is calculated
    */
   def applyScore(score: Score, j : Joker): Score
+  
+  def baseScore : Int = {
+    basechips * basemult
+  }
 }
