@@ -133,7 +133,7 @@ class PokerHandTest extends FunSuite {
     val hand = new Hand(cards,
       ArrayBuffer())
 
-    val result = new HandPriority().bestHand(hand)
+    val result = new HandPriority(hand).bestHand
 
     assertEquals(result.basechips, 100)
     assertEquals(result.basemult, 8)
@@ -150,8 +150,8 @@ class PokerHandTest extends FunSuite {
 
     val hand = new Hand(cards,
       ArrayBuffer())
-      
-    val result = new HandPriority().bestHand(hand)
+
+    val result = new HandPriority(hand).bestHand
 
     assertEquals(result.basechips, 35)
     assertEquals(result.basemult, 4)
@@ -169,7 +169,7 @@ class PokerHandTest extends FunSuite {
     val hand = new Hand(cards,
       ArrayBuffer())
 
-    val result = new HandPriority().bestHand(hand)
+    val result = new HandPriority(hand).bestHand
 
     assertEquals(result.basechips, 30)
     assertEquals(result.basemult, 4)
@@ -187,7 +187,7 @@ class PokerHandTest extends FunSuite {
     val hand = new Hand(cards,
       ArrayBuffer())
 
-    val result = new HandPriority().bestHand(hand)
+    val result = new HandPriority(hand).bestHand
 
     assertEquals(result.basechips, 30)
     assertEquals(result.basemult, 3)
@@ -205,7 +205,7 @@ class PokerHandTest extends FunSuite {
     val hand = new Hand(cards,
       ArrayBuffer())
 
-    val result = new HandPriority().bestHand(hand)
+    val result = new HandPriority(hand).bestHand
 
     assertEquals(result.basechips, 10)
     assertEquals(result.basemult, 2)
@@ -223,7 +223,7 @@ class PokerHandTest extends FunSuite {
     val hand = new Hand(cards,
       ArrayBuffer())
 
-    val result = new HandPriority().bestHand(hand)
+    val result = new HandPriority(hand).bestHand
 
     assertEquals(result.basechips, 5)
     assertEquals(result.basemult, 1)

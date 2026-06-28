@@ -19,7 +19,7 @@ import scala.collection.mutable.ArrayBuffer
  * This class centralizes the decision logic and ensures that only the
  * strongest valid hand is returned.
  */
-class HandPriority {
+class HandPriority(val hand: Hand) {
 
   /**
    * Evaluates a set of cards and returns the best matching PokerHand.
@@ -30,7 +30,7 @@ class HandPriority {
    * @param cards the cards to evaluate
    * @return the highest-ranking PokerHand that applies to the given cards
    */
-  def bestHand(hand: Hand): PokerHand = {
+  def bestHand : PokerHand = {
     val cards = hand.handCards
     
     if (new StraightFlush().isStraightFlush(cards)) {
