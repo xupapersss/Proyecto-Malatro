@@ -52,4 +52,11 @@ class ThreeOfaKind extends RankBasedHand {
   override def applyScore(score: Score, j: Joker): Score = {
     j.threeOfaKindScore(score, this)
   }
+
+  override def scoringCards(playedCards: ArrayBuffer[Card]): ArrayBuffer[Card] = {
+    val groups = playedCards.groupBy(_.rank.value)
+    val trioCards = groups.values.find(_.length == 3).get
+
+    trioCards
+  }
 }

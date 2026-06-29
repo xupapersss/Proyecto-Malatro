@@ -1,9 +1,9 @@
 package cl.uchile.dcc
 
-import pokerhands.*
-import rank.*
-import suit.*
-import jokers.*
+import pokerhands._
+import rank._
+import suit._
+import jokers._
 
 import munit.FunSuite
 

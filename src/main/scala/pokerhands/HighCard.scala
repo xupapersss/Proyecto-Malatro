@@ -46,4 +46,10 @@ class HighCard extends PokerHand {
   override def applyScore(score: Score, j: Joker): Score = {
     j.highCardScore(score, this)
   }
+
+  override def scoringCards(playedCards: ArrayBuffer[Card]): ArrayBuffer[Card] = {
+    val highestCard = ArrayBuffer(playedCards.maxBy(card => card.rank.value))
+    
+    highestCard
+  }
 }

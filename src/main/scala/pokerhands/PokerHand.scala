@@ -3,6 +3,8 @@ package pokerhands
 
 import jokers.Joker
 
+import scala.collection.mutable.ArrayBuffer
+
 /**
  * Represents a poker hand combination in the game.
  *
@@ -44,5 +46,9 @@ trait PokerHand{
   
   def baseScore : Int = {
     basechips * basemult
+  }
+  
+  def scoringCards(playedCards: ArrayBuffer[Card]): ArrayBuffer[Card] = {
+    playedCards
   }
 }
