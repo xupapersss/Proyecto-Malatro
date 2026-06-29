@@ -196,4 +196,8 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     }
     finalScore.total
   }
+  
+  def getHandCards: ArrayBuffer[Card] = handCards
+  
+  def getHandJokers: ArrayBuffer[Joker] = handJokers
 }
