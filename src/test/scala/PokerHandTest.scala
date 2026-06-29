@@ -228,4 +228,22 @@ class PokerHandTest extends FunSuite {
     assertEquals(result.basechips, 5)
     assertEquals(result.basemult, 1)
   }
+
+  test("scoringCard returns only the cards present in the poker hand"){
+
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Two)
+    val c3 = new Card(new Clubs, new Seven)
+    val c4 = new Card(new Diamonds, new Two)
+    val c5 = new Card(new Hearts, new King)
+
+    val cards = ArrayBuffer(c1,c2,c3,c4,c5)
+    val hand = new Hand(cards, ArrayBuffer())
+    val playedPokerHand = new HandPriority(hand).bestHand
+
+    val result = playedPokerHand.scoringCards(cards)
+    val expectedResult = ArrayBuffer(c1,c2,c4)
+
+    assertEquals(result,expectedResult)
+  }
 }
