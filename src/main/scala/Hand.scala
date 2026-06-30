@@ -189,10 +189,12 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
 
     val sumCards = new Score(playedPokerHand.basechips + cardsChips, playedPokerHand.basemult)
 
+    val scoringCards = playedPokerHand.scoringCards(playedCards)
+
     var finalScore = sumCards
 
     for (joker <- _jokers) {
-      finalScore = joker.effect(finalScore, playedPokerHand, playedCards.toList)
+      finalScore = joker.effect(finalScore, playedPokerHand, scoringCards.toList)
     }
     finalScore.total
   }

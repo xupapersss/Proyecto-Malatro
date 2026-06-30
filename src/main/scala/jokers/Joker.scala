@@ -239,13 +239,4 @@ trait Joker {
    * @return the updated score
    */
   def kingScore(score: Score, rank: King): Score = score
-
-  /**
-   * Evaluates and applies score modifications directly to a given Card.
-   *
-   * @param score the current score
-   * @param card  the Card instance being evaluated
-   * @return the updated score
-   */
-  def cardScore(score: Score, card: Card): Score = score
 }

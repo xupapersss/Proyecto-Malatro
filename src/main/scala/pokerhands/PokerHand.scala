@@ -44,10 +44,6 @@ trait PokerHand{
    */
   def applyScore(score: Score, j : Joker): Score
   
-  def baseScore : Int = {
-    basechips * basemult
-  }
-  
   def scoringCards(playedCards: ArrayBuffer[Card]): ArrayBuffer[Card] = {
     playedCards
   }
