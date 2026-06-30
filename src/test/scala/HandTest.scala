@@ -576,4 +576,37 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  test("getHandCards should return the exact ArrayBuffer of cards it was initialized with") {
+    // 1. Setup: Creamos un arreglo de cartas conocido
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val expectedCards = ArrayBuffer(c1, c2)
+
+    // 2. Instanciamos la mano (dejamos los jokers vacíos para aislar la prueba)
+    val hand = new Hand(expectedCards, ArrayBuffer[Joker]())
+
+    // 3. Ejecución
+    val result = hand.getHandCards
+
+    // 4. Verificación: Comparamos que sea la misma colección y tenga el mismo tamaño
+    assertEquals(result, expectedCards)
+    assertEquals(result.length, 2)
+  }
+
+  test("getHandJokers should return the exact ArrayBuffer of jokers it was initialized with") {
+    // 1. Setup: Creamos un arreglo de jokers conocido
+    val j1 = new GreedyJoker()
+    val j2 = new EvenSteven()
+    val expectedJokers = ArrayBuffer[Joker](j1, j2)
+
+    // 2. Instanciamos la mano (dejamos las cartas vacías para aislar la prueba)
+    val hand = new Hand(ArrayBuffer[Card](), expectedJokers)
+
+    // 3. Ejecución
+    val result = hand.getHandJokers
+
+    // 4. Verificación: Comparamos que sea la misma colección y tenga el mismo tamaño
+    assertEquals(result, expectedJokers)
+    assertEquals(result.length, 2)
+  }
 }
