@@ -576,6 +576,76 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  test("handScore works EvenSteven and GreedyJoker") {
+    val c1 = new Card(new Diamonds, new Four)
+    val c2 = new Card(new Spades, new Four)
+    val c3 = new Card(new Hearts, new Four)
+    val c4 = new Card(new Clubs, new Five)
+    val c5 = new Card(new Diamonds, new Nine)
+
+    val j1 = new EvenSteven
+    val j2 = new GreedyJoker
+
+    val hand = new Hand(ArrayBuffer(c1, c2, c3, c4, c5), ArrayBuffer(j1, j2))
+    val playedPokerHand = new HandPriority(hand).bestHand
+
+    val result = hand.handScore(hand.handCards, playedPokerHand)
+
+    val expectedScore = new Score(
+      playedPokerHand.basechips + 12,
+      playedPokerHand.basemult + 15
+    )
+
+    assertEquals(result, expectedScore.total)
+  }
+
+  test("handScore works for DeviousJoker and EvenSteven") {
+    val c1 = new Card(new Clubs, new Five)
+    val c2 = new Card(new Clubs, new Six)
+    val c3 = new Card(new Clubs, new Seven)
+    val c4 = new Card(new Clubs, new Eight)
+    val c5 = new Card(new Clubs, new Nine)
+
+    val j1 = new DeviousJoker
+    val j2 = new EvenSteven
+
+    val hand = new Hand(ArrayBuffer(c1, c2, c3, c4, c5), ArrayBuffer(j1,j2))
+    val playedPokerHand = new HandPriority(hand).bestHand
+
+    val result = hand.handScore(hand.handCards, playedPokerHand)
+
+    val expectedScore = new Score(
+      playedPokerHand.basechips + 35 + 100,
+      playedPokerHand.basemult + 8
+    )
+
+    assertEquals(result, expectedScore.total)
+  }
+
+  test("handScore works for ScaryFace and GreedyJoker") {
+    val c1 = new Card(new Diamonds, new Ace)
+    val c2 = new Card(new Diamonds, new King)
+    val c3 = new Card(new Clubs, new Queen)
+    val c4 = new Card(new Diamonds, new Jack)
+    val c5 = new Card(new Hearts, new Ten)
+
+    val j1 = new ScaryFace
+    val j2 = new GreedyJoker
+
+    val hand = new Hand(ArrayBuffer(c1, c2, c3, c4, c5), ArrayBuffer(j1, j2))
+    val playedPokerHand = new HandPriority(hand).bestHand
+
+    val result = hand.handScore(hand.handCards, playedPokerHand)
+
+    val expectedScore = new Score(
+      playedPokerHand.basechips + 51 + 90,
+      playedPokerHand.basemult + 9
+    )
+
+    assertEquals(result, expectedScore.total)
+  }
+
+
   test("getHandCards should return the exact ArrayBuffer of cards it was initialized with") {
     // 1. Setup: Creamos un arreglo de cartas conocido
     val c1 = new Card(new Hearts, new Two)
