@@ -18,11 +18,15 @@ class PlayersTurn extends GameState {
     val scoreGained = context.hand.handScore(playedCards,bestHand)
     context.currentScore += scoreGained
     
+    context.drawCards()
+    
     context.setState(new EvaluatingState)
   }
 
   override def discardCards(context: Controller, indexes: ArrayBuffer[Int]): Unit = {
     
     context.hand.discardCards(indexes)
+    
+    context.drawCards()
   }
 }

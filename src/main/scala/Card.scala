@@ -55,4 +55,8 @@ class Card (val suit:Suit, val rank: Rank){
     }
     actualScore
   }
+  
+  def cardName: String = {
+    s"${rank.getRankName} of ${suit.label}"
+  }
 }

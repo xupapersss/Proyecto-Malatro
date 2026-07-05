@@ -19,12 +19,16 @@ object Main {
 
     gameController.initialGame()
 
+    playerJokers(gameController)
+
     println("Game started")
 
     while (!gameController.isGameOver) {
-
+      displayGameData(gameController)
       playerAction(gameController)
     }
+
+    displayGameData(gameController)
 
     if (gameController.isWin) {
       println("¡You Win!")
@@ -40,12 +44,18 @@ private def displayGameData(controller: Controller): Unit = {
   if (controller.hand != null) {
     println(s"Plays used: ${controller.hand.getPlayCount} / 3")
 
-    val cards = controller.hand.cards
+    val cards = controller.hand.handCards
     println("Your Hand: ")
     for (i <- cards.indices) {
-      val rankName = cards(i).rank.getRankName
-      val suitName = cards(i).suit.label
-      println(s" [$i] -> $rankName of $suitName")
+      println(s" [$i] -> ${cards(i).cardName}")
+    }
+
+    val jokers = controller.hand.jokers
+    if (jokers.nonEmpty) {
+      println("\nActive Jokers: ")
+      for (i <- jokers.indices) {
+        println(s" [*] -> ${jokers(i).name}")
+      }
     }
   }
 }

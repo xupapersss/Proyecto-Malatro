@@ -15,6 +15,8 @@ class Controller extends Observer {
   var currentScore: Int = 0
   var targetScore: Int = 0
   private var state: GameState = new InitialSetup
+  private var deck: ArrayBuffer[Card] = ArrayBuffer()
+
 
   override def update(subject: Subject, response: Any): Unit = {
     response match {
@@ -51,9 +53,9 @@ class Controller extends Observer {
 
   def evaluateScore(): Unit =
     safeRun(() => state.evaluateScore(this))
-    
+
   def isGameOver: Boolean = state.isGameOver
-    
+
   def isWin: Boolean = state.isWin
 
   def getState: GameState = state
@@ -62,12 +64,27 @@ class Controller extends Observer {
     val fullDeck = createShuffledDeck()
     val initialCards = fullDeck.take(8)
 
+    this.deck = fullDeck.drop(8)
     this.hand = new Hand(initialCards, ArrayBuffer())
 
     this.hand.attach(this)
-
     this.start()
   }
+
+  def drawCards(): Unit = {
+    if (hand != null) {
+      val missingCards = 8 - hand.cards.length
+
+      if (missingCards > 0 && deck.nonEmpty) {
+        val cardsToDraw = deck.take(missingCards)
+
+        deck --= cardsToDraw
+
+        hand.addCards(cardsToDraw)
+      }
+    }
+  }
+
 }
 
 
