@@ -3,6 +3,9 @@ import controller.states.*
 
 import cl.uchile.dcc.controller.{Controller, InvalidTransitionException}
 import munit.FunSuite
+import suit._
+import rank._
+
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -67,16 +70,39 @@ class GameStateTest extends FunSuite {
     controller.currentScore = 500
     controller.targetScore = 1000
 
-    // We need a dummy hand to simulate the play count.
-    // Replace this with a valid setup according to your Hand constructor requirements.
-    controller.hand = new Hand(ArrayBuffer(), ArrayBuffer())
+    // 1. Create a dummy card and populate the hand
+    val dummyCard = new Card(new Hearts, new Two)
+    val initialCards = ArrayBuffer(
+      dummyCard, dummyCard, dummyCard, dummyCard,
+      dummyCard, dummyCard, dummyCard, dummyCard
+    )
 
-    // Simulate playing 4 times to exceed the limit
-    controller.hand.playHand(ArrayBuffer())
-    controller.hand.playHand(ArrayBuffer())
-    controller.hand.playHand(ArrayBuffer())
-    controller.hand.playHand(ArrayBuffer())
+    controller.hand = new Hand(initialCards, ArrayBuffer())
 
+    // Assert initial state of playCount
+    assertEquals(controller.hand.getPlayCount, 0)
+
+    // 2. Simulate valid plays and assert the count after each one
+    controller.hand.playHand(ArrayBuffer(0))
+    assertEquals(controller.hand.getPlayCount, 1)
+
+    controller.hand.playHand(ArrayBuffer(0))
+    assertEquals(controller.hand.getPlayCount, 2)
+
+    controller.hand.playHand(ArrayBuffer(0))
+    assertEquals(controller.hand.getPlayCount, 3)
+
+    // 3. The 4th play exceeds the limit
+    try {
+      controller.hand.playHand(ArrayBuffer(0))
+    } catch {
+      case _: Exception => // We ignore the exception to continue
+    }
+
+    // Assert that the playCount indeed reached 4 despite the exception
+    assertEquals(controller.hand.getPlayCount, 4)
+
+    // 4. Validate the state transition
     state.evaluateScore(controller)
 
     assert(controller.getState.isInstanceOf[Lose])

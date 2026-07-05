@@ -31,8 +31,8 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
 
   private val _cards = handCards
   private val _jokers = handJokers
-  private var playCount: Int = 1
-  private var discardCount: Int = 1
+  private var playCount: Int = 0
+  private var discardCount: Int = 0
   
   if (_cards.length > 8){
     throw new InvalidHand(
@@ -151,7 +151,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
    */
   def playHand(indexes: ArrayBuffer[Int]): ArrayBuffer[Card] = {
 
-    if (playCount > 3){
+    if (playCount >= 3){
       notifyObservers("Out of plays")
     }
 
@@ -171,7 +171,10 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
       playedCards += _cards(i)
     }
 
-    discardCards(indexes)
+    val sortedIndexes = indexes.sorted.reverse
+    for (i <- sortedIndexes) {
+      _cards.remove(i)
+    }
 
     playCount += 1
 
