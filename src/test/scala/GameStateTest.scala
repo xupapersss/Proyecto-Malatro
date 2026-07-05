@@ -62,15 +62,13 @@ class GameStateTest extends FunSuite {
     assert(controller.getState.isInstanceOf[Win])
   }
 
-  test("EvaluatingState should transition to Lose if playCount is strictly greater than 3") {
+  test("EvaluatingState should transition to Lose if playCount reaches 3 without winning") {
     val state = new EvaluatingState()
     controller.setState(state)
 
-    // Set scores so it doesn't trigger the Win condition
     controller.currentScore = 500
     controller.targetScore = 1000
 
-    // 1. Create a dummy card and populate the hand
     val dummyCard = new Card(new Hearts, new Two)
     val initialCards = ArrayBuffer(
       dummyCard, dummyCard, dummyCard, dummyCard,
@@ -79,30 +77,19 @@ class GameStateTest extends FunSuite {
 
     controller.hand = new Hand(initialCards, ArrayBuffer())
 
-    // Assert initial state of playCount
     assertEquals(controller.hand.getPlayCount, 0)
 
-    // 2. Simulate valid plays and assert the count after each one
     controller.hand.playHand(ArrayBuffer(0))
     assertEquals(controller.hand.getPlayCount, 1)
 
     controller.hand.playHand(ArrayBuffer(0))
     assertEquals(controller.hand.getPlayCount, 2)
 
+    // The 3rd play reaches the limit!
     controller.hand.playHand(ArrayBuffer(0))
     assertEquals(controller.hand.getPlayCount, 3)
 
-    // 3. The 4th play exceeds the limit
-    try {
-      controller.hand.playHand(ArrayBuffer(0))
-    } catch {
-      case _: Exception => // We ignore the exception to continue
-    }
-
-    // Assert that the playCount indeed reached 4 despite the exception
-    assertEquals(controller.hand.getPlayCount, 4)
-
-    // 4. Validate the state transition
+    // We don't need a 4th play. Evaluating state should realize there are no plays left.
     state.evaluateScore(controller)
 
     assert(controller.getState.isInstanceOf[Lose])
@@ -141,36 +128,53 @@ class GameStateTest extends FunSuite {
   // Tests for PlayersTurn State
   // ==========================================
 
-  test("PlayersTurn should correctly process playCards and transition to EvaluatingState") {
+  // ==========================================
+  // Tests for PlayersTurn State
+  // ==========================================
+
+  test("PlayersTurn should correctly process discardCards without transitioning states") {
     val state = new PlayersTurn()
     controller.setState(state)
 
-    // Since playCards heavily relies on HandPriority and HandScore, you need a valid
-    // set of cards to prevent NullPointerExceptions or empty collections errors.
-    // Ensure you populate this hand with actual cards for the test to pass successfully.
-    controller.hand = new Hand(ArrayBuffer(/* Insert valid dummy cards here */), ArrayBuffer())
-    val initialScore = controller.currentScore
+    // We populate a dummy hand so HandPriority and handScore don't fail
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+    val c5 = new Card(new Hearts, new Six)
 
-    // Try to play valid indexes according to your dummy hand
-    // state.playCards(controller, ArrayBuffer(0, 1, 2, 3, 4))
+    controller.hand = new Hand(ArrayBuffer(c1, c2, c3, c4, c5), ArrayBuffer())
 
-    // If you uncomment the line above with valid data, the state should change
-    // assert(controller.getState.isInstanceOf[EvaluatingState])
-    // assert(controller.currentScore > initialScore)
+    // We discard the card at index 0
+    state.discardCards(controller, ArrayBuffer(0))
+
+    // State should remain PlayersTurn
+    assert(controller.getState.isInstanceOf[PlayersTurn])
   }
 
-  test("PlayersTurn should process discardCards without transitioning states") {
+  test("PlayersTurn should process playCards, update currentScore and transition to EvaluatingState") {
     val state = new PlayersTurn()
     controller.setState(state)
 
-    // Add valid dummy cards to discard
-    controller.hand = new Hand(ArrayBuffer(/* Insert valid dummy cards here */), ArrayBuffer())
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+    val c5 = new Card(new Hearts, new Six)
 
-    // Simulate discarding cards
-    // state.discardCards(controller, ArrayBuffer(0))
+    controller.hand = new Hand(ArrayBuffer(c1, c2, c3, c4, c5), ArrayBuffer())
+    controller.currentScore = 0
 
-    // State remains unchanged
-    assert(controller.getState.isInstanceOf[PlayersTurn])
+    val initialScore = controller.currentScore
+
+    // Play valid indexes according to the dummy hand
+    state.playCards(controller, ArrayBuffer(0, 1, 2, 3, 4))
+
+    // The state must transition to EvaluatingState
+    assert(controller.getState.isInstanceOf[EvaluatingState])
+
+    // The score must have increased (assuming the played cards yield a score > 0)
+    assert(controller.currentScore > initialScore)
   }
 
   test("PlayersTurn should throw InvalidTransitionException for illegal actions") {

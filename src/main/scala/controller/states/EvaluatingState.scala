@@ -11,7 +11,7 @@ class EvaluatingState extends GameState {
       context.setState(new Win)
 
     else
-      if (context.hand.getPlayCount > 3)
+      if (context.hand.getPlayCount >= 3)
         context.setState(new Lose)
 
       else
