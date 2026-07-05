@@ -10,10 +10,6 @@ class Controller {
   var currentScore: Int = 0
   var targetScore: Int = 0
   
-  
-  
-  
-  
   private var state: GameState = new InitialSetup
   def setState(state: GameState) : Unit =
     this.state = state
