@@ -2,6 +2,7 @@ package cl.uchile.dcc
 import scala.collection.mutable.ArrayBuffer
 import jokers.*
 
+import cl.uchile.dcc.controller.observer.BaseSubject
 import cl.uchile.dcc.pokerhands.PokerHand
 
 /**
@@ -26,7 +27,7 @@ class InvalidHand(s: String) extends Exception(s)
  * @param handCards  the collection of cards in the hand
  * @param handJokers the collection of jokers associated with the hand
  */
-class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker]) {
+class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker]) extends BaseSubject{
 
   private val _cards = handCards
   private val _jokers = handJokers
@@ -151,7 +152,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
   def playHand(indexes: ArrayBuffer[Int]): ArrayBuffer[Card] = {
 
     if (playCount > 3){
-      throw new InvalidHand("Invalid play: you cannot play a hand more than 3 times.")
+      notifyObservers("Out of plays")
     }
 
     if ((indexes.length > 5 )||(indexes.length < 1) ){
@@ -197,6 +198,6 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
   def getHandCards: ArrayBuffer[Card] = handCards
 
   def getHandJokers: ArrayBuffer[Joker] = handJokers
-  
+
   def getPlayCount: Int = playCount
 }

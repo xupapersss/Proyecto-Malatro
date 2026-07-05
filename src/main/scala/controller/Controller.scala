@@ -1,17 +1,25 @@
 package cl.uchile.dcc
 package controller
 
-import controller.states.{GameState, InitialSetup}
+import controller.states.{GameState, InitialSetup, Lose}
+
+import controller.observer.{Observer, Subject}
 
 import scala.collection.mutable.ArrayBuffer
 
-class Controller {
-  var hand: Hand = _
+class Controller extends Observer {
   var currentScore: Int = 0
   var targetScore: Int = 0
-  
   private var state: GameState = new InitialSetup
-  def setState(state: GameState) : Unit =
+
+  override def update(subject: Subject, response: Any): Unit = {
+    if response.isInstanceOf[String] then {
+      println("You are out of plays")
+      setState(new Lose)
+    }
+  }
+
+  def setState(state: GameState): Unit =
     this.state = state
 
   private def safeRun(op: () => Unit): Unit =
@@ -34,4 +42,8 @@ class Controller {
   def evaluateScore(): Unit =
     safeRun(() => state.evaluateScore(this))
 
+  def initialGame(): Unit = {
+    hand = new Hand(initialCards, initialJokers)
+    hand.attach(this)
+  }
 }
