@@ -43,11 +43,16 @@ private def displayGameData(controller: Controller): Unit = {
   println(s"Current Score: ${controller.currentScore}")
   if (controller.hand != null) {
     println(s"Plays used: ${controller.hand.getPlayCount} / 3")
+    println(s"Discards used: ${controller.hand.getDiscardCount} / 3")
 
     val cards = controller.hand.handCards
     println("Your Hand: ")
-    for (i <- cards.indices) {
-      println(s" [$i] -> ${cards(i).cardName}")
+    if (cards.isEmpty) {
+      println("  (Empty)")
+    } else {
+      for (i <- cards.indices) {
+        println(s" [$i] -> ${cards(i).cardName}")
+      }
     }
 
     val jokers = controller.hand.jokers

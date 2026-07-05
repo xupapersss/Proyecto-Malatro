@@ -6,7 +6,7 @@ import suit.*
 import rank.*
 import jokers.*
 
-import cl.uchile.dcc.pokerhands.HandPriority
+import cl.uchile.dcc.pokerhands.{HandPriority, ThreeOfaKind}
 
 class HandTest extends FunSuite {
 
@@ -678,5 +678,45 @@ class HandTest extends FunSuite {
     // 4. Verificación: Comparamos que sea la misma colección y tenga el mismo tamaño
     assertEquals(result, expectedJokers)
     assertEquals(result.length, 2)
+  }
+
+  test("ThreeOfaKind does not crash and calculates correctly when other 10-value cards are played") {
+    // 1. Configuramos exactamente la mano que causó el problema
+    val c1 = new Card(new Spades, new Queen) // index 0
+    val c2 = new Card(new Diamonds, new Queen) // index 1
+    val c3 = new Card(new Spades, new Ace) // index 2
+    val c4 = new Card(new Diamonds, new King) // index 3
+    val c5 = new Card(new Hearts, new Eight) // index 4
+    val c6 = new Card(new Clubs, new Queen) // index 5
+    val c7 = new Card(new Diamonds, new Nine) // index 6
+    val c8 = new Card(new Diamonds, new Five) // index 7
+
+    val j1 = new EvenSteven
+    val j2 = new GreedyJoker
+
+    val hand = new Hand(
+      ArrayBuffer(c1, c2, c3, c4, c5, c6, c7, c8),
+      ArrayBuffer(j1, j2)
+    )
+
+    // 2. Extraemos las cartas usando los mismos índices: 0, 1, 5, 2, 3
+    val playedCards = hand.playHand(ArrayBuffer(0, 1, 5, 2, 3))
+
+    // 3. Simulamos la creación de la mano temporal que implementamos en PlayersTurn
+    val tempHand = new Hand(playedCards, ArrayBuffer())
+    val bestHand = new HandPriority(tempHand).bestHand
+
+    // 4. Verificamos que HandPriority detectó correctamente el Trío (Three of a Kind)
+    assert(bestHand.isInstanceOf[ThreeOfaKind], "The hand was not recognized as Three of a Kind")
+
+    // 5. Ejecutamos la función de puntaje (aquí era donde el programa lanzaba NoSuchElementException)
+    val finalScore = hand.handScore(playedCards, bestHand)
+
+    // 6. Validamos que la matemática es exacta:
+    // Chips: Base (30) + 3 Queens (10+10+10 = 30) = 60
+    // Mult: Base (3) + Greedy Joker por UNA sola carta de diamante jugada y válida (Q de diamantes) (+3) = 6
+    // Even Steven NO suma nada porque las Q, K y A no son pares.
+    // Total: 60 * 6 = 360
+    assertEquals(finalScore, 360)
   }
 }

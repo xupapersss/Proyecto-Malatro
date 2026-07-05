@@ -13,13 +13,14 @@ class PlayersTurn extends GameState {
     
     val playedCards = context.hand.playHand(indexes)
     
-    val bestHand = new HandPriority(context.hand).bestHand
+    val tempHand = new Hand(playedCards,ArrayBuffer())
+    
+    val bestHand = new HandPriority(tempHand).bestHand
     
     val scoreGained = context.hand.handScore(playedCards,bestHand)
     context.currentScore += scoreGained
     
     context.drawCards()
-    
     context.setState(new EvaluatingState)
   }
 

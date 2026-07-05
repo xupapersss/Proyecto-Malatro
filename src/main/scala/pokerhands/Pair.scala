@@ -54,7 +54,7 @@ class Pair extends RankBasedHand {
   }
 
   override def scoringCards(playedCards: ArrayBuffer[Card]): ArrayBuffer[Card] = {
-    val groups = playedCards.groupBy(_.rank.value)
+    val groups = playedCards.groupBy(_.rank.order)
     val pairCards = groups.values.find(_.length == 2).get
     
     pairCards

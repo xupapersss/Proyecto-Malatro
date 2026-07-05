@@ -6,6 +6,7 @@ import controller.observer.{Observer, Subject}
 import rank.*
 import suit.*
 import scala.util.Random
+import cl.uchile.dcc.InvalidHand
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -25,7 +26,7 @@ class Controller extends Observer {
         setState(new Lose)
 
       case "Out of discards" =>
-        println("You are out of discards")
+        println("You are out of discards! You must play your cards.")
 
       case _ =>
     }
@@ -39,6 +40,8 @@ class Controller extends Observer {
     catch {
       case e: InvalidTransitionException =>
         println(e.getMessage)
+      case e: InvalidHand =>
+        println(s" ${e.getMessage}")
     }
 
   def start(): Unit =
