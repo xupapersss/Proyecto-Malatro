@@ -47,6 +47,17 @@ class Controller extends Observer {
     safeRun(() => state.evaluateScore(this))
 
   def getState: GameState = state
+
+  def initialGame(): Unit = {
+    val fullDeck = createShuffledDeck()
+    val initialCards = fullDeck.take(8)
+
+    this.hand = new Hand(initialCards, ArrayBuffer())
+
+    this.hand.attach(this)
+
+    this.start()
+  }
 }
 
 
