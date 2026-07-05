@@ -22,7 +22,7 @@ class PlayersTurn extends GameState {
   }
 
   override def discardCards(context: Controller, indexes: ArrayBuffer[Int]): Unit = {
-
-    context.setState(new PlayersTurn)
+    
+    context.hand.discardCards(indexes)
   }
 }
