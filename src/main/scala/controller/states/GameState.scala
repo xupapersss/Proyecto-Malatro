@@ -6,8 +6,6 @@ import controller.{Controller, InvalidTransitionException}
 import scala.collection.mutable.ArrayBuffer
 
 trait GameState protected() {
-  def updateState(context: Controller, state: GameState) : Unit =
-    context.setState(state)
 
   def start(context: Controller): Unit =
     error("start")
@@ -22,5 +20,5 @@ trait GameState protected() {
     error("evaluate")
 
   private def error(action: String): Nothing =
-    throw InvalidTransitionException(action,"placeholder")
+    throw InvalidTransitionException(action,Controller().getState)
 }

@@ -112,7 +112,7 @@ class GameStateTest extends FunSuite {
     val state = new EvaluatingState()
     controller.setState(state)
     val indexes = ArrayBuffer(0)
-
+    
     intercept[InvalidTransitionException] {
       state.start(controller)
     }

@@ -17,9 +17,15 @@ class Controller extends Observer {
   private var state: GameState = new InitialSetup
 
   override def update(subject: Subject, response: Any): Unit = {
-    if response.isInstanceOf[String] then {
-      println("You are out of plays")
-      setState(new Lose)
+    response match {
+      case "Out of plays" =>
+        println("You are out of plays")
+        setState(new Lose)
+
+      case "Out of discards" =>
+        println("You are out of discards")
+
+      case _ =>
     }
   }
 

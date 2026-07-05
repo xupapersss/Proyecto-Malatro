@@ -96,6 +96,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
   def discardCards(indexes: ArrayBuffer[Int]): Unit = {
 
     if (discardCount >= 3){
+      notifyObservers("Out of discards")
       throw new InvalidHand("Invalid play: you cannot discard more than 3 times")
     }
     if ((indexes.length > 5) || (indexes.length < 1)) {
