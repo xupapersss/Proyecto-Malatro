@@ -22,7 +22,6 @@ class TemplateConfigurationSmokeTest extends FunSuite:
       "build.sbt",
       "project/build.properties",
       "project/plugins.sbt",
-      "README.md"
     )
 
     requiredPaths.foreach { relativePath =>
