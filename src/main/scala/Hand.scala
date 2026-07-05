@@ -197,4 +197,6 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
   def getHandCards: ArrayBuffer[Card] = handCards
 
   def getHandJokers: ArrayBuffer[Joker] = handJokers
+  
+  def getPlayCount: Int = playCount
 }
