@@ -53,11 +53,16 @@ private def displayGameData(controller: Controller): Unit = {
 
 private def playerTargetScore(): Int = {
   var score = 0
-  while (score == 0){
+  while (score <= 0){
     print(s"Enter your target score: ")
     val input = readLine().trim
-    score = input.toInt
-
+    try {
+      score = input.toInt
+      if (score <= 0) println("Please enter a positive number.")
+    } catch {
+      case _: NumberFormatException =>
+        println("Invalid input. Please enter a valid number")
+    }
   }
   score
 }
@@ -90,7 +95,11 @@ private def extractIndexes(text: String): ArrayBuffer[Int] = {
   val indexes = ArrayBuffer[Int]()
 
   for (s <- parts if s.nonEmpty) {
-    indexes += s.toInt
+    try {
+      indexes += s.toInt
+    } catch {
+      case _: NumberFormatException =>
+    }
   }
   indexes
 }
