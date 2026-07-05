@@ -51,6 +51,10 @@ class Controller extends Observer {
 
   def evaluateScore(): Unit =
     safeRun(() => state.evaluateScore(this))
+    
+  def isGameOver: Boolean = state.isGameOver
+    
+  def isWin: Boolean = state.isWin
 
   def getState: GameState = state
 

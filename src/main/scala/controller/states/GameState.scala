@@ -18,6 +18,10 @@ trait GameState protected() {
 
   def evaluateScore(context: Controller): Unit =
     error("evaluate")
+    
+  def isGameOver: Boolean = false
+    
+  def isWin: Boolean = false
 
   private def error(action: String): Nothing =
     throw InvalidTransitionException(action,Controller().getState)
