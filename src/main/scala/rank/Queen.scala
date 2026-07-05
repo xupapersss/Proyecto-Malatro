@@ -12,6 +12,9 @@ class Queen extends FaceCard {
   val order: Int = 12
   val value: Int = 10
 
+  override def getRankName: String = "Queen"
+  
+  
   /**
    * Applies the scoring effect of a Joker specifically to a Queen rank via double dispatch.
    *

@@ -21,15 +21,35 @@ object Main {
 
     while (!gameController.isGameOver) {
 
+      playerAction(gameController)
     }
 
     if (gameController.isWin) {
       println("¡You Win!")
+    } else {
+      println("Game Over")
     }
-
-
   }
 }
+
+private def displayGameData(controller: Controller): Unit = {
+  println(s"Target Score: ${controller.targetScore}")
+  println(s"Current Score: ${controller.currentScore}")
+  if (controller.hand != null) {
+    println(s"Plays used: ${controller.hand.getPlayCount} / 3")
+
+    val cards = controller.hand.cards
+    println("Your Hand: ")
+    for (i <- cards.indices) {
+      val rankName = cards(i).rank.getRankName
+      val suitName = cards(i).suit.label
+      println(s" [$i] -> $rankName of $suitName")
+    }
+  }
+
+
+}
+
 
 private def playerTargetScore(): Int = {
   var score = 0

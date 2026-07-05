@@ -13,6 +13,8 @@ class Jack extends FaceCard {
   val order: Int = 11
   val value: Int = 10
 
+  override def getRankName: String = "Jack"
+  
   /**
    * Applies the scoring effect of a Joker specifically to a Jack rank via double dispatch.
    *

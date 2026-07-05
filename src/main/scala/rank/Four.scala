@@ -13,6 +13,9 @@ class Four extends Even {
   val order: Int = 4
   val value: Int = 4
 
+  override def getRankName: String = "Four"
+  
+  
   /**
    * Applies the scoring effect of a Joker specifically to a Four rank via double dispatch.
    *

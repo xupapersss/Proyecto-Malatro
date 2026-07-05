@@ -13,6 +13,8 @@ class Eight extends Even {
   val order: Int = 8
   val value: Int = 8
 
+  override def getRankName: String = "Eight"
+  
   /**
    * Applies the scoring effect of a Joker specifically to an Eight rank via double dispatch.
    *

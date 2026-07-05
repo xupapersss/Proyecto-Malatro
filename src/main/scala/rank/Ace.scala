@@ -15,6 +15,8 @@ class Ace extends Odd {
   val order: Int = 1
   val value: Int = 11
 
+  override def getRankName: String = "Ace"
+
   /**
    * Applies the scoring effect of a Joker specifically to an Ace rank via double dispatch.
    *

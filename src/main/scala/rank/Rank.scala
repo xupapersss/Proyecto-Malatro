@@ -51,6 +51,8 @@ trait Rank{
   def isOdd : Boolean = false
 
   def isFaceCard : Boolean = false
+  
+  def getRankName : String
 }
 
 

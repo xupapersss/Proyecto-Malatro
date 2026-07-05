@@ -13,6 +13,10 @@ class Seven extends Odd {
   val order: Int = 7
   val value: Int = 7
 
+  override def getRankName: String = "Seven"
+  
+  
+  
   /**
    * Applies the scoring effect of a Joker specifically to a Seven rank via double dispatch.
    *

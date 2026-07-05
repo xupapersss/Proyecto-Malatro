@@ -13,6 +13,9 @@ class King extends FaceCard {
   val order: Int = 13
   val value: Int = 10
 
+  override def getRankName: String = "King"
+  
+  
   /**
    * Applies the scoring effect of a Joker specifically to a King rank via double dispatch.
    *
