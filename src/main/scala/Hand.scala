@@ -33,7 +33,7 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
   private val _jokers = handJokers
   private var playCount: Int = 0
   private var discardCount: Int = 0
-  
+
   if (_cards.length > 8){
     throw new InvalidHand(
       s"Limit exceeded: The base hand cannot start with more than 8 cards."
@@ -183,6 +183,17 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     playedCards
   }
 
+  /**
+   * Calculates the total score obtained from the played cards.
+   *
+   * This method extracts the valid scoring cards based on the best detected PokerHand,
+   * calculates the base chips, applies the hand's multipliers, and processes the
+   * effects of any active Jokers in the hand.
+   *
+   * @param playedCards     the full subset of cards the user selected to play
+   * @param playedPokerHand the best PokerHand configuration identified for those cards
+   * @return the final calculated integer score
+   */
   def handScore(playedCards: ArrayBuffer[Card], playedPokerHand: PokerHand): Int = {
     val validCards = playedPokerHand.scoringCards(playedCards)
 
@@ -200,11 +211,31 @@ class Hand(var handCards: ArrayBuffer[Card], var handJokers: ArrayBuffer[Joker])
     finalScore.total
   }
 
+  /**
+   * Retrieves the mutable collection of cards currently in the hand.
+   *
+   * @return an ArrayBuffer of the hand's cards
+   */
   def getHandCards: ArrayBuffer[Card] = handCards
 
+  /**
+   * Retrieves the mutable collection of jokers currently in the hand.
+   *
+   * @return an ArrayBuffer of the hand's active jokers
+   */
   def getHandJokers: ArrayBuffer[Joker] = handJokers
 
+  /**
+   * Retrieves the total number of times the player has executed a play action.
+   *
+   * @return the play count
+   */
   def getPlayCount: Int = playCount
-  
+
+  /**
+   * Retrieves the total number of times the player has executed a discard action.
+   *
+   * @return the discard count
+   */
   def getDiscardCount: Int = discardCount
 }

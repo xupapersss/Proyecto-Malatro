@@ -24,12 +24,15 @@ trait Joker {
   def name: String
 
   /**
-   * The effect of the Joker.
+   * The core effect of the Joker.
    *
-   * This method is intended to define how the Joker modifies the game,
-   * such as altering scoring, changing card behavior, or affecting hand evaluation.
+   * Defines how the Joker modifies the game, such as altering scoring multipliers or base chips.
+   * Concrete Joker implementations must define this behavior.
    *
-   * NOTE: This is not yet implemented.
+   * @param score the current score before the Joker's effect
+   * @param hand  the poker hand being evaluated
+   * @param cards the list of cards played
+   * @return the updated score
    */
   def effect(score: Score, hand: PokerHand, cards: List[Card]): Score
 

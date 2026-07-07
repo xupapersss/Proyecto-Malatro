@@ -4,13 +4,10 @@ package jokers
 import pokerhands.PokerHand
 
 /**
- * Represents the Even Steven.
+ * Represents the Even Steven Joker.
  *
- * This Joker is intended to introduce a special effect that alters
- * the behavior of the game in a non-trivial way.
- *
- * The exact effect is not yet implemented, but it is expected to
- * interact with hand evaluation or scoring logic.
+ * This Joker introduces a special effect that alters the behavior of the game
+ * by rewarding the player for using even-ranked cards.
  */
 class EvenSteven extends Joker {
 
@@ -24,14 +21,11 @@ class EvenSteven extends Joker {
   override def name: String = "Even Steven"
 
   /**
-   * Applies the specific effect of the Even Steven.
+   * Recursively counts the number of even cards in a given list.
    *
-   * This method is intended to define how this particular Joker modifies the game,
-   * such as altering scoring multipliers or chips.
-   *
-   * NOTE: This is not yet implemented.
+   * @param cards the list of cards to evaluate
+   * @return the total number of even cards
    */
-  
   private def evenCounter(cards: List[Card]): Int = {
     cards match {
       case Nil => 0
@@ -40,7 +34,17 @@ class EvenSteven extends Joker {
         isEvenValue + evenCounter(tail)
     }
   }
-  
+
+  /**
+   * Applies the specific effect of the Even Steven Joker.
+   *
+   * Adds +4 to the score's multiplier for every even card present in the played cards.
+   *
+   * @param score the current score before the Joker's effect
+   * @param hand  the poker hand being evaluated
+   * @param cards the list of cards played
+   * @return the updated score with the Joker's effect applied
+   */
   override def effect(score: Score, hand: PokerHand, cards: List[Card]): Score = {
     hand match {
       case _ =>

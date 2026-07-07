@@ -5,7 +5,6 @@ import jokers._
 
 import scala.collection.mutable.ArrayBuffer
 
-
 /**
  * Represents the Straight Flush poker hand.
  *
@@ -26,7 +25,6 @@ class StraightFlush extends PokerHand {
    * The multiplier applied to the base chips.
    */
   override val basemult = 8
-
 
   /**
    * Determines if a set of cards forms a Straight Flush.

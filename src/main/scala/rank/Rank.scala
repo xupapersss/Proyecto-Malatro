@@ -46,20 +46,43 @@ trait Rank{
    */
   def applyScore(score: Score, j: Joker): Score
 
+  /**
+   * Determines if this rank is an even number.
+   *
+   * @return true if the rank is even, false otherwise
+   */
   def isEven: Boolean = false
 
+  /**
+   * Determines if this rank is an odd number.
+   *
+   * @return true if the rank is odd, false otherwise
+   */
   def isOdd : Boolean = false
 
+  /**
+   * Determines if this rank belongs to a face card.
+   *
+   * @return true if the rank is a Jack, Queen, or King, false otherwise
+   */
   def isFaceCard : Boolean = false
-  
+
+  /**
+   * Retrieves the string representation of the rank's name.
+   *
+   * @return a string containing the name of the rank
+   */
   def getRankName : String
 }
-
 
 /**
  * Represents a rank category for odd-valued cards.
  */
 trait Odd extends Rank {
+  /**
+   * @inheritdoc
+   * @return always true for Odd ranks
+   */
   override def isOdd: Boolean = true
 }
 
@@ -67,6 +90,10 @@ trait Odd extends Rank {
  * Represents a rank category for even-valued cards.
  */
 trait Even extends Rank {
+  /**
+   * @inheritdoc
+   * @return always true for Even ranks
+   */
   override def isEven: Boolean = true
 }
 
@@ -74,5 +101,9 @@ trait Even extends Rank {
  * Represents a rank category for face cards (e.g., Jack, Queen, King).
  */
 trait FaceCard extends Rank {
+  /**
+   * @inheritdoc
+   * @return always true for FaceCard ranks
+   */
   override def isFaceCard: Boolean = true
 }

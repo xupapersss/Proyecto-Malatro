@@ -8,6 +8,7 @@ import jokers._
  * All cards of this suit share the same label: "Hearts".
  */
 class Hearts extends Suit {
+  /** The human-readable label for this suit. */
   override val label = "Hearts"
 
   /**

@@ -8,8 +8,16 @@ import jokers.*
 
 import cl.uchile.dcc.pokerhands.{HandPriority, ThreeOfaKind}
 
+/**
+ * Test suite for the Hand class.
+ *
+ * This suite comprehensively verifies the mechanics of the player's hand,
+ * including adding/discarding cards and jokers, validating game rules (max limits),
+ * playing subsets of cards, and calculating final scores with Joker effects.
+ */
 class HandTest extends FunSuite {
 
+  /** Verifies that addCards successfully appends new cards to the hand without exceeding limits. */
   test("addCards adds new cards to the hand correctly") {
     val card1 = new Card(new Hearts, new Two)
     val card2 = new Card(new Spades, new Three)
@@ -33,6 +41,7 @@ class HandTest extends FunSuite {
     assert(result.contains(newCard2))
   }
 
+  /** Verifies that addJokers successfully appends new jokers to the hand without exceeding limits. */
   test("addJokers adds jokers to the hand correctly") {
     val joker1 = new DeviousJoker
     val joker2 = new GreedyJoker
@@ -52,6 +61,7 @@ class HandTest extends FunSuite {
     assert(result.contains(joker2))
   }
 
+  /** Verifies that discardCards correctly removes the specified cards based on their descending indices. */
   test("discardCards removes cards by indexes correctly") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -73,6 +83,7 @@ class HandTest extends FunSuite {
     assert(result.contains(c4))
   }
 
+  /** Verifies that discardJokers correctly removes a specific joker without shifting issues. */
   test("discardJokers removes second joker correctly") {
     val j1 = new DeviousJoker
     val j2 = new DeviousJoker
@@ -89,6 +100,7 @@ class HandTest extends FunSuite {
     assertEquals(result, List(j1))
   }
 
+  /** Verifies that playing a hand extracts the correct cards and removes them from the internal buffer. */
   test("playHand returns selected cards and removes them from Hand") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -113,6 +125,8 @@ class HandTest extends FunSuite {
     // verify that played cards were deleted from hand
     assertEquals(hand.cards, List(c1, c2, c4, c6, c8))
   }
+
+  /** Verifies that creating a Hand with more than 8 cards throws an InvalidHand exception. */
   test("Hand cannot start 8 or more cards") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -131,6 +145,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that adding cards beyond the 8-card limit throws an InvalidHand exception. */
   test("Hand cannot have more than 8 cards when adding new ones") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -152,11 +167,11 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that creating a Hand with more than 2 jokers throws an InvalidHand exception. */
   test("Hand cannot start with more than 2 Jokers") {
     val j1 = new DeviousJoker
     val j2 = new EvenSteven
     val j3 = new GreedyJoker
-
 
     intercept[InvalidHand] {
       val hand = new Hand(
@@ -166,6 +181,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that adding jokers beyond the 2-joker limit throws an InvalidHand exception. */
   test("Hand cannot have more than 2 jokers when adding new ones") {
     val j1 = new DeviousJoker
     val j2 = new EvenSteven
@@ -181,6 +197,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that discarding an out-of-bounds card index throws an InvalidHand exception. */
   test("discardCards cannot have an invalid index") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -199,6 +216,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that discarding an out-of-bounds joker index throws an InvalidHand exception. */
   test("discardJokers cannot have an invalid index") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -217,6 +235,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that attempting to play more than 5 cards at once throws an InvalidHand exception. */
   test("playHand cannot have more than 5 cards") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -237,6 +256,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that attempting to play 0 cards throws an InvalidHand exception. */
   test("playHand cannot have less than 1 card") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -257,6 +277,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that attempting to play an out-of-bounds card index throws an InvalidHand exception. */
   test("playHand cannot have an index that doesn't exist in the hand") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -277,6 +298,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that attempting to discard more than 5 cards at once throws an InvalidHand exception. */
   test("you cannot discard more than 5 cards"){
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -297,6 +319,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that attempting to discard 0 cards throws an InvalidHand exception. */
   test("you cannot discard less than 1 card"){
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -317,6 +340,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that attempting to discard a card index that doesn't exist throws an InvalidHand exception. */
   test("discardCards cannot have an index that doesn't exist in the hand") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -335,6 +359,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that attempting to play more than 3 times total throws an InvalidHand exception. */
   test("you cannot play a set of cards more than 3 times"){
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -358,6 +383,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies that attempting to discard more than 3 times total throws an InvalidHand exception. */
   test("you cannot discard more than 3 times"){
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -381,6 +407,7 @@ class HandTest extends FunSuite {
     }
   }
 
+  /** Verifies the correct score calculation for a Straight enhanced by a Devious Joker. */
   test("handScore works as intended for a straight") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Spades, new Three)
@@ -400,6 +427,7 @@ class HandTest extends FunSuite {
     assertEquals(result,expectedScore.total)
   }
 
+  /** Verifies the correct score calculation for a Pair enhanced by an Even Steven Joker. */
   test("handScore works for a Pair and EvenSteven") {
     val c1 = new Card(new Hearts, new Eight)
     val c2 = new Card(new Spades, new Eight)
@@ -422,6 +450,7 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  /** Verifies the correct score calculation for a Flush enhanced by a Greedy Joker. */
   test("handScore works for a Flush and GreedyJoker") {
     val c1 = new Card(new Diamonds, new Two)
     val c2 = new Card(new Diamonds, new Four)
@@ -444,6 +473,7 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  /** Verifies the correct score calculation for a High Card enhanced by a Scary Face Joker. */
   test("handScore works for a HighCard and ScaryFace") {
     val c1 = new Card(new Hearts, new King)
     val c2 = new Card(new Spades, new Nine)
@@ -466,6 +496,7 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  /** Verifies the correct score calculation for a Three of a Kind enhanced by an Even Steven Joker. */
   test("handScore works for a Three of a Kind and EvenSteven") {
     val c1 = new Card(new Diamonds, new Four)
     val c2 = new Card(new Spades, new Four)
@@ -488,6 +519,7 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  /** Verifies the correct score calculation for a Straight Flush enhanced by a Devious Joker. */
   test("handScore works for a StraightFlush and DeviousJoker") {
     val c1 = new Card(new Clubs, new Five)
     val c2 = new Card(new Clubs, new Six)
@@ -510,6 +542,7 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  /** Verifies that the score is un-altered if the Even Steven condition is not met. */
   test("handScore works as intended when EvenSteven doesn't add points") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Clubs, new Ace)
@@ -532,6 +565,7 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  /** Verifies that the score is un-altered if the Greedy Joker condition is not met. */
   test("handScore works as intended when GreedyJoker doesn't add points") {
     val c1 = new Card(new Hearts, new Two)
     val c2 = new Card(new Diamonds, new Four)
@@ -554,6 +588,7 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  /** Verifies that the score is un-altered if the Scary Face condition is not met. */
   test("handScore works as intended when ScaryFace doesn't add points") {
     val c1 = new Card(new Hearts, new Ace)
     val c2 = new Card(new Diamonds, new King)
@@ -576,6 +611,7 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  /** Verifies that multiple jokers (Even Steven + Greedy Joker) correctly stack their effects. */
   test("handScore works EvenSteven and GreedyJoker") {
     val c1 = new Card(new Diamonds, new Four)
     val c2 = new Card(new Spades, new Four)
@@ -599,6 +635,7 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  /** Verifies that multiple jokers (Devious Joker + Even Steven) correctly stack their effects. */
   test("handScore works for DeviousJoker and EvenSteven") {
     val c1 = new Card(new Clubs, new Five)
     val c2 = new Card(new Clubs, new Six)
@@ -622,6 +659,7 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
+  /** Verifies that multiple jokers (Scary Face + Greedy Joker) correctly stack their effects. */
   test("handScore works for ScaryFace and GreedyJoker") {
     val c1 = new Card(new Diamonds, new Ace)
     val c2 = new Card(new Diamonds, new King)
@@ -645,7 +683,7 @@ class HandTest extends FunSuite {
     assertEquals(result, expectedScore.total)
   }
 
-
+  /** Verifies that getHandCards correctly returns the internal mutable ArrayBuffer of cards. */
   test("getHandCards should return the exact ArrayBuffer of cards it was initialized with") {
     // 1. Setup: Creamos un arreglo de cartas conocido
     val c1 = new Card(new Hearts, new Two)
@@ -663,6 +701,7 @@ class HandTest extends FunSuite {
     assertEquals(result.length, 2)
   }
 
+  /** Verifies that getHandJokers correctly returns the internal mutable ArrayBuffer of jokers. */
   test("getHandJokers should return the exact ArrayBuffer of jokers it was initialized with") {
     // 1. Setup: Creamos un arreglo de jokers conocido
     val j1 = new GreedyJoker()
@@ -680,6 +719,28 @@ class HandTest extends FunSuite {
     assertEquals(result.length, 2)
   }
 
+  /** Verifies that getDiscardCount accurately tracks the number of discard actions performed. */
+  test("getDiscardCount should accurately track the number of discard actions") {
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Diamonds, new Five)
+
+    val hand = new Hand(ArrayBuffer(c1, c2, c3, c4), ArrayBuffer())
+
+    // Initial state should be 0
+    assertEquals(hand.getDiscardCount, 0)
+
+    // After first discard
+    hand.discardCards(ArrayBuffer(0))
+    assertEquals(hand.getDiscardCount, 1)
+
+    // After second discard
+    hand.discardCards(ArrayBuffer(0))
+    assertEquals(hand.getDiscardCount, 2)
+  }
+
+  /** Verifies that playing multiple 10-value cards alongside a Three of a Kind doesn't crash the evaluator. */
   test("ThreeOfaKind does not crash and calculates correctly when other 10-value cards are played") {
     // 1. Configuramos exactamente la mano que causó el problema
     val c1 = new Card(new Spades, new Queen) // index 0

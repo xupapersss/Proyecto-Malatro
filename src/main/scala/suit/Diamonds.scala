@@ -8,6 +8,7 @@ import jokers._
  * All cards of this suit share the same label: "Diamonds".
  */
 class Diamonds extends Suit {
+  /** The human-readable label for this suit. */
   override val label = "Diamonds"
 
   /**
@@ -21,5 +22,8 @@ class Diamonds extends Suit {
     j.diamondsScore(score, this)
   }
 
+  /**
+   * @return always true since this suit is Diamonds
+   */
   override def isDiamond: Boolean = true
 }

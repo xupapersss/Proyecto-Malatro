@@ -31,7 +31,7 @@ trait PokerHand{
    * basechips * basemult
    */
   def basemult: Int
-  
+
   /**
    * Applies the scoring effect of a Joker to this poker hand.
    *
@@ -43,7 +43,16 @@ trait PokerHand{
    * @return the updated score after the joker's effect is calculated
    */
   def applyScore(score: Score, j : Joker): Score
-  
+
+  /**
+   * Returns the specific cards that form the core combination of this hand.
+   *
+   * By default, it returns all played cards. Specific hands (like Pair or Three of a Kind)
+   * override this to return only the subset of cards that actively contribute to the score.
+   *
+   * @param playedCards the list of cards played by the user
+   * @return an ArrayBuffer containing only the scoring cards
+   */
   def scoringCards(playedCards: ArrayBuffer[Card]): ArrayBuffer[Card] = {
     playedCards
   }

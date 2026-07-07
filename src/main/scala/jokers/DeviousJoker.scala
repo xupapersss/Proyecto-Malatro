@@ -5,15 +5,11 @@ import pokerhands.{PokerHand, Straight, StraightFlush}
 
 import cl.uchile.dcc.Score
 
-
 /**
  * Represents the Devious Joker.
  *
- * This Joker is intended to introduce a special effect that alters
- * the behavior of the game in a non-trivial way.
- *
- * The exact effect is not yet implemented, but it is expected to
- * interact with hand evaluation or scoring logic.
+ * This Joker introduces a special effect that alters the behavior of the game
+ * by modifying the scoring logic for specific hands.
  */
 class DeviousJoker extends Joker {
 
@@ -25,16 +21,17 @@ class DeviousJoker extends Joker {
    * @return a string representing the name "Devious Joker"
    */
   override def name: String = "Devious Joker"
-  
+
   /**
    * Applies the specific effect of the Devious Joker.
    *
-   * This method is intended to define how this particular Joker modifies the game,
-   * such as altering scoring multipliers or chips.
+   * Adds 100 to the base chips if the evaluated hand is a Straight or a Straight Flush.
    *
-   * NOTE: This is not yet implemented.
+   * @param score the current score before the Joker's effect
+   * @param hand  the poker hand being evaluated
+   * @param cards the list of cards played
+   * @return the updated score with the Joker's effect applied
    */
-
   override def effect(score: Score, hand: PokerHand, cards: List[Card]): Score = {
     hand match {
       case _: Straight => new Score(score.getChips + 100, score.getMult)

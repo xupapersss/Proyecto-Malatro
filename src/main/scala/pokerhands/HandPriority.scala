@@ -1,6 +1,5 @@
 package cl.uchile.dcc
 package pokerhands
-import scala.collection.mutable.ArrayBuffer
 
 /**
  * Determines the highest-priority poker hand for a given set of cards.
@@ -27,12 +26,11 @@ class HandPriority(val hand: Hand) {
    * The method checks each hand type in descending order of priority,
    * returning the first match found.
    *
-   * @param cards the cards to evaluate
    * @return the highest-ranking PokerHand that applies to the given cards
    */
   def bestHand : PokerHand = {
     val cards = hand.handCards
-    
+
     if (new StraightFlush().isStraightFlush(cards)) {
       new StraightFlush
     } else if (new Flush().isFlush(cards)) {

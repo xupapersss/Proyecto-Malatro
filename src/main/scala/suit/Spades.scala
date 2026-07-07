@@ -10,6 +10,7 @@ import scala.collection.mutable.ArrayBuffer
  * All cards of this suit share the same label: "Spades".
  */
 class Spades extends Suit {
+  /** The human-readable label for this suit. */
   override val label = "Spades"
 
   /**

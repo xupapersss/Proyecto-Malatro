@@ -10,11 +10,16 @@ import jokers._
  * Category: Even
  */
 class Eight extends Even {
+  /** The relative order of the Eight in a sequence. */
   val order: Int = 8
+  /** The standard scoring value of the Eight. */
   val value: Int = 8
 
+  /**
+   * @return the string "Eight"
+   */
   override def getRankName: String = "Eight"
-  
+
   /**
    * Applies the scoring effect of a Joker specifically to an Eight rank via double dispatch.
    *

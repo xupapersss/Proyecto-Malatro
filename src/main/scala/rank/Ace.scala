@@ -12,9 +12,14 @@ import jokers._
  * Category: Odd
  */
 class Ace extends Odd {
+  /** The relative order of the Ace in a sequence. */
   val order: Int = 1
+  /** The standard scoring value of the Ace. */
   val value: Int = 11
 
+  /**
+   * @return the string "Ace"
+   */
   override def getRankName: String = "Ace"
 
   /**

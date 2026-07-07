@@ -7,27 +7,33 @@ import cl.uchile.dcc.pokerhands.HandPriority
 
 import scala.collection.mutable.ArrayBuffer
 
+/**
+ * State representing the player's active turn.
+ *
+ * In this state, the player is allowed to select cards from their hand
+ * to either play them (scoring points) or discard them.
+ */
 class PlayersTurn extends GameState {
 
   override def playCards(context: Controller, indexes: ArrayBuffer[Int]): Unit = {
-    
+
     val playedCards = context.hand.playHand(indexes)
-    
+
     val tempHand = new Hand(playedCards,ArrayBuffer())
-    
+
     val bestHand = new HandPriority(tempHand).bestHand
-    
+
     val scoreGained = context.hand.handScore(playedCards,bestHand)
     context.currentScore += scoreGained
-    
+
     context.drawCards()
     context.setState(new EvaluatingState)
   }
 
   override def discardCards(context: Controller, indexes: ArrayBuffer[Int]): Unit = {
-    
+
     context.hand.discardCards(indexes)
-    
+
     context.drawCards()
   }
 }

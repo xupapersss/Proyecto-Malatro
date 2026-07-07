@@ -13,9 +13,21 @@ package cl.uchile.dcc
  * @param mult  the multiplier applied to the chips
  */
 class Score (chips: Int, mult: Int) {
-  
+
+  /**
+   * Retrieves the base chip value associated with this score.
+   *
+   * @return the number of chips
+   */
   def getChips : Int = chips
+
+  /**
+   * Retrieves the multiplier value associated with this score.
+   *
+   * @return the multiplier
+   */
   def getMult : Int = mult
+
   /**
    * Computes the total score.
    *

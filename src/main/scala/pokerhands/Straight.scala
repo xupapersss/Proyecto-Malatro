@@ -26,7 +26,6 @@ class Straight extends PokerHand {
    */
   override val basemult = 4
 
-
   /**
    * Determines whether a sequence of rank orders is consecutive.
    *
@@ -57,7 +56,6 @@ class Straight extends PokerHand {
       true
     }
   }
-
 
   /**
    * Determines if a set of cards forms a Straight.

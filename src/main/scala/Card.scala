@@ -55,7 +55,12 @@ class Card (val suit:Suit, val rank: Rank){
     }
     actualScore
   }
-  
+
+  /**
+   * Constructs a human-readable string representation of the card.
+   *
+   * @return a formatted string in the form of "Rank of Suit" (e.g., "Ace of Spades")
+   */
   def cardName: String = {
     s"${rank.getRankName} of ${suit.label}"
   }

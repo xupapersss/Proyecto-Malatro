@@ -8,8 +8,22 @@ import cl.uchile.dcc.jokers.{DeviousJoker, EvenSteven, GreedyJoker, Joker, Scary
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn.readLine
 
-
+/**
+ * Main entry point for the console-based Malatro game.
+ *
+ * This object manages the interactive command-line interface (CLI) for the player,
+ * handling input, displaying the game state, and communicating with the Controller.
+ */
 object Main {
+
+  /**
+   * The main execution loop of the game.
+   *
+   * Initializes the controller, sets up the game parameters (target score and jokers),
+   * and runs the main turn loop until a game over condition is met.
+   *
+   * @param args command-line arguments (not used)
+   */
   def main(args: Array[String]): Unit = {
     println("¡Welcome to Malatro!")
 
@@ -38,6 +52,14 @@ object Main {
   }
 }
 
+/**
+ * Displays the current state of the game to the player.
+ *
+ * This includes the target score, current score, remaining plays, 
+ * remaining discards, the cards currently held in the hand, and any active Jokers.
+ *
+ * @param controller the main game controller holding the state
+ */
 private def displayGameData(controller: Controller): Unit = {
   println(s"Target Score: ${controller.targetScore}")
   println(s"Current Score: ${controller.currentScore}")
@@ -65,6 +87,14 @@ private def displayGameData(controller: Controller): Unit = {
   }
 }
 
+/**
+ * Prompts the player to select up to two Jokers for their initial setup.
+ *
+ * Reads user input from the console and instantiates the chosen Jokers,
+ * adding them to the controller's hand.
+ *
+ * @param controller the main game controller
+ */
 private def playerJokers(controller: Controller): Unit = {
   println("\nAvailable Jokers:")
   println("  [1] Devious Joker (+100 chips on Straight)")
@@ -106,7 +136,13 @@ private def playerJokers(controller: Controller): Unit = {
   }
 }
 
-
+/**
+ * Prompts the player to define the target score required to win the game.
+ *
+ * Ensures that the inputted score is a valid positive integer.
+ *
+ * @return the chosen target score
+ */
 private def playerTargetScore(): Int = {
   var score = 0
   while (score <= 0){
@@ -123,6 +159,13 @@ private def playerTargetScore(): Int = {
   score
 }
 
+/**
+ * Prompts the player for their next move (play or discard) and the target cards.
+ *
+ * Processes the text input and forwards the command to the controller.
+ *
+ * @param controller the main game controller
+ */
 private def playerAction(controller: Controller): Unit = {
   print("Enter action (play / discard): ")
   val action = readLine().trim.toLowerCase
@@ -146,6 +189,14 @@ private def playerAction(controller: Controller): Unit = {
   }
 }
 
+/**
+ * Converts a space-separated string of numbers into an ArrayBuffer of integers.
+ *
+ * Useful for parsing card index selections from the console.
+ *
+ * @param text the raw string input from the user
+ * @return an ArrayBuffer containing the parsed integers
+ */
 private def extractIndexes(text: String): ArrayBuffer[Int] = {
   val parts = text.trim.split(" ")
   val indexes = ArrayBuffer[Int]()

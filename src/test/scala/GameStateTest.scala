@@ -6,9 +6,15 @@ import munit.FunSuite
 import suit._
 import rank._
 
-
 import scala.collection.mutable.ArrayBuffer
 
+/**
+ * Test suite for the GameState state machine.
+ *
+ * This suite verifies the correct behavior of all game states, including
+ * valid transitions, blocked actions (which must throw InvalidTransitionException),
+ * and the default behavior of terminal state flags (isGameOver, isWin).
+ */
 class GameStateTest extends FunSuite {
   var controller: Controller = _
 
@@ -17,9 +23,26 @@ class GameStateTest extends FunSuite {
   }
 
   // ==========================================
+  // Tests for Base GameState Trait
+  // ==========================================
+
+  /**
+   * Verifies that the base GameState trait defaults isGameOver and isWin to false.
+   * This ensures that any non-terminal state inherits the correct continuous gameplay flags.
+   */
+  test("Base GameState properties isGameOver and isWin should be false by default") {
+    // We create an anonymous instance of the trait to test its default behavior
+    val defaultState = new GameState {}
+
+    assert(!defaultState.isGameOver, "isGameOver should default to false")
+    assert(!defaultState.isWin, "isWin should default to false")
+  }
+
+  // ==========================================
   // Tests for InitialSetup State
   // ==========================================
 
+  /** Verifies that InitialSetup allows the 'start' action and properly transitions to PlayersTurn. */
   test("InitialSetup should allow 'start' and transition to PlayersTurn") {
     val state = new InitialSetup()
     controller.setState(state)
@@ -29,6 +52,7 @@ class GameStateTest extends FunSuite {
     assert(controller.getState.isInstanceOf[PlayersTurn])
   }
 
+  /** Verifies that InitialSetup blocks all gameplay actions (play, discard, evaluate). */
   test("InitialSetup should throw InvalidTransitionException for all other actions") {
     val state = new InitialSetup()
     controller.setState(state)
@@ -49,6 +73,7 @@ class GameStateTest extends FunSuite {
   // Tests for EvaluatingState State
   // ==========================================
 
+  /** Verifies that EvaluatingState transitions to Win when the target score is reached. */
   test("EvaluatingState should transition to Win if currentScore is greater than or equal to targetScore") {
     val state = new EvaluatingState()
     controller.setState(state)
@@ -62,6 +87,7 @@ class GameStateTest extends FunSuite {
     assert(controller.getState.isInstanceOf[Win])
   }
 
+  /** Verifies that EvaluatingState transitions to Lose when maximum plays are reached without winning. */
   test("EvaluatingState should transition to Lose if playCount reaches 3 without winning") {
     val state = new EvaluatingState()
     controller.setState(state)
@@ -95,6 +121,7 @@ class GameStateTest extends FunSuite {
     assert(controller.getState.isInstanceOf[Lose])
   }
 
+  /** Verifies that EvaluatingState loops back to PlayersTurn if the game must continue. */
   test("EvaluatingState should transition to PlayersTurn if no win or lose conditions are met") {
     val state = new EvaluatingState()
     controller.setState(state)
@@ -108,11 +135,12 @@ class GameStateTest extends FunSuite {
     assert(controller.getState.isInstanceOf[PlayersTurn])
   }
 
+  /** Verifies that EvaluatingState blocks setup and card manipulation actions. */
   test("EvaluatingState should throw InvalidTransitionException for non-evaluation actions") {
     val state = new EvaluatingState()
     controller.setState(state)
     val indexes = ArrayBuffer(0)
-    
+
     intercept[InvalidTransitionException] {
       state.start(controller)
     }
@@ -128,10 +156,7 @@ class GameStateTest extends FunSuite {
   // Tests for PlayersTurn State
   // ==========================================
 
-  // ==========================================
-  // Tests for PlayersTurn State
-  // ==========================================
-
+  /** Verifies that discarding cards executes correctly and keeps the game in PlayersTurn. */
   test("PlayersTurn should correctly process discardCards without transitioning states") {
     val state = new PlayersTurn()
     controller.setState(state)
@@ -152,6 +177,7 @@ class GameStateTest extends FunSuite {
     assert(controller.getState.isInstanceOf[PlayersTurn])
   }
 
+  /** Verifies that playing cards increases the score and advances the game to EvaluatingState. */
   test("PlayersTurn should process playCards, update currentScore and transition to EvaluatingState") {
     val state = new PlayersTurn()
     controller.setState(state)
@@ -177,6 +203,7 @@ class GameStateTest extends FunSuite {
     assert(controller.currentScore > initialScore)
   }
 
+  /** Verifies that PlayersTurn blocks setup and evaluation actions. */
   test("PlayersTurn should throw InvalidTransitionException for illegal actions") {
     val state = new PlayersTurn()
     controller.setState(state)
@@ -193,6 +220,7 @@ class GameStateTest extends FunSuite {
   // Tests for Win and Lose States
   // ==========================================
 
+  /** Verifies that the Win state is fully terminal and blocks all actions. */
   test("Win state should block all actions") {
     val state = new Win()
     controller.setState(state)
@@ -212,6 +240,7 @@ class GameStateTest extends FunSuite {
     }
   }
 
+  /** Verifies that the Lose state is fully terminal and blocks all actions. */
   test("Lose state should block all actions") {
     val state = new Lose()
     controller.setState(state)

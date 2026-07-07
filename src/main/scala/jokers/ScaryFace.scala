@@ -4,13 +4,10 @@ package jokers
 import pokerhands.PokerHand
 
 /**
- * Represents the Scary Face.
+ * Represents the Scary Face Joker.
  *
- * This Joker is intended to introduce a special effect that alters
- * the behavior of the game in a non-trivial way.
- *
- * The exact effect is not yet implemented, but it is expected to
- * interact with hand evaluation or scoring logic.
+ * This Joker introduces a special effect that alters the behavior of the game
+ * by rewarding the player for using face cards.
  */
 class ScaryFace extends Joker {
 
@@ -24,14 +21,11 @@ class ScaryFace extends Joker {
   override def name: String = "Scary Face"
 
   /**
-   * Applies the specific effect of the Scary Face.
+   * Recursively counts the number of face cards (Jack, Queen, King) in a given list.
    *
-   * This method is intended to define how this particular Joker modifies the game,
-   * such as altering scoring multipliers or chips.
-   *
-   * NOTE: This is not yet implemented.
+   * @param cards the list of cards to evaluate
+   * @return the total number of face cards
    */
-  
   private def faceCardCounter(cards: List[Card]) : Int = {
     cards match {
       case Nil => 0
@@ -41,6 +35,16 @@ class ScaryFace extends Joker {
     }
   }
 
+  /**
+   * Applies the specific effect of the Scary Face Joker.
+   *
+   * Adds +30 to the base chips for every face card present in the played cards.
+   *
+   * @param score the current score before the Joker's effect
+   * @param hand  the poker hand being evaluated
+   * @param cards the list of cards played
+   * @return the updated score with the Joker's effect applied
+   */
   override def effect(score: Score, hand: PokerHand, cards: List[Card]): Score = {
     hand match {
       case _ =>
@@ -52,7 +56,4 @@ class ScaryFace extends Joker {
         }
     }
   }
-  /**
-   * por cada facecard añade +30 chips
-   */
 }

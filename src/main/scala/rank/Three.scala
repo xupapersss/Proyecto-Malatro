@@ -10,13 +10,16 @@ import jokers._
  * Category: Odd
  */
 class Three extends Odd {
+  /** The relative order of the Three in a sequence. */
   val order: Int = 3
+  /** The standard scoring value of the Three. */
   val value: Int = 3
 
+  /**
+   * @return the string "Three"
+   */
   override def getRankName: String = "Three"
-  
-  
-  
+
   /**
    * Applies the scoring effect of a Joker specifically to a Three rank via double dispatch.
    *

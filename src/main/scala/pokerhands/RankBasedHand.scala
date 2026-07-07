@@ -4,7 +4,6 @@ package pokerhands
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-
 /**
  * Represents an abstract poker hand based on rank repetition.
  *
@@ -14,7 +13,6 @@ import scala.collection.mutable.ArrayBuffer
  * It extends PokerHand and serves as a base for more specific combinations.
  */
 abstract class RankBasedHand extends PokerHand {
-
 
   /**
    * Builds a frequency counter for the ranks in a set of cards.

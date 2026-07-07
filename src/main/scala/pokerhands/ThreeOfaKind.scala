@@ -5,7 +5,6 @@ import jokers._
 
 import scala.collection.mutable.ArrayBuffer
 
-
 /**
  * Represents the Three of a Kind poker hand.
  *
@@ -25,7 +24,6 @@ class ThreeOfaKind extends RankBasedHand {
    * The multiplier applied to the base chips.
    */
   val basemult = 3
-
 
   /**
    * Determines if a set of cards contains a Three of a Kind.
@@ -53,6 +51,12 @@ class ThreeOfaKind extends RankBasedHand {
     j.threeOfaKindScore(score, this)
   }
 
+  /**
+   * Extracts the three matching cards from the played cards to be used for scoring.
+   *
+   * @param playedCards the cards played by the user
+   * @return an ArrayBuffer containing exactly the three cards that form the Three of a Kind
+   */
   override def scoringCards(playedCards: ArrayBuffer[Card]): ArrayBuffer[Card] = {
     val groups = playedCards.groupBy(_.rank.order)
     val trioCards = groups.values.find(_.length == 3).get

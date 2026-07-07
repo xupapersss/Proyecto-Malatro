@@ -5,7 +5,6 @@ import cl.uchile.dcc.jokers.Joker
 
 import scala.collection.mutable.ArrayBuffer
 
-
 /**
  * Represents the Pair poker hand.
  *
@@ -25,7 +24,6 @@ class Pair extends RankBasedHand {
    * The multiplier applied to the base chips.
    */
   override val basemult = 2
-
 
   /**
    * Determines if a set of cards contains a Pair.
@@ -53,10 +51,16 @@ class Pair extends RankBasedHand {
     j.pairScore(score, this)
   }
 
+  /**
+   * Extracts the pair of cards from the played cards to be used for scoring.
+   *
+   * @param playedCards the cards played by the user
+   * @return an ArrayBuffer containing exactly the two cards that form the Pair
+   */
   override def scoringCards(playedCards: ArrayBuffer[Card]): ArrayBuffer[Card] = {
     val groups = playedCards.groupBy(_.rank.order)
     val pairCards = groups.values.find(_.length == 2).get
-    
+
     pairCards
-  } 
+  }
 }

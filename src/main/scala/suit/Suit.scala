@@ -36,6 +36,11 @@ trait Suit{
    * @return the updated score after the joker's effect is calculated
    */
   def applyScore(score: Score, j: Joker): Score
-  
+
+  /**
+   * Determines if this suit is Diamonds.
+   *
+   * @return true if the suit is Diamonds, false otherwise
+   */
   def isDiamond : Boolean = false
 }

@@ -10,12 +10,16 @@ import jokers._
  * Category: Odd
  */
 class Nine extends Odd {
+  /** The relative order of the Nine in a sequence. */
   val order: Int = 9
+  /** The standard scoring value of the Nine. */
   val value: Int = 9
 
+  /**
+   * @return the string "Nine"
+   */
   override def getRankName: String = "Nine"
-  
-  
+
   /**
    * Applies the scoring effect of a Joker specifically to a Nine rank via double dispatch.
    *

@@ -13,7 +13,6 @@ import scala.collection.mutable.ArrayBuffer
  *
  * HighCard acts as a fallback case and is always considered valid.
  */
-
 class HighCard extends PokerHand {
 
   /**
@@ -47,9 +46,15 @@ class HighCard extends PokerHand {
     j.highCardScore(score, this)
   }
 
+  /**
+   * Extracts the highest-ranking card from the played cards to be used for scoring.
+   *
+   * @param playedCards the cards played by the user
+   * @return an ArrayBuffer containing only the single highest card
+   */
   override def scoringCards(playedCards: ArrayBuffer[Card]): ArrayBuffer[Card] = {
     val highestCard = ArrayBuffer(playedCards.maxBy(card => card.rank.value))
-    
+
     highestCard
   }
 }

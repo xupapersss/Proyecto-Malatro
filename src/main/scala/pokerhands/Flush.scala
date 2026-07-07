@@ -6,7 +6,6 @@ import jokers._
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-
 /**
  * Represents the Flush poker hand.
  *
@@ -20,14 +19,12 @@ class Flush extends PokerHand {
   /**
    * The base number of chips awarded for a Flush.
    */
-
   val basechips = 35
 
   /**
    * The multiplier applied to the base chips.
    */
   val basemult = 4
-
 
   /**
    * Determines if a set of cards forms a Flush.

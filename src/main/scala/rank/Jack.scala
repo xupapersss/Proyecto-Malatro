@@ -10,11 +10,16 @@ import jokers._
  * Category: Face Card
  */
 class Jack extends FaceCard {
+  /** The relative order of the Jack in a sequence. */
   val order: Int = 11
+  /** The standard scoring value of the Jack. */
   val value: Int = 10
 
+  /**
+   * @return the string "Jack"
+   */
   override def getRankName: String = "Jack"
-  
+
   /**
    * Applies the scoring effect of a Joker specifically to a Jack rank via double dispatch.
    *

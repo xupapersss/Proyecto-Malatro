@@ -3,15 +3,26 @@ package cl.uchile.dcc
 import cl.uchile.dcc.controller.observer._
 import munit.FunSuite
 
+/**
+ * Test suite for the Observer pattern implementation.
+ *
+ * This suite uses dummy classes to verify that a Subject correctly maintains
+ * its list of Observers, notifies them of events, and allows attaching and detaching.
+ */
 class ObserverTest extends FunSuite {
-  // Dummy Subject to test BaseSubject since its constructor is protected
+
+  /** * Dummy Subject to test BaseSubject since its constructor is protected.
+   * Exposes the notification method for testing.
+   */
   class TestSubject extends BaseSubject {
     def triggerNotification(message: Any): Unit = {
       notifyObservers(message)
     }
   }
 
-  // Dummy Observer to track if updates are actually received
+  /** * Dummy Observer to track if updates are actually received.
+   * Stores the last received response and the notification count.
+   */
   class TestObserver extends Observer {
     var lastSubject: Subject = _
     var lastResponse: Any = _
@@ -24,6 +35,7 @@ class ObserverTest extends FunSuite {
     }
   }
 
+  /** Verifies that a Subject can attach an observer and successfully send it an update. */
   test("BaseSubject should attach an observer and notify it") {
     val subject = new TestSubject()
     val observer = new TestObserver()
@@ -36,6 +48,7 @@ class ObserverTest extends FunSuite {
     assertEquals(observer.lastSubject, subject)
   }
 
+  /** Verifies that a detached observer no longer receives updates. */
   test("BaseSubject should detach an observer so it stops receiving notifications") {
     val subject = new TestSubject()
     val observer = new TestObserver()
@@ -49,6 +62,7 @@ class ObserverTest extends FunSuite {
     assertEquals(observer.lastResponse, null)
   }
 
+  /** Verifies that a Subject correctly iterates and notifies all its attached observers. */
   test("BaseSubject should be able to notify multiple observers at once") {
     val subject = new TestSubject()
     val observer1 = new TestObserver()
@@ -65,6 +79,7 @@ class ObserverTest extends FunSuite {
     assertEquals(observer2.lastResponse, "Broadcast Message")
   }
 
+  /** Verifies that detaching a single observer preserves the connection with the rest. */
   test("BaseSubject should detach a specific observer without affecting others") {
     val subject = new TestSubject()
     val observer1 = new TestObserver()
