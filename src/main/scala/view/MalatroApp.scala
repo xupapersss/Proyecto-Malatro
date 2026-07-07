@@ -118,6 +118,11 @@ object MalatroApp extends JFXApp3 {
       style = "-fx-font-size: 20px; -fx-font-weight: bold;"
     }
 
+    val actionBox = new HBox {
+      spacing = 20
+      alignment = Pos.Center
+    }
+
     def updateUI(): Unit = {
       selectedIndexes.clear()
 
@@ -139,17 +144,17 @@ object MalatroApp extends JFXApp3 {
         })
         handBox.children += cardNode
       }
-    }
 
-    val playButton = new Button("Play Selected") {
-      style = "-fx-font-size: 16px;"
-      onAction = _ => {
-        if (selectedIndexes.nonEmpty) {
-          val indexesToPlay = selectedIndexes.toSeq.sorted(Ordering[Int].reverse).to(scala.collection.mutable.ArrayBuffer)
-          gameController.playCards(indexesToPlay)
-          gameController.evaluateScore()
-          updateUI()
-        }
+      if (gameController.isWin) {
+        statusText.text = s"¡VICTORIA! Alcanzaste ${gameController.currentScore} puntos."
+        statusText.fill = Color.Yellow
+        handBox.children.clear()
+        actionBox.visible = false
+      } else if (gameController.isGameOver) {
+        statusText.text = s"GAME OVER. Te quedaste sin jugadas.\nPuntaje final: ${gameController.currentScore}"
+        statusText.fill = Color.Red
+        handBox.children.clear()
+        actionBox.visible = false
       }
     }
 
@@ -164,11 +169,19 @@ object MalatroApp extends JFXApp3 {
       }
     }
 
-    val actionBox = new HBox {
-      spacing = 20
-      alignment = Pos.Center
-      children = List(playButton, discardButton)
+    val playButton = new Button("Play Selected") {
+      style = "-fx-font-size: 16px;"
+      onAction = _ => {
+        if (selectedIndexes.nonEmpty) {
+          val indexesToPlay = selectedIndexes.toSeq.sorted(Ordering[Int].reverse).to(scala.collection.mutable.ArrayBuffer)
+          gameController.playCards(indexesToPlay)
+          gameController.evaluateScore()
+          updateUI()
+        }
+      }
     }
+
+    actionBox.children = List(playButton, discardButton)
 
     val mainLayout = new VBox {
       spacing = 50
