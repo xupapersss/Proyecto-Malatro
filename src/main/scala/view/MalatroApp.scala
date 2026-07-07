@@ -18,41 +18,44 @@ import scalafx.scene.text.Text
 
 object MalatroApp extends JFXApp3 {
 
-  def createCardView(card: Card): StackPane = {
-
+  def createCardView(card: Card, index: Int, onClick: (Int, StackPane) => Unit): StackPane = {
     val rankStr = card.rank match {
-      case _: Ace   => "Ace"
-      case _: Two   => "2"
+      case _: Ace => "Ace";
+      case _: Two => "2";
       case _: Three => "3"
-      case _: Four  => "4"
-      case _: Five  => "5"
-      case _: Six   => "6"
-      case _: Seven => "7"
-      case _: Eight => "8"
-      case _: Nine  => "9"
-      case _: Ten   => "10"
-      case _: Jack  => "Jack"
+      case _: Four => "4";
+      case _: Five => "5";
+      case _: Six => "6"
+      case _: Seven => "7";
+      case _: Eight => "8";
+      case _: Nine => "9"
+      case _: Ten => "10";
+      case _: Jack => "Jack";
       case _: Queen => "Queen"
-      case _: King  => "King"
-      case _        => card.rank.getRankName
+      case _: King => "King";
+      case _ => card.rank.getRankName
     }
-
     val fileName = s"${rankStr}_of_${card.suit.label}.png"
     val imagePath = getClass.getResource(s"/cards/$fileName")
 
     val imageView = if (imagePath != null) {
       new ImageView(new Image(imagePath.toString)) {
-        fitWidth = 100
+        fitWidth = 80
         preserveRatio = true
       }
     } else {
-      println(s"⚠️ Error: Image not found in /cards/$fileName")
       new ImageView()
     }
 
-    new StackPane {
+    val cardPane = new StackPane {
       children = List(imageView)
     }
+
+    cardPane.onMouseClicked = _ => {
+      onClick(index, cardPane)
+    }
+
+    cardPane
   }
 
   override def start(): Unit = {
@@ -102,19 +105,83 @@ object MalatroApp extends JFXApp3 {
     gameController.targetScore = selectedScore
     gameController.initialGame()
 
-    println(s"Starting game with Target Score: $selectedScore")
+    var selectedIndexes = scala.collection.mutable.Set[Int]()
 
     val handBox = new HBox {
       spacing = 10
       padding = Insets(20)
       alignment = Pos.Center
-      children = gameController.hand.cards.map(card => createCardView(card))
-      translateY = 300
     }
+
+    val statusText = new Text {
+      fill = Color.White
+      style = "-fx-font-size: 20px; -fx-font-weight: bold;"
+    }
+
+    def updateUI(): Unit = {
+      selectedIndexes.clear()
+
+      statusText.text =
+        s"Target: $selectedScore | Score: ${gameController.currentScore}\n" +
+          s"Plays: ${gameController.hand.getPlayCount}/3 | Discards: ${gameController.hand.getDiscardCount}/3"
+
+      handBox.children.clear()
+      val cards = gameController.hand.cards
+      for (i <- cards.indices) {
+        val cardNode = createCardView(cards(i), i, (clickedIndex, pane) => {
+          if (selectedIndexes.contains(clickedIndex)) {
+            selectedIndexes -= clickedIndex
+            pane.translateY = 0
+          } else if (selectedIndexes.size < 5) {
+            selectedIndexes += clickedIndex
+            pane.translateY = -20
+          }
+        })
+        handBox.children += cardNode
+      }
+    }
+
+    val playButton = new Button("Play Selected") {
+      style = "-fx-font-size: 16px;"
+      onAction = _ => {
+        if (selectedIndexes.nonEmpty) {
+          val indexesToPlay = selectedIndexes.toSeq.sorted(Ordering[Int].reverse).to(scala.collection.mutable.ArrayBuffer)
+          gameController.playCards(indexesToPlay)
+          gameController.evaluateScore()
+          updateUI()
+        }
+      }
+    }
+
+    val discardButton = new Button("Discard Selected") {
+      style = "-fx-font-size: 16px;"
+      onAction = _ => {
+        if (selectedIndexes.nonEmpty) {
+          val indexesToDiscard = selectedIndexes.toSeq.sorted(Ordering[Int].reverse).to(scala.collection.mutable.ArrayBuffer)
+          gameController.discardCards(indexesToDiscard)
+          updateUI()
+        }
+      }
+    }
+
+    val actionBox = new HBox {
+      spacing = 20
+      alignment = Pos.Center
+      children = List(playButton, discardButton)
+    }
+
+    val mainLayout = new VBox {
+      spacing = 50
+      alignment = Pos.Center
+      translateY = 150
+      children = List(statusText, handBox, actionBox)
+    }
+
+    updateUI()
 
     new Scene(1000, 700) {
       fill = Color.Gray
-      content = List(handBox)
+      content = List(mainLayout)
     }
   }
 }
