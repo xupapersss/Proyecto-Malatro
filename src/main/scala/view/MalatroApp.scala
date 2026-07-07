@@ -4,14 +4,16 @@ package view
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
-import scalafx.scene.layout.{HBox, StackPane}
+import scalafx.scene.layout.{HBox, StackPane, VBox}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import rank.*
 import suit.*
 
 import cl.uchile.dcc.controller.Controller
-import scalafx.geometry.Insets
+import scalafx.geometry.{Insets, Pos}
+import scalafx.scene.control.Button
+import scalafx.scene.text.Text
 
 
 object MalatroApp extends JFXApp3 {
@@ -54,29 +56,65 @@ object MalatroApp extends JFXApp3 {
   }
 
   override def start(): Unit = {
+    val menuBox = new VBox {
+      spacing = 20
+      alignment = Pos.Center
 
-    val gameController = new Controller()
-    gameController.targetScore = 5000
-    gameController.initialGame()
+      val title = new Text("Select difficulty:") {
+        fill = Color.White
+        style = "-fx-font-size: 24px; -fx-font-weight: bold;"
+      }
 
-    val handBox = new HBox {
-      spacing = 10
-      padding = Insets(20)
+      val btnEasy = new Button("Easy (300)") {
+        style = "-fx-font-size: 18px; -fx-min-width: 200px;"
+        onAction = _ => stage.scene = createGameScene(300)
+      }
 
-      val cardViews = gameController.hand.cards.map(card => createCardView(card))
-      children = cardViews
+      val btnMedium = new Button("Medium (1000)") {
+        style = "-fx-font-size: 18px; -fx-min-width: 200px;"
+        onAction = _ => stage.scene = createGameScene(1000)
+      }
 
-      translateY = 300
+      val btnHard = new Button("Hard (5000)") {
+        style = "-fx-font-size: 18px; -fx-min-width: 200px;"
+        onAction = _ => stage.scene = createGameScene(5000)
+      }
+
+      children = List(title, btnEasy, btnMedium, btnHard)
+
+      translateX = 380
+      translateY = 250
+    }
+
+    val menuScene = new Scene(1000, 700) {
+      fill = Color.Grey
+      content = List(menuBox)
     }
 
     stage = new JFXApp3.PrimaryStage {
       title = "Malatro"
-      width = 1000
-      height = 700
-      scene = new Scene {
-        fill = Color.Gray
-        content = List(handBox)
-      }
+      scene = menuScene
+    }
+  }
+
+  def createGameScene(selectedScore: Int): Scene = {
+    val gameController = new Controller()
+    gameController.targetScore = selectedScore
+    gameController.initialGame()
+
+    println(s"Starting game with Target Score: $selectedScore")
+
+    val handBox = new HBox {
+      spacing = 10
+      padding = Insets(20)
+      alignment = Pos.Center
+      children = gameController.hand.cards.map(card => createCardView(card))
+      translateY = 300
+    }
+
+    new Scene(1000, 700) {
+      fill = Color.Gray
+      content = List(handBox)
     }
   }
 }
