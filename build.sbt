@@ -15,3 +15,5 @@ lazy val root = (project in file("."))
   )
 
 libraryDependencies += "org.scalameta" %% "munit" % "1.2.4" % Test
+
+libraryDependencies += "org.scalafx" %% "scalafx" % "26.0.0-R38"
