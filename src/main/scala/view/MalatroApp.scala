@@ -1,39 +1,27 @@
 package cl.uchile.dcc
 package view
 
-import scalafx.scene.image.{Image, ImageView}
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
 import scalafx.scene.layout.{HBox, StackPane, VBox}
 import scalafx.scene.paint.Color
-import scalafx.scene.shape.Rectangle
-import rank.*
-import suit.*
-
-import cl.uchile.dcc.controller.Controller
+import scalafx.scene.image.{Image, ImageView}
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Button
 import scalafx.scene.text.Text
-
+import rank.*
+import jokers.*
+import cl.uchile.dcc.controller.Controller
 
 object MalatroApp extends JFXApp3 {
 
   def createCardView(card: Card, index: Int, onClick: (Int, StackPane) => Unit): StackPane = {
     val rankStr = card.rank match {
-      case _: Ace => "Ace";
-      case _: Two => "2";
-      case _: Three => "3"
-      case _: Four => "4";
-      case _: Five => "5";
-      case _: Six => "6"
-      case _: Seven => "7";
-      case _: Eight => "8";
-      case _: Nine => "9"
-      case _: Ten => "10";
-      case _: Jack => "Jack";
-      case _: Queen => "Queen"
-      case _: King => "King";
-      case _ => card.rank.getRankName
+      case _: Ace => "Ace"; case _: Two => "2"; case _: Three => "3"
+      case _: Four => "4"; case _: Five => "5"; case _: Six => "6"
+      case _: Seven => "7"; case _: Eight => "8"; case _: Nine => "9"
+      case _: Ten => "10"; case _: Jack => "Jack"; case _: Queen => "Queen"
+      case _: King => "King"; case _ => card.rank.getRankName
     }
     val fileName = s"${rankStr}_of_${card.suit.label}.png"
     val imagePath = getClass.getResource(s"/cards/$fileName")
@@ -47,56 +35,44 @@ object MalatroApp extends JFXApp3 {
       new ImageView()
     }
 
-    val cardPane = new StackPane {
-      children = List(imageView)
-    }
-
-    cardPane.onMouseClicked = _ => {
-      onClick(index, cardPane)
-    }
-
+    val cardPane = new StackPane { children = List(imageView) }
+    cardPane.onMouseClicked = _ => onClick(index, cardPane)
     cardPane
   }
 
   override def start(): Unit = {
-    val menuBox = new VBox {
-      spacing = 20
-      alignment = Pos.Center
-
-      val title = new Text("Select difficulty:") {
-        fill = Color.White
-        style = "-fx-font-size: 24px; -fx-font-weight: bold;"
-      }
-
-      val btnEasy = new Button("Easy (300)") {
-        style = "-fx-font-size: 18px; -fx-min-width: 200px;"
-        onAction = _ => stage.scene = createGameScene(300)
-      }
-
-      val btnMedium = new Button("Medium (1000)") {
-        style = "-fx-font-size: 18px; -fx-min-width: 200px;"
-        onAction = _ => stage.scene = createGameScene(1000)
-      }
-
-      val btnHard = new Button("Hard (5000)") {
-        style = "-fx-font-size: 18px; -fx-min-width: 200px;"
-        onAction = _ => stage.scene = createGameScene(5000)
-      }
-
-      children = List(title, btnEasy, btnMedium, btnHard)
-
-      translateX = 380
-      translateY = 250
+    val menuTitle = new Text("Select difficulty:") {
+      fill = Color.White
+      style = "-fx-font-size: 24px; -fx-font-weight: bold;"
     }
 
-    val menuScene = new Scene(1000, 700) {
-      fill = Color.Grey
-      content = List(menuBox)
+    val btnEasy = new Button("Easy (300)") {
+      style = "-fx-font-size: 18px; -fx-min-width: 200px;"
+      onAction = _ => stage.scene = createGameScene(300)
+    }
+    val btnMedium = new Button("Medium (1000)") {
+      style = "-fx-font-size: 18px; -fx-min-width: 200px;"
+      onAction = _ => stage.scene = createGameScene(1000)
+    }
+    val btnHard = new Button("Hard (5000)") {
+      style = "-fx-font-size: 18px; -fx-min-width: 200px;"
+      onAction = _ => stage.scene = createGameScene(5000)
+    }
+
+    val menuBox = new VBox {
+      spacing = 30
+      alignment = Pos.Center
+      children = List(menuTitle, btnEasy, btnMedium, btnHard)
+      translateX = 380
+      translateY = 200
     }
 
     stage = new JFXApp3.PrimaryStage {
       title = "Malatro"
-      scene = menuScene
+      scene = new Scene(1000, 700) {
+        fill = Color.Grey
+        content = List(menuBox)
+      }
     }
   }
 
@@ -106,22 +82,57 @@ object MalatroApp extends JFXApp3 {
     gameController.initialGame()
 
     var selectedIndexes = scala.collection.mutable.Set[Int]()
+    val selectedJokers = scala.collection.mutable.Set[String]()
 
-    val handBox = new HBox {
-      spacing = 10
-      padding = Insets(20)
-      alignment = Pos.Center
-    }
+    val topBox = new HBox { spacing = 50; alignment = Pos.Center }
+    val handBox = new HBox { spacing = 10; padding = Insets(20); alignment = Pos.Center }
+    val jokerSelectionBox = new HBox { spacing = 15; alignment = Pos.Center; padding = Insets(10) }
+    val actionBox = new HBox { spacing = 20; alignment = Pos.Center }
 
     val statusText = new Text {
       fill = Color.White
       style = "-fx-font-size: 20px; -fx-font-weight: bold;"
     }
+    topBox.children = List(statusText)
 
-    val actionBox = new HBox {
-      spacing = 20
-      alignment = Pos.Center
+    val jokerFiles = Map(
+      "Devious" -> "Devious_Joker.png",
+      "Even Steven" -> "Even_Steven.png",
+      "Greedy" -> "Greedy_Joker.png",
+      "Scary Face" -> "Scary_Face.png"
+    )
+
+    def createJokerButton(jokerId: String, fileName: String): VBox = {
+      val path = getClass.getResource(s"/jokers/$fileName")
+      val imgView = if (path != null) {
+        new ImageView(new Image(path.toString)) {
+          fitWidth = 60; preserveRatio = true
+        }
+      } else {
+        println(s"⚠️ Error: No se encontró la imagen en /Joker/$fileName")
+        new ImageView()
+      }
+
+      val container = new VBox {
+        alignment = Pos.Center
+        spacing = 5
+        opacity = 0.4
+        children = List(imgView, new Text(jokerId) { fill = Color.White })
+      }
+
+      container.onMouseClicked = _ => {
+        if (selectedJokers.contains(jokerId)) {
+          selectedJokers -= jokerId
+          container.opacity = 0.4
+        } else if (selectedJokers.size < 2) {
+          selectedJokers += jokerId
+          container.opacity = 1.0
+        }
+      }
+      container
     }
+
+    jokerSelectionBox.children = jokerFiles.map { case (name, file) => createJokerButton(name, file) }.toList
 
     def updateUI(): Unit = {
       selectedIndexes.clear()
@@ -149,11 +160,13 @@ object MalatroApp extends JFXApp3 {
         statusText.text = s"¡VICTORIA! Alcanzaste ${gameController.currentScore} puntos."
         statusText.fill = Color.Yellow
         handBox.children.clear()
+        jokerSelectionBox.visible = false
         actionBox.visible = false
       } else if (gameController.isGameOver) {
         statusText.text = s"GAME OVER. Te quedaste sin jugadas.\nPuntaje final: ${gameController.currentScore}"
         statusText.fill = Color.Red
         handBox.children.clear()
+        jokerSelectionBox.visible = false
         actionBox.visible = false
       }
     }
@@ -173,9 +186,21 @@ object MalatroApp extends JFXApp3 {
       style = "-fx-font-size: 16px;"
       onAction = _ => {
         if (selectedIndexes.nonEmpty) {
+
+          gameController.hand.getHandJokers.clear()
+
+          val jokersToAdd = scala.collection.mutable.ArrayBuffer[Joker]()
+          if (selectedJokers.contains("Devious")) jokersToAdd += new DeviousJoker()
+          if (selectedJokers.contains("Even Steven")) jokersToAdd += new EvenSteven()
+          if (selectedJokers.contains("Greedy")) jokersToAdd += new GreedyJoker()
+          if (selectedJokers.contains("Scary Face")) jokersToAdd += new ScaryFace()
+
+          gameController.hand.addJokers(jokersToAdd)
+
           val indexesToPlay = selectedIndexes.toSeq.sorted(Ordering[Int].reverse).to(scala.collection.mutable.ArrayBuffer)
           gameController.playCards(indexesToPlay)
           gameController.evaluateScore()
+
           updateUI()
         }
       }
@@ -184,10 +209,10 @@ object MalatroApp extends JFXApp3 {
     actionBox.children = List(playButton, discardButton)
 
     val mainLayout = new VBox {
-      spacing = 50
+      spacing = 30
       alignment = Pos.Center
-      translateY = 150
-      children = List(statusText, handBox, actionBox)
+      translateY = 50
+      children = List(topBox, jokerSelectionBox, handBox, actionBox)
     }
 
     updateUI()
