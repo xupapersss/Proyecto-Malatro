@@ -201,6 +201,32 @@ object MalatroApp extends JFXApp3 {
       children = List(currentHandText)
     }
 
+    val winGif = new ImageView()
+    val winPath = getClass.getResource("/images/hog-exploding.gif")
+    if (winPath != null) winGif.image = new Image(winPath.toString)
+    winGif.fitWidth = 250;
+    winGif.preserveRatio = true
+
+    val loseGif1 = new ImageView()
+    val losePath1 = getClass.getResource("/images/Pancho_Melo_Llorando_y_rompiendo_todo.gif")
+    if (losePath1 != null) loseGif1.image = new Image(losePath1.toString)
+    loseGif1.fitWidth = 300;
+    loseGif1.preserveRatio = true
+
+    val loseGif2 = new ImageView()
+    val losePath2 = getClass.getResource("/images/monkey-confused.gif")
+    if (losePath2 != null) loseGif2.image = new Image(losePath2.toString)
+    loseGif2.fitWidth = 250;
+    loseGif2.preserveRatio = true
+
+    val endGameMediaBox = new HBox {
+      spacing = 30
+      alignment = Pos.Center
+      visible = false
+      managed = false
+    }
+
+
     val jokerFiles = Map(
       "Devious" -> "Devious_Joker.png",
       "Even Steven" -> "Even_Steven.png",
@@ -255,6 +281,16 @@ object MalatroApp extends JFXApp3 {
       }
     }
 
+    val returnButton = new Button("Return to Main Menu") {
+      style = "-fx-font-size: 18px; -fx-padding: 10px 20px;"
+      visible = false
+      managed = false
+      onAction = _ => {
+        setBackgroundVideo("balatrofondo.mp4")
+        contentPane.children = List(createTitleView())
+      }
+    }
+
     def updateUI(): Unit = {
       selectedIndexes.clear()
 
@@ -284,20 +320,46 @@ object MalatroApp extends JFXApp3 {
         statusText.text = s"¡YOU WIN! You reached ${gameController.currentScore} points."
         statusText.fill = Color.Yellow
         handBox.children.clear()
-        jokerSelectionBox.visible = false
-        actionBox.visible = false
-        selectionInfoBox.visible = false
-        sortBox.visible = false
+
+        jokerSelectionBox.visible = false;
+        jokerSelectionBox.managed = false
+        actionBox.visible = false;
+        actionBox.managed = false
+        selectionInfoBox.visible = false;
+        selectionInfoBox.managed = false
+        sortBox.visible = false;
+        sortBox.managed = false
+        handBox.managed = false
+
+        endGameMediaBox.children = List(winGif)
+        endGameMediaBox.visible = true;
+        endGameMediaBox.managed = true
+        returnButton.visible = true;
+        returnButton.managed = true
+
       } else if (gameController.isGameOver) {
         statusText.text = s"GAME OVER. You are out of plays.\nFinal score: ${gameController.currentScore}"
         statusText.fill = Color.Red
         handBox.children.clear()
-        jokerSelectionBox.visible = false
-        actionBox.visible = false
-        selectionInfoBox.visible = false
-        sortBox.visible = false
+
+        jokerSelectionBox.visible = false;
+        jokerSelectionBox.managed = false
+        actionBox.visible = false;
+        actionBox.managed = false
+        selectionInfoBox.visible = false;
+        selectionInfoBox.managed = false
+        sortBox.visible = false;
+        sortBox.managed = false
+        handBox.managed = false
+
+        endGameMediaBox.children = List(loseGif1, loseGif2)
+        endGameMediaBox.visible = true;
+        endGameMediaBox.managed = true
+        returnButton.visible = true;
+        returnButton.managed = true
       }
     }
+
 
     val sortRankButton = new Button("Sort by Rank") {
       style = "-fx-font-size: 14px;"
@@ -362,7 +424,7 @@ object MalatroApp extends JFXApp3 {
     val mainLayout = new VBox {
       spacing = 30
       alignment = Pos.Center
-      children = List(topBox, jokerSelectionBox, handBox, sortBox, selectionInfoBox, actionBox)
+      children = List(topBox, jokerSelectionBox, handBox, sortBox, selectionInfoBox, actionBox, endGameMediaBox, returnButton)
     }
 
     updateUI()
