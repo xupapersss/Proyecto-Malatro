@@ -43,8 +43,53 @@ object MalatroApp extends JFXApp3 {
   }
 
   override def start(): Unit = {
+    val titleText = new Text("MALATRO") {
+      fill = Color.Black
+      style = "-fx-font-size: 100px; -fx-font-weight: bold; -fx-font-family: monospace;"
+    }
+
+    val promptText = new Text("Click anywhere to start") {
+      fill = Color.Yellow
+      style = "-fx-font-size: 24px;"
+    }
+
+    val gifPath = getClass.getResource("/images/BALATROBALATRO.gif")
+    val gifView = if (gifPath != null) {
+      new ImageView(new Image(gifPath.toString)) {
+        fitWidth = 600 // Puedes cambiar este tamaño para hacerlo más grande o pequeño
+        preserveRatio = true
+      }
+    } else {
+      println("⚠️ Error: Couldn't found /images/BALATROBALATRO.gif")
+      new ImageView()
+    }
+
+    val textBox = new VBox {
+      spacing = 300
+      alignment = Pos.Center
+      children = List(titleText, promptText)
+    }
+
+    val titleScene = new Scene(1000, 700) {
+      fill = Color.DarkSlateGray
+      root = new StackPane {
+        children = List(gifView, textBox)
+      }
+    }
+
+    titleScene.onMouseClicked = _ => {
+      stage.scene = createDifficultyScene()
+    }
+
+    stage = new JFXApp3.PrimaryStage {
+      title = "Malatro"
+      scene = titleScene
+    }
+  }
+
+  private def createDifficultyScene(): Scene = {
     val menuTitle = new Text("Select difficulty:") {
-      fill = Color.White
+      fill = Color.Gray
       style = "-fx-font-size: 24px; -fx-font-weight: bold;"
     }
 
@@ -65,15 +110,12 @@ object MalatroApp extends JFXApp3 {
       spacing = 30
       alignment = Pos.Center
       children = List(menuTitle, btnEasy, btnMedium, btnHard)
-      translateX = 380
-      translateY = 200
     }
 
-    stage = new JFXApp3.PrimaryStage {
-      title = "Malatro"
-      scene = new Scene(1000, 700) {
-        fill = Color.Grey
-        content = List(menuBox)
+    new Scene(1000, 700) {
+      fill = Color.Grey
+      root = new StackPane {
+        children = menuBox
       }
     }
   }
@@ -89,6 +131,7 @@ object MalatroApp extends JFXApp3 {
     val topBox = new HBox { spacing = 50; alignment = Pos.Center }
     val handBox = new HBox { spacing = 10; padding = Insets(20); alignment = Pos.Center }
     val jokerSelectionBox = new HBox { spacing = 15; alignment = Pos.Center; padding = Insets(10) }
+    val sortBox = new HBox { spacing = 15; alignment = Pos.Center }
     val actionBox = new HBox { spacing = 20; alignment = Pos.Center }
 
     val statusText = new Text {
@@ -108,8 +151,6 @@ object MalatroApp extends JFXApp3 {
       children = List(currentHandText)
     }
 
-
-
     val jokerFiles = Map(
       "Devious" -> "Devious_Joker.png",
       "Even Steven" -> "Even_Steven.png",
@@ -124,7 +165,7 @@ object MalatroApp extends JFXApp3 {
           fitWidth = 60; preserveRatio = true
         }
       } else {
-        println(s"⚠️ Error: No se encontró la imagen en /Joker/$fileName")
+        println(s"⚠️ Error: No se encontró la imagen en /jokers/$fileName")
         new ImageView()
       }
 
@@ -164,8 +205,6 @@ object MalatroApp extends JFXApp3 {
       }
     }
 
-
-
     def updateUI(): Unit = {
       selectedIndexes.clear()
 
@@ -198,12 +237,16 @@ object MalatroApp extends JFXApp3 {
         handBox.children.clear()
         jokerSelectionBox.visible = false
         actionBox.visible = false
+        selectionInfoBox.visible = false
+        sortBox.visible = false
       } else if (gameController.isGameOver) {
         statusText.text = s"GAME OVER. Te quedaste sin jugadas.\nPuntaje final: ${gameController.currentScore}"
         statusText.fill = Color.Red
         handBox.children.clear()
         jokerSelectionBox.visible = false
         actionBox.visible = false
+        selectionInfoBox.visible = false
+        sortBox.visible = false
       }
     }
 
@@ -231,11 +274,7 @@ object MalatroApp extends JFXApp3 {
       }
     }
 
-    val sortBox = new HBox {
-      spacing = 15
-      alignment = Pos.Center
-      children = List(sortRankButton, sortSuitButton)
-    }
+    sortBox.children = List(sortRankButton, sortSuitButton)
 
     val discardButton = new Button("Discard") {
       style = "-fx-font-size: 16px;"
@@ -252,7 +291,6 @@ object MalatroApp extends JFXApp3 {
       style = "-fx-font-size: 16px;"
       onAction = _ => {
         if (selectedIndexes.nonEmpty) {
-
           gameController.hand.getHandJokers.clear()
 
           val jokersToAdd = scala.collection.mutable.ArrayBuffer[Joker]()
@@ -277,7 +315,6 @@ object MalatroApp extends JFXApp3 {
     val mainLayout = new VBox {
       spacing = 30
       alignment = Pos.Center
-      translateY = 50
       children = List(topBox, jokerSelectionBox, handBox, sortBox, selectionInfoBox, actionBox)
     }
 
@@ -285,7 +322,9 @@ object MalatroApp extends JFXApp3 {
 
     new Scene(1000, 700) {
       fill = Color.Gray
-      content = List(mainLayout)
+      root = new StackPane {
+        children = mainLayout
+      }
     }
   }
 }
