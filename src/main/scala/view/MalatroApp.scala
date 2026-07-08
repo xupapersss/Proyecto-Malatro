@@ -9,6 +9,7 @@ import scalafx.scene.image.{Image, ImageView}
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Button
 import scalafx.scene.text.Text
+import scalafx.scene.media.{Media, MediaPlayer, MediaView}
 import rank.*
 import jokers.*
 import cl.uchile.dcc.controller.Controller
@@ -16,6 +17,45 @@ import pokerhands.*
 import scala.collection.mutable.ArrayBuffer
 
 object MalatroApp extends JFXApp3 {
+
+  private var backgroundPlayer: MediaPlayer = _
+
+  private val bgPane = new StackPane()
+  private val contentPane = new StackPane()
+
+  private val mainRoot = new StackPane {
+    children = List(bgPane, contentPane)
+  }
+
+  private def setBackgroundVideo(fileName: String): Unit = {
+    if (backgroundPlayer != null) {
+      backgroundPlayer.stop()
+      backgroundPlayer.dispose()
+    }
+
+    val videoUrl = getClass.getResource(s"/images/$fileName")
+    if (videoUrl != null) {
+      val media = new Media(videoUrl.toExternalForm)
+      backgroundPlayer = new MediaPlayer(media)
+      backgroundPlayer.cycleCount = MediaPlayer.Indefinite
+      backgroundPlayer.play()
+
+      val bgView = new MediaView(backgroundPlayer) {
+        preserveRatio = false
+        mouseTransparent = true
+      }
+
+      bgView.fitWidth.bind(mainRoot.width)
+      bgView.fitHeight.bind(mainRoot.height)
+
+      bgPane.children = List(bgView)
+    } else {
+      println(s"⚠️ Error: No se encontró el video en /images/$fileName")
+      bgPane.children.clear()
+    }
+  }
+
+
 
   private def createCardView(card: Card, index: Int, onClick: (Int, StackPane) => Unit): StackPane = {
     val rankStr = card.rank match {
@@ -43,6 +83,21 @@ object MalatroApp extends JFXApp3 {
   }
 
   override def start(): Unit = {
+    stage = new JFXApp3.PrimaryStage {
+      title = "Malatro"
+      scene = new Scene(1000, 700) {
+        fill = Color.DarkSlateGray
+        root = mainRoot
+      }
+    }
+
+    setBackgroundVideo("balatrofondo.mp4")
+
+    contentPane.children = List(createTitleView())
+  }
+
+
+  private def createTitleView(): StackPane = {
     val titleText = new Text("MALATRO") {
       fill = Color.Black
       style = "-fx-font-size: 100px; -fx-font-weight: bold; -fx-font-family: monospace;"
@@ -56,8 +111,9 @@ object MalatroApp extends JFXApp3 {
     val gifPath = getClass.getResource("/images/BALATROBALATRO.gif")
     val gifView = if (gifPath != null) {
       new ImageView(new Image(gifPath.toString)) {
-        fitWidth = 600 // Puedes cambiar este tamaño para hacerlo más grande o pequeño
+        fitWidth = 600
         preserveRatio = true
+        mouseTransparent = true
       }
     } else {
       println("⚠️ Error: Couldn't found /images/BALATROBALATRO.gif")
@@ -67,43 +123,38 @@ object MalatroApp extends JFXApp3 {
     val textBox = new VBox {
       spacing = 300
       alignment = Pos.Center
+      mouseTransparent = true
       children = List(titleText, promptText)
     }
 
-    val titleScene = new Scene(1000, 700) {
-      fill = Color.DarkSlateGray
-      root = new StackPane {
-        children = List(gifView, textBox)
-      }
+    val titleContainer = new StackPane {
+      children = List(gifView, textBox)
     }
 
-    titleScene.onMouseClicked = _ => {
-      stage.scene = createDifficultyScene()
+    titleContainer.onMouseClicked = _ => {
+      contentPane.children = List(createDifficultyView())
     }
 
-    stage = new JFXApp3.PrimaryStage {
-      title = "Malatro"
-      scene = titleScene
-    }
+    titleContainer
   }
 
-  private def createDifficultyScene(): Scene = {
+  private def createDifficultyView(): StackPane = {
     val menuTitle = new Text("Select difficulty:") {
-      fill = Color.Gray
+      fill = Color.White
       style = "-fx-font-size: 24px; -fx-font-weight: bold;"
     }
 
     val btnEasy = new Button("Easy (300)") {
       style = "-fx-font-size: 18px; -fx-min-width: 200px;"
-      onAction = _ => stage.scene = createGameScene(300)
+      onAction = _ => contentPane.children = List(createGameView(300))
     }
     val btnMedium = new Button("Medium (1000)") {
       style = "-fx-font-size: 18px; -fx-min-width: 200px;"
-      onAction = _ => stage.scene = createGameScene(1000)
+      onAction = _ => contentPane.children = List(createGameView(1000))
     }
     val btnHard = new Button("Hard (5000)") {
       style = "-fx-font-size: 18px; -fx-min-width: 200px;"
-      onAction = _ => stage.scene = createGameScene(5000)
+      onAction = _ => contentPane.children = List(createGameView(5000))
     }
 
     val menuBox = new VBox {
@@ -112,15 +163,14 @@ object MalatroApp extends JFXApp3 {
       children = List(menuTitle, btnEasy, btnMedium, btnHard)
     }
 
-    new Scene(1000, 700) {
-      fill = Color.Grey
-      root = new StackPane {
-        children = menuBox
-      }
+    new StackPane {
+      children = List(menuBox)
     }
   }
 
-  private def createGameScene(selectedScore: Int): Scene = {
+  private def createGameView(selectedScore: Int): StackPane = {
+    setBackgroundVideo("Gameplayfondo.mp4")
+
     val gameController = new Controller()
     gameController.targetScore = selectedScore
     gameController.initialGame()
@@ -165,7 +215,7 @@ object MalatroApp extends JFXApp3 {
           fitWidth = 60; preserveRatio = true
         }
       } else {
-        println(s"⚠️ Error: No se encontró la imagen en /jokers/$fileName")
+        println(s"⚠️ Error: Couldn't found the image in /jokers/$fileName")
         new ImageView()
       }
 
@@ -223,7 +273,6 @@ object MalatroApp extends JFXApp3 {
             selectedIndexes += clickedIndex
             pane.translateY = -20
           }
-
           updateSelectedHandText()
         })
         handBox.children += cardNode
@@ -232,7 +281,7 @@ object MalatroApp extends JFXApp3 {
       updateSelectedHandText()
 
       if (gameController.isWin) {
-        statusText.text = s"¡VICTORIA! Alcanzaste ${gameController.currentScore} puntos."
+        statusText.text = s"¡YOU WIN! You reached ${gameController.currentScore} points."
         statusText.fill = Color.Yellow
         handBox.children.clear()
         jokerSelectionBox.visible = false
@@ -240,7 +289,7 @@ object MalatroApp extends JFXApp3 {
         selectionInfoBox.visible = false
         sortBox.visible = false
       } else if (gameController.isGameOver) {
-        statusText.text = s"GAME OVER. Te quedaste sin jugadas.\nPuntaje final: ${gameController.currentScore}"
+        statusText.text = s"GAME OVER. You are out of plays.\nFinal score: ${gameController.currentScore}"
         statusText.fill = Color.Red
         handBox.children.clear()
         jokerSelectionBox.visible = false
@@ -268,7 +317,6 @@ object MalatroApp extends JFXApp3 {
           case "diamonds" => 4
           case _ => 5
         }
-
         gameController.hand.getHandCards.sortInPlaceBy(card => suitToNumber(card.suit.label))
         updateUI()
       }
@@ -304,7 +352,6 @@ object MalatroApp extends JFXApp3 {
           val indexesToPlay = selectedIndexes.toSeq.sorted(Ordering[Int].reverse).to(scala.collection.mutable.ArrayBuffer)
           gameController.playCards(indexesToPlay)
           gameController.evaluateScore()
-
           updateUI()
         }
       }
@@ -320,11 +367,8 @@ object MalatroApp extends JFXApp3 {
 
     updateUI()
 
-    new Scene(1000, 700) {
-      fill = Color.Gray
-      root = new StackPane {
-        children = mainLayout
-      }
+    new StackPane {
+      children = List(mainLayout)
     }
   }
 }
