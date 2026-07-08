@@ -57,4 +57,6 @@ class Flush extends PokerHand {
   override def applyScore(score: Score, j: Joker): Score = {
     j.flushScore(score, this)
   }
+
+  override def pokerHandName: String = "Flush"
 }

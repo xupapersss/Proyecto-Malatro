@@ -63,4 +63,6 @@ class Pair extends RankBasedHand {
 
     pairCards
   }
+
+  override def pokerHandName: String = "Pair"
 }

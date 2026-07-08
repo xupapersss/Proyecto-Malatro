@@ -52,4 +52,6 @@ class StraightFlush extends PokerHand {
   override def applyScore(score: Score, j: Joker): Score = {
     j.straightFlushScore(score, this)
   }
+
+  override def pokerHandName: String = "Straight Flush"
 }

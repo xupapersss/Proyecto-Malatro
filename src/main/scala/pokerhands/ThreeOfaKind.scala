@@ -63,4 +63,6 @@ class ThreeOfaKind extends RankBasedHand {
 
     trioCards
   }
+
+  override def pokerHandName: String = "Three Of a Kind"
 }

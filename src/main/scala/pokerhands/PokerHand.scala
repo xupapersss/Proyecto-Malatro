@@ -56,4 +56,6 @@ trait PokerHand{
   def scoringCards(playedCards: ArrayBuffer[Card]): ArrayBuffer[Card] = {
     playedCards
   }
+  
+  def pokerHandName: String
 }

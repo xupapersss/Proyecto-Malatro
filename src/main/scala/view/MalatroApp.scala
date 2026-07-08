@@ -12,10 +12,12 @@ import scalafx.scene.text.Text
 import rank.*
 import jokers.*
 import cl.uchile.dcc.controller.Controller
+import pokerhands.*
+import scala.collection.mutable.ArrayBuffer
 
 object MalatroApp extends JFXApp3 {
 
-  def createCardView(card: Card, index: Int, onClick: (Int, StackPane) => Unit): StackPane = {
+  private def createCardView(card: Card, index: Int, onClick: (Int, StackPane) => Unit): StackPane = {
     val rankStr = card.rank match {
       case _: Ace => "Ace"; case _: Two => "2"; case _: Three => "3"
       case _: Four => "4"; case _: Five => "5"; case _: Six => "6"
@@ -76,7 +78,7 @@ object MalatroApp extends JFXApp3 {
     }
   }
 
-  def createGameScene(selectedScore: Int): Scene = {
+  private def createGameScene(selectedScore: Int): Scene = {
     val gameController = new Controller()
     gameController.targetScore = selectedScore
     gameController.initialGame()
@@ -94,6 +96,19 @@ object MalatroApp extends JFXApp3 {
       style = "-fx-font-size: 20px; -fx-font-weight: bold;"
     }
     topBox.children = List(statusText)
+
+    val currentHandText = new Text("Selected Hand: None") {
+      fill = Color.Cyan
+      style = "-fx-font-size: 18px; -fx-font-weight: bold;"
+    }
+
+    val selectionInfoBox = new HBox {
+      spacing = 10
+      alignment = Pos.Center
+      children = List(currentHandText)
+    }
+
+
 
     val jokerFiles = Map(
       "Devious" -> "Devious_Joker.png",
@@ -134,6 +149,23 @@ object MalatroApp extends JFXApp3 {
 
     jokerSelectionBox.children = jokerFiles.map { case (name, file) => createJokerButton(name, file) }.toList
 
+    def updateSelectedHandText(): Unit = {
+      if (selectedIndexes.isEmpty) {
+        currentHandText.text = "Selected Hand: None"
+      } else {
+        val currentCards = gameController.hand.cards
+        val selectedCards = ArrayBuffer.from(
+          selectedIndexes.toList.map(index => currentCards(index))
+        )
+        val tempHand = new Hand(selectedCards, ArrayBuffer())
+        val bestPokerHand = HandPriority(tempHand).bestHand
+
+        currentHandText.text = s"Selected Hand: ${bestPokerHand.pokerHandName}"
+      }
+    }
+
+
+
     def updateUI(): Unit = {
       selectedIndexes.clear()
 
@@ -152,9 +184,13 @@ object MalatroApp extends JFXApp3 {
             selectedIndexes += clickedIndex
             pane.translateY = -20
           }
+
+          updateSelectedHandText()
         })
         handBox.children += cardNode
       }
+
+      updateSelectedHandText()
 
       if (gameController.isWin) {
         statusText.text = s"¡VICTORIA! Alcanzaste ${gameController.currentScore} puntos."
@@ -171,7 +207,37 @@ object MalatroApp extends JFXApp3 {
       }
     }
 
-    val discardButton = new Button("Discard Selected") {
+    val sortRankButton = new Button("Sort by Rank") {
+      style = "-fx-font-size: 14px;"
+      onAction = _ => {
+        gameController.hand.getHandCards.sortInPlaceBy(_.rank.value)
+        updateUI()
+      }
+    }
+
+    val sortSuitButton = new Button("Sort by Suit") {
+      style = "-fx-font-size: 14px;"
+      onAction = _ => {
+        def suitToNumber(label: String): Int = label.toLowerCase match {
+          case "spades" => 1
+          case "hearts" => 2
+          case "clubs" => 3
+          case "diamonds" => 4
+          case _ => 5
+        }
+
+        gameController.hand.getHandCards.sortInPlaceBy(card => suitToNumber(card.suit.label))
+        updateUI()
+      }
+    }
+
+    val sortBox = new HBox {
+      spacing = 15
+      alignment = Pos.Center
+      children = List(sortRankButton, sortSuitButton)
+    }
+
+    val discardButton = new Button("Discard") {
       style = "-fx-font-size: 16px;"
       onAction = _ => {
         if (selectedIndexes.nonEmpty) {
@@ -182,7 +248,7 @@ object MalatroApp extends JFXApp3 {
       }
     }
 
-    val playButton = new Button("Play Selected") {
+    val playButton = new Button("Play") {
       style = "-fx-font-size: 16px;"
       onAction = _ => {
         if (selectedIndexes.nonEmpty) {
@@ -212,7 +278,7 @@ object MalatroApp extends JFXApp3 {
       spacing = 30
       alignment = Pos.Center
       translateY = 50
-      children = List(topBox, jokerSelectionBox, handBox, actionBox)
+      children = List(topBox, jokerSelectionBox, handBox, sortBox, selectionInfoBox, actionBox)
     }
 
     updateUI()

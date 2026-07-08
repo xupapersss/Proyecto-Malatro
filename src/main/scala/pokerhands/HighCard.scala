@@ -57,4 +57,6 @@ class HighCard extends PokerHand {
 
     highestCard
   }
+
+  override def pokerHandName: String = "High Card"
 }

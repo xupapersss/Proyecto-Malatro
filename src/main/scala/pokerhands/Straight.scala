@@ -90,4 +90,6 @@ class Straight extends PokerHand {
   override def applyScore(score: Score, j: Joker): Score = {
     j.straightScore(score, this)
   }
+
+  override def pokerHandName: String = "Straight"
 }
