@@ -11,22 +11,37 @@ import scalafx.scene.control.Button
 import scalafx.scene.text.Text
 import scalafx.scene.media.{Media, MediaPlayer, MediaView}
 import rank.*
-import jokers.*
 import cl.uchile.dcc.controller.Controller
-import pokerhands.*
-import scala.collection.mutable.ArrayBuffer
 
+/**
+ * Main application object for the Malatro game using ScalaFX.
+ *
+ * Implements a layered "glass pane" architecture where the background video
+ * plays uninterrupted on a back layer while UI elements (menus, game board)
+ * are swapped dynamically on a front transparent layer.
+ */
 object MalatroApp extends JFXApp3 {
 
+  /** Global media player reference to prevent garbage collection during playback. */
   private var backgroundPlayer: MediaPlayer = _
 
+  /** Back layer dedicated exclusively to playing background media. */
   private val bgPane = new StackPane()
+
+  /** Front layer acting as a transparent canvas for all interactive UI elements. */
   private val contentPane = new StackPane()
 
+  /** The root layout containing both the background and content layers. */
   private val mainRoot = new StackPane {
     children = List(bgPane, contentPane)
   }
 
+  /**
+   * Safely transitions the background video to a new file.
+   * Stops and disposes of the current video to free up memory before loading the new one.
+   *
+   * @param fileName The name of the .mp4 file located in the /images/ directory.
+   */
   private def setBackgroundVideo(fileName: String): Unit = {
     if (backgroundPlayer != null) {
       backgroundPlayer.stop()
@@ -42,7 +57,7 @@ object MalatroApp extends JFXApp3 {
 
       val bgView = new MediaView(backgroundPlayer) {
         preserveRatio = false
-        mouseTransparent = true
+        mouseTransparent = true // Prevents the video from intercepting mouse clicks
       }
 
       bgView.fitWidth.bind(mainRoot.width)
@@ -50,13 +65,19 @@ object MalatroApp extends JFXApp3 {
 
       bgPane.children = List(bgView)
     } else {
-      println(s"⚠️ Error: No se encontró el video en /images/$fileName")
+      println(s"⚠️ Error: Could not find the video at /images/$fileName")
       bgPane.children.clear()
     }
   }
 
-
-
+  /**
+   * Creates a visual representation (ImageView) of a given playing card.
+   *
+   * @param card The Card object containing rank and suit data.
+   * @param index The position of the card in the hand array.
+   * @param onClick Callback function executed when the card is clicked.
+   * @return A StackPane containing the clickable card image.
+   */
   private def createCardView(card: Card, index: Int, onClick: (Int, StackPane) => Unit): StackPane = {
     val rankStr = card.rank match {
       case _: Ace => "Ace"; case _: Two => "2"; case _: Three => "3"
@@ -82,6 +103,9 @@ object MalatroApp extends JFXApp3 {
     cardPane
   }
 
+  /**
+   * Application entry point. Initializes the primary stage and loads the main title screen.
+   */
   override def start(): Unit = {
     stage = new JFXApp3.PrimaryStage {
       title = "Malatro"
@@ -96,7 +120,11 @@ object MalatroApp extends JFXApp3 {
     contentPane.children = List(createTitleView())
   }
 
-
+  /**
+   * Generates the initial Title Screen view.
+   *
+   * @return A StackPane containing the game title, prompt, and animated logo.
+   */
   private def createTitleView(): StackPane = {
     val titleText = new Text("MALATRO") {
       fill = Color.Black
@@ -116,7 +144,7 @@ object MalatroApp extends JFXApp3 {
         mouseTransparent = true
       }
     } else {
-      println("⚠️ Error: Couldn't found /images/BALATROBALATRO.gif")
+      println("⚠️ Error: Couldn't find /images/BALATROBALATRO.gif")
       new ImageView()
     }
 
@@ -131,6 +159,7 @@ object MalatroApp extends JFXApp3 {
       children = List(gifView, textBox)
     }
 
+    // Clicking anywhere on this container transitions the view to the difficulty menu
     titleContainer.onMouseClicked = _ => {
       contentPane.children = List(createDifficultyView())
     }
@@ -138,6 +167,11 @@ object MalatroApp extends JFXApp3 {
     titleContainer
   }
 
+  /**
+   * Generates the Difficulty Selection menu view.
+   *
+   * @return A StackPane containing the difficulty options (Easy, Medium, Hard).
+   */
   private def createDifficultyView(): StackPane = {
     val menuTitle = new Text("Select difficulty:") {
       fill = Color.White
@@ -168,6 +202,12 @@ object MalatroApp extends JFXApp3 {
     }
   }
 
+  /**
+   * Generates the core Gameplay view and initializes the game controller logic.
+   *
+   * @param selectedScore The target score to reach based on selected difficulty.
+   * @return A StackPane containing the complete game board interface.
+   */
   private def createGameView(selectedScore: Int): StackPane = {
     setBackgroundVideo("Gameplayfondo.mp4")
 
@@ -175,9 +215,11 @@ object MalatroApp extends JFXApp3 {
     gameController.targetScore = selectedScore
     gameController.initialGame()
 
+    // Sets to track which cards and jokers the player has currently clicked/selected
     var selectedIndexes = scala.collection.mutable.Set[Int]()
     val selectedJokers = scala.collection.mutable.Set[String]()
 
+    // Layout containers for different sections of the game board
     val topBox = new HBox { spacing = 50; alignment = Pos.Center }
     val handBox = new HBox { spacing = 10; padding = Insets(20); alignment = Pos.Center }
     val jokerSelectionBox = new HBox { spacing = 15; alignment = Pos.Center; padding = Insets(10) }
@@ -201,31 +243,32 @@ object MalatroApp extends JFXApp3 {
       children = List(currentHandText)
     }
 
+    // Load end-game media assets (GIFs)
     val winGif = new ImageView()
     val winPath = getClass.getResource("/images/hog-exploding.gif")
     if (winPath != null) winGif.image = new Image(winPath.toString)
-    winGif.fitWidth = 250;
+    winGif.fitWidth = 250
     winGif.preserveRatio = true
 
     val loseGif1 = new ImageView()
     val losePath1 = getClass.getResource("/images/Pancho_Melo_Llorando_y_rompiendo_todo.gif")
     if (losePath1 != null) loseGif1.image = new Image(losePath1.toString)
-    loseGif1.fitWidth = 300;
+    loseGif1.fitWidth = 300
     loseGif1.preserveRatio = true
 
     val loseGif2 = new ImageView()
     val losePath2 = getClass.getResource("/images/monkey-confused.gif")
     if (losePath2 != null) loseGif2.image = new Image(losePath2.toString)
-    loseGif2.fitWidth = 250;
+    loseGif2.fitWidth = 250
     loseGif2.preserveRatio = true
 
+    // Container for end-game GIFs, hidden and collapsed by default
     val endGameMediaBox = new HBox {
       spacing = 30
       alignment = Pos.Center
       visible = false
       managed = false
     }
-
 
     val jokerFiles = Map(
       "Devious" -> "Devious_Joker.png",
@@ -234,6 +277,10 @@ object MalatroApp extends JFXApp3 {
       "Scary Face" -> "Scary_Face.png"
     )
 
+    /**
+     * Helper function to generate a clickable Joker button.
+     * Manages visual opacity based on selection state.
+     */
     def createJokerButton(jokerId: String, fileName: String): VBox = {
       val path = getClass.getResource(s"/jokers/$fileName")
       val imgView = if (path != null) {
@@ -241,7 +288,7 @@ object MalatroApp extends JFXApp3 {
           fitWidth = 60; preserveRatio = true
         }
       } else {
-        println(s"⚠️ Error: Couldn't found the image in /jokers/$fileName")
+        println(s"⚠️ Error: Couldn't find the image in /jokers/$fileName")
         new ImageView()
       }
 
@@ -264,23 +311,16 @@ object MalatroApp extends JFXApp3 {
       container
     }
 
+    // Populate the joker box
     jokerSelectionBox.children = jokerFiles.map { case (name, file) => createJokerButton(name, file) }.toList
 
+    /** Retrieves the calculated poker hand name from the controller and updates the UI text. */
     def updateSelectedHandText(): Unit = {
-      if (selectedIndexes.isEmpty) {
-        currentHandText.text = "Selected Hand: None"
-      } else {
-        val currentCards = gameController.hand.cards
-        val selectedCards = ArrayBuffer.from(
-          selectedIndexes.toList.map(index => currentCards(index))
-        )
-        val tempHand = new Hand(selectedCards, ArrayBuffer())
-        val bestPokerHand = HandPriority(tempHand).bestHand
-
-        currentHandText.text = s"Selected Hand: ${bestPokerHand.pokerHandName}"
-      }
+      val handName = gameController.evaluateSelectedHandName(selectedIndexes)
+      currentHandText.text = s"Selected Hand: $handName"
     }
 
+    // Button to return to the main menu upon winning or losing
     val returnButton = new Button("Return to Main Menu") {
       style = "-fx-font-size: 18px; -fx-padding: 10px 20px;"
       visible = false
@@ -291,6 +331,10 @@ object MalatroApp extends JFXApp3 {
       }
     }
 
+    /**
+     * Master refresh function.
+     * Re-renders the hand of cards, updates scores, and handles transition to Win/Lose screens.
+     */
     def updateUI(): Unit = {
       selectedIndexes.clear()
 
@@ -304,10 +348,10 @@ object MalatroApp extends JFXApp3 {
         val cardNode = createCardView(cards(i), i, (clickedIndex, pane) => {
           if (selectedIndexes.contains(clickedIndex)) {
             selectedIndexes -= clickedIndex
-            pane.translateY = 0
+            pane.translateY = 0 // Return card to default position
           } else if (selectedIndexes.size < 5) {
             selectedIndexes += clickedIndex
-            pane.translateY = -20
+            pane.translateY = -20 // Lift card visually to indicate selection
           }
           updateSelectedHandText()
         })
@@ -316,70 +360,58 @@ object MalatroApp extends JFXApp3 {
 
       updateSelectedHandText()
 
+      // Handle Win State
       if (gameController.isWin) {
         statusText.text = s"¡YOU WIN! You reached ${gameController.currentScore} points."
         statusText.fill = Color.Yellow
         handBox.children.clear()
 
-        jokerSelectionBox.visible = false;
-        jokerSelectionBox.managed = false
-        actionBox.visible = false;
-        actionBox.managed = false
-        selectionInfoBox.visible = false;
-        selectionInfoBox.managed = false
-        sortBox.visible = false;
-        sortBox.managed = false
+        // Hide and collapse all gameplay tools
+        jokerSelectionBox.visible = false; jokerSelectionBox.managed = false
+        actionBox.visible = false; actionBox.managed = false
+        selectionInfoBox.visible = false; selectionInfoBox.managed = false
+        sortBox.visible = false; sortBox.managed = false
         handBox.managed = false
 
+        // Show winning media and return button
         endGameMediaBox.children = List(winGif)
-        endGameMediaBox.visible = true;
-        endGameMediaBox.managed = true
-        returnButton.visible = true;
-        returnButton.managed = true
+        endGameMediaBox.visible = true; endGameMediaBox.managed = true
+        returnButton.visible = true; returnButton.managed = true
 
+        // Handle Game Over State
       } else if (gameController.isGameOver) {
         statusText.text = s"GAME OVER. You are out of plays.\nFinal score: ${gameController.currentScore}"
         statusText.fill = Color.Red
         handBox.children.clear()
 
-        jokerSelectionBox.visible = false;
-        jokerSelectionBox.managed = false
-        actionBox.visible = false;
-        actionBox.managed = false
-        selectionInfoBox.visible = false;
-        selectionInfoBox.managed = false
-        sortBox.visible = false;
-        sortBox.managed = false
+        // Hide and collapse all gameplay tools
+        jokerSelectionBox.visible = false; jokerSelectionBox.managed = false
+        actionBox.visible = false; actionBox.managed = false
+        selectionInfoBox.visible = false; selectionInfoBox.managed = false
+        sortBox.visible = false; sortBox.managed = false
         handBox.managed = false
 
+        // Show losing media and return button
         endGameMediaBox.children = List(loseGif1, loseGif2)
-        endGameMediaBox.visible = true;
-        endGameMediaBox.managed = true
-        returnButton.visible = true;
-        returnButton.managed = true
+        endGameMediaBox.visible = true; endGameMediaBox.managed = true
+        returnButton.visible = true; returnButton.managed = true
       }
     }
 
-
+    // LOGIC DELEGATED TO THE CONTROLLER
     val sortRankButton = new Button("Sort by Rank") {
       style = "-fx-font-size: 14px;"
       onAction = _ => {
-        gameController.hand.getHandCards.sortInPlaceBy(_.rank.value)
+        gameController.sortHandByRank()
         updateUI()
       }
     }
 
+    // LOGIC DELEGATED TO THE CONTROLLER
     val sortSuitButton = new Button("Sort by Suit") {
       style = "-fx-font-size: 14px;"
       onAction = _ => {
-        def suitToNumber(label: String): Int = label.toLowerCase match {
-          case "spades" => 1
-          case "hearts" => 2
-          case "clubs" => 3
-          case "diamonds" => 4
-          case _ => 5
-        }
-        gameController.hand.getHandCards.sortInPlaceBy(card => suitToNumber(card.suit.label))
+        gameController.sortHandBySuit()
         updateUI()
       }
     }
@@ -390,6 +422,7 @@ object MalatroApp extends JFXApp3 {
       style = "-fx-font-size: 16px;"
       onAction = _ => {
         if (selectedIndexes.nonEmpty) {
+          // Sort indices in reverse to prevent shifting issues when removing elements
           val indexesToDiscard = selectedIndexes.toSeq.sorted(Ordering[Int].reverse).to(scala.collection.mutable.ArrayBuffer)
           gameController.discardCards(indexesToDiscard)
           updateUI()
@@ -397,23 +430,12 @@ object MalatroApp extends JFXApp3 {
       }
     }
 
+    // LOGIC DELEGATED TO THE CONTROLLER
     val playButton = new Button("Play") {
       style = "-fx-font-size: 16px;"
       onAction = _ => {
         if (selectedIndexes.nonEmpty) {
-          gameController.hand.getHandJokers.clear()
-
-          val jokersToAdd = scala.collection.mutable.ArrayBuffer[Joker]()
-          if (selectedJokers.contains("Devious")) jokersToAdd += new DeviousJoker()
-          if (selectedJokers.contains("Even Steven")) jokersToAdd += new EvenSteven()
-          if (selectedJokers.contains("Greedy")) jokersToAdd += new GreedyJoker()
-          if (selectedJokers.contains("Scary Face")) jokersToAdd += new ScaryFace()
-
-          gameController.hand.addJokers(jokersToAdd)
-
-          val indexesToPlay = selectedIndexes.toSeq.sorted(Ordering[Int].reverse).to(scala.collection.mutable.ArrayBuffer)
-          gameController.playCards(indexesToPlay)
-          gameController.evaluateScore()
+          gameController.playCardsWithSelectedJokers(selectedIndexes.toSeq, selectedJokers)
           updateUI()
         }
       }
@@ -427,6 +449,7 @@ object MalatroApp extends JFXApp3 {
       children = List(topBox, jokerSelectionBox, handBox, sortBox, selectionInfoBox, actionBox, endGameMediaBox, returnButton)
     }
 
+    // Initial UI render
     updateUI()
 
     new StackPane {

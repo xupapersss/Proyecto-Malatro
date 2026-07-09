@@ -5,6 +5,8 @@ import controller.states.{GameState, InitialSetup, Lose}
 import controller.observer.{Observer, Subject}
 import rank.*
 import suit.*
+import jokers.*
+import pokerhands.*
 import scala.util.Random
 import cl.uchile.dcc.InvalidHand
 
@@ -128,6 +130,62 @@ class Controller extends Observer {
         hand.addCards(cardsToDraw)
       }
     }
+  }
+
+  // ====================================================
+  // MÉTODOS DELEGADOS PARA LA INTERFAZ GRÁFICA (MVC)
+  // ====================================================
+
+  /** Sorts the cards in the player's hand by rank value. */
+  def sortHandByRank(): Unit = {
+    hand.getHandCards.sortInPlaceBy(_.rank.value)
+  }
+
+  /** Sorts the cards in the player's hand by suit. */
+  def sortHandBySuit(): Unit = {
+    def suitToNumber(label: String): Int = label.toLowerCase match {
+      case "spades" => 1
+      case "hearts" => 2
+      case "clubs" => 3
+      case "diamonds" => 4
+      case _ => 5
+    }
+    hand.getHandCards.sortInPlaceBy(card => suitToNumber(card.suit.label))
+  }
+
+  /** * Evaluates a subset of cards and returns the name of the best poker hand.
+   * * @param selectedIndexes the indices of the selected cards
+   * @return the string representation of the best poker hand
+   */
+  def evaluateSelectedHandName(selectedIndexes: Iterable[Int]): String = {
+    if (selectedIndexes.isEmpty) return "None"
+    val currentCards = hand.cards
+    val selectedCards = ArrayBuffer.from(selectedIndexes.map(index => currentCards(index)))
+    val tempHand = new Hand(selectedCards, ArrayBuffer())
+    val bestPokerHand = HandPriority(tempHand).bestHand
+    bestPokerHand.pokerHandName
+  }
+
+  /**
+   * Adds the selected jokers to the hand and plays the selected cards.
+   *
+   * @param selectedIndexes the indices of the cards to play
+   * @param selectedJokers the names of the jokers to apply
+   */
+  def playCardsWithSelectedJokers(selectedIndexes: Seq[Int], selectedJokers: Iterable[String]): Unit = {
+    hand.getHandJokers.clear()
+    val jokersToAdd = ArrayBuffer[Joker]()
+
+    if (selectedJokers.exists(_ == "Devious")) jokersToAdd += new DeviousJoker()
+    if (selectedJokers.exists(_ == "Even Steven")) jokersToAdd += new EvenSteven()
+    if (selectedJokers.exists(_ == "Greedy")) jokersToAdd += new GreedyJoker()
+    if (selectedJokers.exists(_ == "Scary Face")) jokersToAdd += new ScaryFace()
+
+    hand.addJokers(jokersToAdd)
+
+    val indexesToPlay = selectedIndexes.sorted(Ordering[Int].reverse).to(ArrayBuffer)
+    playCards(indexesToPlay)
+    evaluateScore()
   }
 
 }

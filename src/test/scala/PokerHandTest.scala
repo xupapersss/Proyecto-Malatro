@@ -270,4 +270,44 @@ class PokerHandTest extends FunSuite {
 
     assertEquals(result,expectedResult)
   }
+
+  // ==========================================
+  // Tests for pokerHandName property
+  // ==========================================
+
+  /** Verifies that pokerHandName returns the correct string for HighCard. */
+  test("pokerHandName should return 'High Card' for HighCard hand") {
+    val hand = new HighCard()
+    assertEquals(hand.pokerHandName, "High Card")
+  }
+
+  /** Verifies that pokerHandName returns the correct string for Pair. */
+  test("pokerHandName should return 'Pair' for Pair hand") {
+    val hand = new Pair()
+    assertEquals(hand.pokerHandName, "Pair")
+  }
+
+  /** Verifies that pokerHandName returns the correct string for ThreeOfaKind. */
+  test("pokerHandName should return 'Three Of a Kind' for ThreeOfaKind hand") {
+    val hand = new ThreeOfaKind()
+    assertEquals(hand.pokerHandName, "Three Of a Kind")
+  }
+
+  /** Verifies that pokerHandName returns the correct string for Flush. */
+  test("pokerHandName should return 'Flush' for Flush hand") {
+    val hand = new Flush()
+    assertEquals(hand.pokerHandName, "Flush")
+  }
+
+  /** Verifies that pokerHandName returns the correct string for Straight. */
+  test("pokerHandName should return 'Straight' for Straight hand") {
+    val hand = new Straight()
+    assertEquals(hand.pokerHandName, "Straight")
+  }
+
+  /** Verifies that pokerHandName returns the correct string for StraightFlush. */
+  test("pokerHandName should return 'Straight Flush' for StraightFlush hand") {
+    val hand = new StraightFlush()
+    assertEquals(hand.pokerHandName, "Straight Flush")
+  }
 }

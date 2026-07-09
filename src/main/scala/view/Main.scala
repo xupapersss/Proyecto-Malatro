@@ -55,7 +55,7 @@ object Main {
 /**
  * Displays the current state of the game to the player.
  *
- * This includes the target score, current score, remaining plays, 
+ * This includes the target score, current score, remaining plays,
  * remaining discards, the cards currently held in the hand, and any active Jokers.
  *
  * @param controller the main game controller holding the state

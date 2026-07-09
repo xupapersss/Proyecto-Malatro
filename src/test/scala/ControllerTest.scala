@@ -3,6 +3,10 @@ package cl.uchile.dcc
 import munit.FunSuite
 import controller.states.{GameState, InitialSetup, Lose, Win}
 import controller.Controller
+import cl.uchile.dcc.rank.*
+import cl.uchile.dcc.suit.*
+import cl.uchile.dcc.jokers.*
+import cl.uchile.dcc.pokerhands.*
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -11,7 +15,7 @@ import scala.collection.mutable.ArrayBuffer
  *
  * This suite verifies the correct initialization of the controller,
  * state transitions, game creation, the handling of Observer updates,
- * exception management via safeRun, and card drawing mechanics.
+ * exception management via safeRun, card drawing mechanics, and MVC delegation.
  */
 class ControllerTest extends FunSuite {
 
@@ -23,7 +27,11 @@ class ControllerTest extends FunSuite {
 
   /** Verifies standard initialization values. */
   test("The controller should initialize with InitialSetup state and scores at 0") {
-    assert(controller.getState.isInstanceOf[InitialSetup])
+    val isInitialSetup = controller.getState match {
+      case _: InitialSetup => true
+      case _ => false
+    }
+    assert(isInitialSetup, "State should be InitialSetup")
     assertEquals(controller.currentScore, 0)
     assertEquals(controller.targetScore, 0)
   }
@@ -41,14 +49,22 @@ class ControllerTest extends FunSuite {
 
     assert(controller.hand != null)
 
-    assert(!controller.getState.isInstanceOf[InitialSetup])
+    val isInitialSetup = controller.getState match {
+      case _: InitialSetup => true
+      case _ => false
+    }
+    assert(!isInitialSetup, "State should not be InitialSetup after starting")
   }
 
   /** Verifies the Observer update changes the state to Lose when plays run out. */
   test("The update method should change the state to Lose when receiving a String") {
     controller.update(null, "Out of plays")
 
-    assert(controller.getState.isInstanceOf[Lose])
+    val isLose = controller.getState match {
+      case _: Lose => true
+      case _ => false
+    }
+    assert(isLose, "State should be Lose")
   }
 
   /** Verifies the Observer ignores unknown notifications. */
@@ -204,5 +220,106 @@ class ControllerTest extends FunSuite {
     controller.drawCards()
 
     assertEquals(controller.hand.cards.length, 8)
+  }
+
+  // ==========================================
+  // Tests for MVC Graphic Interface Delegation
+  // ==========================================
+
+  /** Verifies that sortHandByRank orders cards correctly by their rank value. */
+  test("sortHandByRank should correctly sort the player's hand in ascending order") {
+    val c1 = new Card(new Hearts, new King)  // Value: 13
+    val c2 = new Card(new Spades, new Two)   // Value: 2
+    val c3 = new Card(new Diamonds, new Ace) // Value: 1
+
+    controller.hand = new Hand(ArrayBuffer(c1, c2, c3), ArrayBuffer())
+    controller.sortHandByRank()
+
+    val sortedCards = controller.hand.cards
+    assertEquals(sortedCards(0).rank.order, 2)
+    assertEquals(sortedCards(1).rank.order, 13)
+    assertEquals(sortedCards(2).rank.order, 1)
+  }
+
+  /** Verifies that sortHandBySuit orders cards according to the predefined suit hierarchy. */
+  test("sortHandBySuit should correctly sort the player's hand by suit hierarchy") {
+    val c1 = new Card(new Diamonds, new Two)
+    val c2 = new Card(new Spades, new Three)
+    val c3 = new Card(new Clubs, new Four)
+    val c4 = new Card(new Hearts, new Five)
+
+    controller.hand = new Hand(ArrayBuffer(c1, c2, c3, c4), ArrayBuffer())
+    controller.sortHandBySuit()
+
+    val sortedCards = controller.hand.cards
+    assertEquals(sortedCards(0).suit.label.toLowerCase, "spades")
+    assertEquals(sortedCards(1).suit.label.toLowerCase, "hearts")
+    assertEquals(sortedCards(2).suit.label.toLowerCase, "clubs")
+    assertEquals(sortedCards(3).suit.label.toLowerCase, "diamonds")
+  }
+
+  /** Verifies that evaluating an empty selection returns "None". */
+  test("evaluateSelectedHandName should return 'None' if no cards are selected") {
+    controller.initialGame()
+    val name = controller.evaluateSelectedHandName(List())
+    assertEquals(name, "None")
+  }
+
+  /** Verifies that evaluating a valid selection correctly identifies the poker hand. */
+  test("evaluateSelectedHandName should correctly identify a poker hand") {
+    val c1 = new Card(new Hearts, new Two)
+    val c2 = new Card(new Hearts, new Three)
+    val c3 = new Card(new Hearts, new Four)
+    val c4 = new Card(new Hearts, new Seven)
+    val c5 = new Card(new Hearts, new Nine)
+
+    controller.hand = new Hand(ArrayBuffer(c1, c2, c3, c4, c5), ArrayBuffer())
+
+    val name = controller.evaluateSelectedHandName(List(0, 1, 2, 3, 4))
+
+    assertEquals(name, "Flush")
+  }
+
+  /** Verifies that playing cards with Jokers delegates properly and loads the Jokers into the hand. */
+  test("playCardsWithSelectedJokers should add the correct jokers, play the cards, and evaluate score") {
+    var playCardsCalled = false
+    var evaluateScoreCalled = false
+
+    controller.initialGame()
+    
+    val mockState = new InitialSetup {
+      override def playCards(c: Controller, indexes: ArrayBuffer[Int]): Unit = {
+        playCardsCalled = true
+      }
+
+      override def evaluateScore(c: Controller): Unit = {
+        evaluateScoreCalled = true
+      }
+    }
+    controller.setState(mockState)
+
+    val selectedIndexes = Seq(0, 1)
+    val selectedJokers = List("Devious", "Scary Face")
+
+    controller.playCardsWithSelectedJokers(selectedIndexes, selectedJokers)
+
+    val currentJokers = controller.hand.getHandJokers
+
+    assertEquals(currentJokers.length, 2)
+
+    val hasDevious = currentJokers.exists {
+      case _: DeviousJoker => true
+      case _ => false
+    }
+    assert(hasDevious, "DeviousJoker was not added to the hand")
+
+    val hasScaryFace = currentJokers.exists {
+      case _: ScaryFace => true
+      case _ => false
+    }
+    assert(hasScaryFace, "ScaryFace was not added to the hand")
+
+    assert(playCardsCalled, "playCards was not called inside playCardsWithSelectedJokers")
+    assert(evaluateScoreCalled, "evaluateScore was not called inside playCardsWithSelectedJokers")
   }
 }
